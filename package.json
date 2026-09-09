@@ -1,0 +1,11 @@
+{
+  "name": "zenith-tracker",
+  "private": true,
+  "scripts": {
+    "api": "npm run start:dev --prefix apps/api",
+    "web": "npm run dev --prefix apps/web",
+    "test": "npm test --prefix apps/api && npm test --prefix apps/web -- --run",
+    "lint": "npm run lint --prefix apps/api && npm run lint --prefix apps/web",
+    "test:e2e": "npm run test:e2e --prefix apps/api"
+  }
+}
