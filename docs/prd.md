@@ -61,7 +61,7 @@
 > independentes. O conjunto `Must Have` é o escopo comprometido deste semestre.
 > Status: `⚪ Draft` · `🟡 Ready` · `🟢 Live`.
 
-### US01 — Entrar no produto por papel · `Must Have` · `M` · Status: `⚪ Draft`
+### US01 — Entrar no produto por papel · `Must Have` · `M` · Status: `🟡 Ready`
 
 **Como** visitante, **eu quero** criar conta e entrar com e-mail e senha escolhendo o papel (aluno ou treinador) **para que** eu caia só na área do meu papel.
 
