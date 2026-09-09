@@ -76,7 +76,7 @@
 
 ---
 
-### US02 — Vincular aluno à carteira · `Must Have` · `M` · Status: `⚪ Draft`
+### US02 — Vincular aluno à carteira · `Must Have` · `M` · Status: `🟡 Ready`
 
 **Como** treinador com assinatura Ativa, **eu quero** colocar um aluno na minha carteira pelo e-mail da conta dele **para que** eu monte o plano daquela pessoa e não de outra.
 
@@ -91,7 +91,7 @@
 
 ---
 
-### US03 — Montar o plano nutricional inicial · `Must Have` · `M` · Status: `⚪ Draft`
+### US03 — Montar o plano nutricional inicial · `Must Have` · `M` · Status: `🟡 Ready`
 
 **Como** treinador com aluno vinculado, **eu quero** informar os dados iniciais, revisar o teto sugerido e gravar o setup com a margem **para que** o aluno passe a ver um teto que daí em diante se atualiza sozinho.
 
