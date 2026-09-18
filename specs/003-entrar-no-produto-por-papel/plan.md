@@ -12,7 +12,7 @@
 
 ## Tarefas
 
-- [ ] **Tarefa 1 — Destravar User, envelope HTTP e JWT**
+- [x] **Tarefa 1 — Destravar User, envelope HTTP e JWT**
   - Cobre: nenhum CA (passo técnico)
   - Teste primeiro: o app de teste sobe com ValidationPipe (whitelist + forbid), interceptor e filter; body com campo extra vira 400 no envelope `{ statusCode, message, error }` sem stack; contrato Prisma declara `User` com `email` único. Falha hoje: não há Prisma, pipe global nem envelope.
   - Arquivos previstos: `apps/api/src/prisma/contract.prisma`, `apps/api/src/prisma/db.ts`, `apps/api/src/prisma.service.ts`, `apps/api/src/common/`, `apps/api/src/app.module.ts`, `apps/api/src/main.ts`, `apps/api/package.json`, `apps/api/test/`

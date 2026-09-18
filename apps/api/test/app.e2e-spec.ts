@@ -3,24 +3,47 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { App } from 'supertest/types';
 import { AppModule } from './../src/app.module';
+import { configureApp } from './../src/common/configure-app';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication<App>;
 
   beforeEach(async () => {
+    process.env.JWT_SECRET ??= 'e2e-only-jwt-secret';
+
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    configureApp(app);
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  it('/ (GET) wraps the payload in the success envelope', () => {
     return request(app.getHttpServer())
       .get('/')
       .expect(200)
-      .expect('Hello World!');
+      .expect({ statusCode: 200, data: 'Hello World!' });
+  });
+
+  it('POST /probe with an extra body field returns 400 envelope without stack', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/probe')
+      .send({ name: 'ok', extra: true })
+      .expect(400);
+
+    expect(response.body).toEqual({
+      statusCode: 400,
+      message: expect.anything(),
+      error: expect.any(String),
+    });
+    expect(Object.keys(response.body).sort()).toEqual(
+      ['error', 'message', 'statusCode'].sort(),
+    );
+    expect(JSON.stringify(response.body)).not.toMatch(/stack/i);
+    expect(JSON.stringify(response.body)).not.toMatch(/password/i);
+    expect(JSON.stringify(response.body)).not.toMatch(/token/i);
   });
 
   afterEach(async () => {
