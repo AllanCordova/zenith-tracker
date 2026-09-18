@@ -17,7 +17,7 @@
   - Teste primeiro: o app de teste sobe com ValidationPipe (whitelist + forbid), interceptor e filter; body com campo extra vira 400 no envelope `{ statusCode, message, error }` sem stack; contrato Prisma declara `User` com `email` único. Falha hoje: não há Prisma, pipe global nem envelope.
   - Arquivos previstos: `apps/api/src/prisma/contract.prisma`, `apps/api/src/prisma/db.ts`, `apps/api/src/prisma.service.ts`, `apps/api/src/common/`, `apps/api/src/app.module.ts`, `apps/api/src/main.ts`, `apps/api/package.json`, `apps/api/test/`
 
-- [ ] **Tarefa 2 — Cadastrar visitante e cair na área do papel**
+- [x] **Tarefa 2 — Cadastrar visitante e cair na área do papel**
   - Cobre: CA1, CA11
   - Teste primeiro: e2e `POST /auth/register` (aluno e treinador) devolve `accessToken` + `user` sem `passwordHash`, e-mail em minúsculas, senha hasheada; `GET /auth/me` com Bearer devolve o nome. Vitest: confirmar cadastro grava JWT no `localStorage` e cai em `/aluno` ou `/treinador` com o nome e o substituto; desmontar o formulário sem confirmar não chama o repositório (CA11). Falha hoje: não há `/auth/register` nem páginas.
   - Arquivos previstos: `apps/api/src/auth/`, `apps/api/src/users/`, `apps/api/test/`, `apps/web/repositories/`, `apps/web/lib/`, `apps/web/app/cadastro/`, `apps/web/app/aluno/`, `apps/web/app/treinador/`, `apps/web/__tests__/`
