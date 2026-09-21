@@ -37,7 +37,7 @@
   - Teste primeiro: e2e com JWT de aluno em `GET /trainer/area` → 403 sem corpo de recurso. Vitest: sessão aluno em `/treinador` permanece em `/aluno`.
   - Arquivos previstos: `apps/api/src/auth/`, `apps/api/test/`, `apps/web/app/treinador/`, `apps/web/lib/`, `apps/web/__tests__/`
 
-- [ ] **Tarefa 6 — Impedir treinador na área do aluno**
+- [x] **Tarefa 6 — Impedir treinador na área do aluno**
   - Cobre: CA5
   - Teste primeiro: e2e com JWT de treinador em `GET /student/area` → 403 sem corpo de recurso. Vitest: sessão treinador em `/aluno` permanece em `/treinador`.
   - Arquivos previstos: `apps/api/src/auth/`, `apps/api/test/`, `apps/web/app/aluno/`, `apps/web/lib/`, `apps/web/__tests__/`

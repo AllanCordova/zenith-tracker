@@ -261,4 +261,33 @@ describe('Auth register (e2e)', () => {
     expect(response.body).not.toHaveProperty('data');
     expect(JSON.stringify(response.body)).not.toMatch(/passwordHash|carteira|plano/);
   });
+
+  it('GET /student/area with TRAINER JWT returns 403 without resource body', async () => {
+    const suffix = `${Date.now()}-ca5`;
+    const storedEmail = `treinador.ca5.${suffix}@example.com`;
+    createdEmails.push(storedEmail);
+
+    const registered = await request(app.getHttpServer())
+      .post('/auth/register')
+      .send({
+        name: 'Téo Treinador',
+        email: storedEmail,
+        password: 'Senha123',
+        role: 'TRAINER',
+      })
+      .expect(201);
+
+    const response = await request(app.getHttpServer())
+      .get('/student/area')
+      .set('Authorization', `Bearer ${registered.body.data.accessToken}`);
+
+    expect(response.status).toBe(403);
+    expect(response.body).toEqual({
+      statusCode: 403,
+      message: expect.any(String),
+      error: expect.any(String),
+    });
+    expect(response.body).not.toHaveProperty('data');
+    expect(JSON.stringify(response.body)).not.toMatch(/passwordHash|carteira|plano/);
+  });
 });

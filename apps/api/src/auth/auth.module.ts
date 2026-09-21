@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './auth.guard';
 import { JwtStrategy } from './jwt.strategy';
 import { RolesGuard } from './roles.guard';
+import { StudentAreaController } from './student-area.controller';
 import { TrainerAreaController } from './trainer-area.controller';
 
 @Module({
@@ -13,7 +14,7 @@ import { TrainerAreaController } from './trainer-area.controller';
     UsersModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
-  controllers: [AuthController, TrainerAreaController],
+  controllers: [AuthController, StudentAreaController, TrainerAreaController],
   providers: [AuthService, JwtStrategy, JwtAuthGuard, RolesGuard],
 })
 export class AuthModule {}
