@@ -74,7 +74,7 @@
   - Teste primeiro: `OPTIONS`/`POST /auth/register` com `Origin: http://localhost:3001` não é 404 de preflight e devolve cabeçalho CORS; o `fetch` da UI não cai no Next (`:3001`). Falha hoje: `Cannot OPTIONS /auth/register`; `NEXT_PUBLIC_API_URL` vazio manda o POST para a origem do Next.
   - Arquivos previstos: `apps/api/src/common/configure-app.ts`, `apps/api/src/main.ts`, `apps/api/test/`, `apps/web/repositories/auth.ts`
 
-- [ ] **Tarefa 12 — Comprovar o e2e de auth com Postgres no ar**
+- [x] **Tarefa 12 — Comprovar o e2e de auth com Postgres no ar**
   - Cobre: evidência ao vivo dos CAs de API; auditoria final, pendência 4
   - Teste primeiro: `cd apps/api && npm run test:e2e` passa com PostgreSQL em `127.0.0.1:5432` (Compose da raiz). Falha hoje: `ECONNREFUSED 127.0.0.1:5432` nos 8 casos de `auth.e2e-spec.ts`.
   - Arquivos previstos: `docker-compose.yml`, `apps/api/test/`, `apps/api/.env.example`

@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -34,3 +35,12 @@ function loadEnvFile(path: string): void {
 
 loadEnvFile(resolve(__dirname, '../.env'));
 process.env.JWT_SECRET ??= 'e2e-only-jwt-secret';
+process.env.DATABASE_URL ??=
+  'postgresql://postgres:postgres@127.0.0.1:5432/postgres';
+
+const apiRoot = resolve(__dirname, '..');
+execFileSync(resolve(apiRoot, 'node_modules/.bin/prisma'), ['db', 'migrate'], {
+  cwd: apiRoot,
+  env: process.env,
+  stdio: 'pipe',
+});
