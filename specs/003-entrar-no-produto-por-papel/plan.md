@@ -32,7 +32,7 @@
   - Teste primeiro: e2e `POST /auth/login` com senha certa devolve token; e-mail errado ou senha errada → 401, mesma mensagem de combinação, sem dizer qual falhou. Vitest: `/login` com erro não grava JWT e mostra o texto genérico; com acerto cai na área do papel.
   - Arquivos previstos: `apps/api/src/auth/`, `apps/api/test/`, `apps/web/app/login/`, `apps/web/repositories/`, `apps/web/__tests__/`
 
-- [ ] **Tarefa 5 — Impedir aluno na área do treinador**
+- [x] **Tarefa 5 — Impedir aluno na área do treinador**
   - Cobre: CA4
   - Teste primeiro: e2e com JWT de aluno em `GET /trainer/area` → 403 sem corpo de recurso. Vitest: sessão aluno em `/treinador` permanece em `/aluno`.
   - Arquivos previstos: `apps/api/src/auth/`, `apps/api/test/`, `apps/web/app/treinador/`, `apps/web/lib/`, `apps/web/__tests__/`
