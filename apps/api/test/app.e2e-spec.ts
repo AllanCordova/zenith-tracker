@@ -28,10 +28,19 @@ describe('AppController (e2e)', () => {
       .expect({ statusCode: 200, data: 'Hello World!' });
   });
 
-  it('POST /probe with an extra body field returns 400 envelope without stack', async () => {
+  it('POST /auth/register with an extra body field returns 400 envelope without stack or password', async () => {
+    const email = `extra.envelope.${Date.now()}@example.com`;
+    const password = 'Senha123';
+
     const response = await request(app.getHttpServer())
-      .post('/probe')
-      .send({ name: 'ok', extra: true })
+      .post('/auth/register')
+      .send({
+        name: 'Ana Aluna',
+        email,
+        password,
+        role: 'STUDENT',
+        extra: true,
+      })
       .expect(400);
 
     expect(response.body).toEqual({
@@ -43,8 +52,22 @@ describe('AppController (e2e)', () => {
       ['error', 'message', 'statusCode'].sort(),
     );
     expect(JSON.stringify(response.body)).not.toMatch(/stack/i);
-    expect(JSON.stringify(response.body)).not.toMatch(/password/i);
+    expect(JSON.stringify(response.body)).not.toContain(password);
     expect(JSON.stringify(response.body)).not.toMatch(/token/i);
+
+    const login = await request(app.getHttpServer())
+      .post('/auth/login')
+      .send({ email, password });
+
+    expect(login.status).toBe(401);
+  });
+
+  it('POST /probe is gone', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/probe')
+      .send({ name: 'ok' });
+
+    expect(response.status).toBe(404);
   });
 
   it('OPTIONS /auth/register from the UI origin is not a 404 preflight and returns CORS', async () => {

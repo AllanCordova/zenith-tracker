@@ -79,7 +79,7 @@
   - Teste primeiro: `cd apps/api && npm run test:e2e` passa com PostgreSQL em `127.0.0.1:5432` (Compose da raiz). Falha hoje: `ECONNREFUSED 127.0.0.1:5432` nos 8 casos de `auth.e2e-spec.ts`.
   - Arquivos previstos: `docker-compose.yml`, `apps/api/test/`, `apps/api/.env.example`
 
-- [ ] **Tarefa 13 — Remover a sonda `POST /probe`**
+- [x] **Tarefa 13 — Remover a sonda `POST /probe`**
   - Cobre: nada da spec (a spec não pede essa rota); auditoria final, pendência 3
   - Teste primeiro: e2e deixa de bater em `/probe`; a prova de campo extra no envelope 400 passa a usar uma rota de escrita da spec (`POST /auth/register` ou `/auth/login`). Falha hoje: `AppController` ainda expõe `POST /probe` e `ProbeWriteDto` em produção.
   - Arquivos previstos: `apps/api/src/app.controller.ts`, `apps/api/src/common/probe-write.dto.ts`, `apps/api/test/app.e2e-spec.ts`
