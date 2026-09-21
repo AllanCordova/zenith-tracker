@@ -187,4 +187,16 @@
   .zt-select-icon {
     @apply size-4 shrink-0 text-primaria;
   }
+
+  .zt-landing {
+    @apply mx-auto w-full max-w-3xl px-token-xl py-token-xl;
+  }
+
+  .zt-landing-grid {
+    @apply mt-token-xl grid gap-token-lg md:grid-cols-3;
+  }
+
+  .zt-landing-cta {
+    @apply mt-token-xl flex flex-col gap-token-sm sm:flex-row;
+  }
 }
