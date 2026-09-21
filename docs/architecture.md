@@ -1,8 +1,8 @@
 # 🛠️ Architecture / Software Design Document
 
 **Projeto:** Zenith Tracker
-**Versão:** 1.0.0
-**Última atualização:** 2026-09-09
+**Versão:** 1.1.0
+**Última atualização:** 2026-09-21
 
 > 🤖 **O `prd.md` responde _o quê_ o produto faz. Este responde _onde as coisas
 > moram e como se chamam_.** Detalhe de tela — rota, componente, contrato —
@@ -257,7 +257,7 @@ Unicidade: `User.email`; par (`trainerId`, `studentId`) em `Enrollment`; no máx
 
 | Domínio | Módulo (pasta) | Guard | Dados (repository) | US |
 | :------ | :------------- | :---- | :----------------- | :-- |
-| | | | | |
+| Autenticação e conta | `auth/`, `users/` | `JwtAuthGuard` + `RolesGuard` | Prisma `User` | US01 |
 
 ---
 
@@ -266,6 +266,7 @@ Unicidade: `User.email`; par (`trainerId`, `studentId`) em `Enrollment`; no máx
 | Data | Versão | O que mudou |
 | :--- | :------ | :---------- |
 | 2026-09-09 | 1.0.0 | Versão inicial via `/utf-architecture` |
+| 2026-09-21 | 1.1.0 | Mapa de domínios: US01 (`auth/`, `users/`, `User`) |
 
 ---
 

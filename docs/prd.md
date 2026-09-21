@@ -61,7 +61,7 @@
 > independentes. O conjunto `Must Have` é o escopo comprometido deste semestre.
 > Status: `⚪ Draft` · `🟡 Ready` · `🟢 Live`.
 
-### US01 — Entrar no produto por papel · `Must Have` · `M` · Status: `🟡 Ready`
+### US01 — Entrar no produto por papel · `Must Have` · `M` · Status: `🟢 Live`
 
 **Como** visitante, **eu quero** criar conta e entrar com e-mail e senha escolhendo o papel (aluno ou treinador) **para que** eu caia só na área do meu papel.
 
@@ -351,6 +351,7 @@
 | Data | Versão | O que mudou |
 | :--- | :----- | :---------- |
 | 2026-09-04 | 1.0.0 | Versão inicial: visão, glossário, atores, Must Have (US01–US06, com pedido e pagamento), Should/Could do backlog anterior, regras do motor e da assinatura |
+| 2026-09-21 | 1.0.0 | US01 — Entrar no produto por papel: `🟡 Ready` → `🟢 Live` |
 | 2026-09-08 | 1.0.0 | Visão e RN20: teto variável com o andamento da dieta, sem o aluno redigitar o peso — distinto da meta do dia por treino extra (RN17) |
 | 2026-09-08 | 1.0.0 | Setup vs. automático: treinador grava estado inicial (e pode editar quando quiser); o teto do dia aparece sozinho depois (RN10, RN12, RN20, US03, US04) |
 | 2026-09-08 | 1.0.0 | RN16: sem período de cortesia — primeiro vínculo já exige Assinatura Ativa |
