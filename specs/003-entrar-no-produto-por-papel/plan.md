@@ -52,7 +52,7 @@
   - Teste primeiro: Vitest com JWT válido em `/cadastro` e `/login` cai na área do papel sem segundo `register`. Logout apaga o JWT do `localStorage`; a área autenticada seguinte exige `/login`.
   - Arquivos previstos: `apps/web/app/cadastro/`, `apps/web/app/login/`, `apps/web/app/aluno/`, `apps/web/app/treinador/`, `apps/web/lib/`, `apps/web/__tests__/`
 
-- [ ] **Tarefa 9 — Recusar senha e payload inválidos no cadastro**
+- [x] **Tarefa 9 — Recusar senha e payload inválidos no cadastro**
   - Cobre: CA9, CA10
   - Teste primeiro: e2e senha curta / sem letra / sem dígito, nome vazio, e-mail sem formato, `role` ausente ou inválido, campo extra → 400, nenhuma linha `User`. Vitest: confirmação diferente não chama o repositório; as outras recusas mostram que os dados não passaram, sem senha no texto.
   - Arquivos previstos: `apps/api/src/auth/`, `apps/api/test/`, `apps/web/app/cadastro/`, `apps/web/__tests__/`

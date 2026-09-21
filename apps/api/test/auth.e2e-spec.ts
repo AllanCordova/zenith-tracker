@@ -306,4 +306,117 @@ describe('Auth register (e2e)', () => {
     expect(response.body).not.toHaveProperty('data');
     expect(JSON.stringify(response.body)).not.toMatch(/passwordHash|carteira|plano/);
   });
+
+  it('POST /auth/register with invalid password or payload returns 400 and does not create User', async () => {
+    const suffix = `${Date.now()}-ca9`;
+    const cases: Array<{ title: string; email: string; body: Record<string, unknown> }> = [
+      {
+        title: 'senha curta',
+        email: `curta.ca9.${suffix}@example.com`,
+        body: {
+          name: 'Ana Aluna',
+          email: `curta.ca9.${suffix}@example.com`,
+          password: 'Abcdef1',
+          role: 'STUDENT',
+        },
+      },
+      {
+        title: 'senha sem letra',
+        email: `semletra.ca9.${suffix}@example.com`,
+        body: {
+          name: 'Ana Aluna',
+          email: `semletra.ca9.${suffix}@example.com`,
+          password: '12345678',
+          role: 'STUDENT',
+        },
+      },
+      {
+        title: 'senha sem dígito',
+        email: `semdigito.ca9.${suffix}@example.com`,
+        body: {
+          name: 'Ana Aluna',
+          email: `semdigito.ca9.${suffix}@example.com`,
+          password: 'Abcdefgh',
+          role: 'STUDENT',
+        },
+      },
+      {
+        title: 'nome vazio',
+        email: `nomevazio.ca10.${suffix}@example.com`,
+        body: {
+          name: '',
+          email: `nomevazio.ca10.${suffix}@example.com`,
+          password: 'Senha123',
+          role: 'STUDENT',
+        },
+      },
+      {
+        title: 'e-mail sem formato',
+        email: 'nao-e-email',
+        body: {
+          name: 'Ana Aluna',
+          email: 'nao-e-email',
+          password: 'Senha123',
+          role: 'STUDENT',
+        },
+      },
+      {
+        title: 'role ausente',
+        email: `sempapel.ca10.${suffix}@example.com`,
+        body: {
+          name: 'Ana Aluna',
+          email: `sempapel.ca10.${suffix}@example.com`,
+          password: 'Senha123',
+        },
+      },
+      {
+        title: 'role inválido',
+        email: `papelinvalido.ca10.${suffix}@example.com`,
+        body: {
+          name: 'Ana Aluna',
+          email: `papelinvalido.ca10.${suffix}@example.com`,
+          password: 'Senha123',
+          role: 'ADMIN',
+        },
+      },
+      {
+        title: 'campo extra',
+        email: `extra.ca10.${suffix}@example.com`,
+        body: {
+          name: 'Ana Aluna',
+          email: `extra.ca10.${suffix}@example.com`,
+          password: 'Senha123',
+          role: 'STUDENT',
+          extra: true,
+        },
+      },
+    ];
+
+    for (const testCase of cases) {
+      createdEmails.push(testCase.email.toLowerCase());
+
+      const response = await request(app.getHttpServer())
+        .post('/auth/register')
+        .send(testCase.body);
+
+      expect({ title: testCase.title, status: response.status }).toEqual({
+        title: testCase.title,
+        status: 400,
+      });
+      expect(response.body).toEqual({
+        statusCode: 400,
+        message: expect.anything(),
+        error: expect.any(String),
+      });
+      expect(response.body).not.toHaveProperty('data');
+      expect(response.body).not.toHaveProperty('accessToken');
+      expect(JSON.stringify(response.body)).not.toMatch(/stack/i);
+      expect(JSON.stringify(response.body)).not.toContain(String(testCase.body.password));
+
+      const row = await db.orm.public.User.first({
+        email: testCase.email.toLowerCase(),
+      });
+      expect(row).toBeNull();
+    }
+  });
 });

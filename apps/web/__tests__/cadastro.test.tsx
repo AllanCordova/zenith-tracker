@@ -217,3 +217,88 @@ test("falha de conexão no cadastro não mostra que o e-mail já existe", async 
   expect(localStorage.getItem("accessToken")).toBeNull();
   expect(push).not.toHaveBeenCalled();
 });
+
+test("confirmação diferente não chama o repositório e não cria sessão", async () => {
+  render(<CadastroPage />);
+
+  fillCadastroForm({
+    name: "Ana Aluna",
+    email: "ana@example.com",
+    password: "Senha123",
+    confirmPassword: "Senha456",
+    roleLabel: "Aluno",
+  });
+
+  fireEvent.click(screen.getByRole("button", { name: "Confirmar" }));
+
+  expect(register).not.toHaveBeenCalled();
+  expect(screen.getByText(/dados não passaram/i)).toBeDefined();
+  expect(document.body.textContent).not.toMatch(/Senha123|Senha456/);
+  expect(localStorage.getItem("accessToken")).toBeNull();
+  expect(push).not.toHaveBeenCalled();
+});
+
+test.each([
+  {
+    title: "senha curta",
+    name: "Ana Aluna",
+    email: "ana@example.com",
+    password: "Abcdef1",
+    confirmPassword: "Abcdef1",
+  },
+  {
+    title: "senha sem letra",
+    name: "Ana Aluna",
+    email: "ana@example.com",
+    password: "12345678",
+    confirmPassword: "12345678",
+  },
+  {
+    title: "senha sem dígito",
+    name: "Ana Aluna",
+    email: "ana@example.com",
+    password: "Abcdefgh",
+    confirmPassword: "Abcdefgh",
+  },
+  {
+    title: "nome vazio",
+    name: "",
+    email: "ana@example.com",
+    password: "Senha123",
+    confirmPassword: "Senha123",
+  },
+  {
+    title: "e-mail sem formato",
+    name: "Ana Aluna",
+    email: "nao-e-email",
+    password: "Senha123",
+    confirmPassword: "Senha123",
+  },
+])(
+  "recusa $title mostra que os dados não passaram, sem senha no texto",
+  async ({ name, email, password, confirmPassword }) => {
+    register.mockRejectedValue(new Error("Os dados não passaram"));
+
+    render(<CadastroPage />);
+
+    fillCadastroForm({
+      name,
+      email,
+      password,
+      confirmPassword,
+      roleLabel: "Aluno",
+    });
+
+    fireEvent.submit(screen.getByRole("button", { name: "Confirmar" }).closest("form")!);
+
+    await waitFor(() => {
+      expect(register).toHaveBeenCalled();
+      expect(screen.getByText(/dados não passaram/i)).toBeDefined();
+    });
+
+    expect(screen.queryByText(/e-mail já existe/i)).toBeNull();
+    expect(document.body.textContent).not.toContain(password);
+    expect(localStorage.getItem("accessToken")).toBeNull();
+    expect(push).not.toHaveBeenCalled();
+  },
+);

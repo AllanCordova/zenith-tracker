@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { areaPathForRole, getAccessToken, getSessionUser, saveSession } from "@/lib/session";
 import { register } from "@/repositories/auth";
 
+const DADOS_NAO_PASSARAM = "Os dados não passaram";
+
 export default function CadastroPage() {
   const router = useRouter();
   const token = getAccessToken();
@@ -29,6 +31,10 @@ export default function CadastroPage() {
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (password !== confirmPassword) {
+      setError(DADOS_NAO_PASSARAM);
+      return;
+    }
     try {
       const result = await register({ name, email, password, role });
       if (!result?.accessToken || !result.user) {
@@ -37,7 +43,11 @@ export default function CadastroPage() {
       }
       saveSession(result.accessToken, result.user);
       router.push(areaPathForRole(result.user.role));
-    } catch {
+    } catch (error) {
+      if (error instanceof Error && error.message === DADOS_NAO_PASSARAM) {
+        setError(DADOS_NAO_PASSARAM);
+        return;
+      }
       setError("Não deu certo. Verifique a conexão.");
     }
   }

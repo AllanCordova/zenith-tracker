@@ -25,6 +25,7 @@ export type LoginInput = {
 export type LoginResult = RegisterResult;
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
+const REGISTER_PAYLOAD_REFUSED = "Os dados não passaram";
 
 export async function register(input: RegisterInput): Promise<RegisterResult> {
   const response = await fetch(`${API_URL}/auth/register`, {
@@ -33,6 +34,9 @@ export async function register(input: RegisterInput): Promise<RegisterResult> {
     body: JSON.stringify(input),
   });
   const envelope = (await response.json()) as { data: RegisterResult };
+  if (response.status === 400) {
+    throw new Error(REGISTER_PAYLOAD_REFUSED);
+  }
   return envelope.data;
 }
 
