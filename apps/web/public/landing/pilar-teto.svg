@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-label="Espaço da imagem do teto 800 por 600">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <polyline fill="none" stroke="#16a34a" stroke-width="8" points="80,420 200,360 320,380 440,260 560,220 720,140"/>
+  <circle cx="720" cy="140" r="14" fill="#16a34a"/>
+  <text x="80" y="80" fill="#0a0a0a" font-family="Inter, sans-serif" font-size="22" font-weight="700">pilar-teto</text>
+  <text x="80" y="112" fill="#71717a" font-family="Inter, sans-serif" font-size="16">800 × 600 · pilar-teto.webp</text>
+</svg>

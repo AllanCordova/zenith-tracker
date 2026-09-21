@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-label="Espaço da imagem do dia fechado 800 por 600">
+  <rect width="800" height="600" fill="#ffffff"/>
+  <circle cx="400" cy="320" r="120" fill="none" stroke="#15803d" stroke-width="10"/>
+  <polyline fill="none" stroke="#15803d" stroke-width="12" points="340,320 385,365 470,270"/>
+  <text x="80" y="80" fill="#0a0a0a" font-family="Inter, sans-serif" font-size="22" font-weight="700">pilar-dia</text>
+  <text x="80" y="112" fill="#71717a" font-family="Inter, sans-serif" font-size="16">800 × 600 · pilar-dia.webp</text>
+</svg>
