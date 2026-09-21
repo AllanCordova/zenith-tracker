@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { ProductShell } from "@/components/product-shell";
 import { areaPathForRole, clearSession, getAccessToken, getSessionUser } from "@/lib/session";
 
 export default function TreinadorPage() {
@@ -30,13 +31,16 @@ export default function TreinadorPage() {
   }
 
   return (
-    <main>
-      <p>{user?.name ?? ""}</p>
-      {/* TODO #US05: carteira ainda não libera até existir Issue da US05 */}
-      <p>carteira ainda não libera</p>
-      <button type="button" onClick={onLogout}>
-        Sair
-      </button>
-    </main>
+    <ProductShell>
+      <main>
+        <h1 className="zt-titulo">Treinador</h1>
+        <p className="zt-corpo mt-token-sm">{user?.name ?? ""}</p>
+        {/* TODO #US05: carteira ainda não libera até existir Issue da US05 */}
+        <p className="zt-apoio mt-token-lg">carteira ainda não libera</p>
+        <button className="zt-btn-perigo" type="button" onClick={onLogout}>
+          Sair
+        </button>
+      </main>
+    </ProductShell>
   );
 }
