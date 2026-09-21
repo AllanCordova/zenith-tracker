@@ -42,7 +42,7 @@
   - Teste primeiro: e2e com JWT de treinador em `GET /student/area` → 403 sem corpo de recurso. Vitest: sessão treinador em `/aluno` permanece em `/treinador`.
   - Arquivos previstos: `apps/api/src/auth/`, `apps/api/test/`, `apps/web/app/aluno/`, `apps/web/lib/`, `apps/web/__tests__/`
 
-- [ ] **Tarefa 7 — Levar visitante ao login**
+- [x] **Tarefa 7 — Levar visitante ao login**
   - Cobre: CA6
   - Teste primeiro: Vitest sem JWT em `/aluno` e em `/treinador` cai em `/login` e não mostra nome, plano nem carteira. E2e: `GET /auth/me` e as rotas de área sem Bearer → 401.
   - Arquivos previstos: `apps/web/app/aluno/`, `apps/web/app/treinador/`, `apps/web/lib/`, `apps/web/__tests__/`, `apps/api/test/`

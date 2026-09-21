@@ -233,6 +233,22 @@ describe('Auth register (e2e)', () => {
     expect(JSON.stringify(wrongPassword.body)).not.toMatch(/passwordHash/);
   });
 
+  it('GET /auth/me and area routes without Bearer return 401', async () => {
+    const me = await request(app.getHttpServer()).get('/auth/me');
+    const studentArea = await request(app.getHttpServer()).get('/student/area');
+    const trainerArea = await request(app.getHttpServer()).get('/trainer/area');
+
+    expect(me.status).toBe(401);
+    expect(studentArea.status).toBe(401);
+    expect(trainerArea.status).toBe(401);
+    expect(me.body).not.toHaveProperty('data');
+    expect(studentArea.body).not.toHaveProperty('data');
+    expect(trainerArea.body).not.toHaveProperty('data');
+    expect(JSON.stringify(me.body)).not.toMatch(/passwordHash|carteira|plano/);
+    expect(JSON.stringify(studentArea.body)).not.toMatch(/passwordHash|carteira|plano/);
+    expect(JSON.stringify(trainerArea.body)).not.toMatch(/passwordHash|carteira|plano/);
+  });
+
   it('GET /trainer/area with STUDENT JWT returns 403 without resource body', async () => {
     const suffix = `${Date.now()}-ca4`;
     const storedEmail = `aluno.ca4.${suffix}@example.com`;

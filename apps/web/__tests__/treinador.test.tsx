@@ -17,6 +17,17 @@ beforeEach(() => {
   push.mockReset();
 });
 
+test("visitante sem JWT em /treinador cai em /login e não mostra nome nem carteira", async () => {
+  render(<TreinadorPage />);
+
+  await waitFor(() => {
+    expect(push).toHaveBeenCalledWith("/login");
+  });
+  expect(screen.queryByText("carteira ainda não libera")).toBeNull();
+  expect(screen.queryByText("plano ainda não fechado")).toBeNull();
+  expect(screen.queryByText(/Ana Aluna|Téo Treinador/)).toBeNull();
+});
+
 test("sessão de aluno em /treinador permanece em /aluno", async () => {
   saveSession("jwt-aluno", {
     id: "user-1",

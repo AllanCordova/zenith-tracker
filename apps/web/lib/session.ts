@@ -13,6 +13,13 @@ export function saveSession(accessToken: string, user: SessionUser): void {
   localStorage.setItem(USER_KEY, JSON.stringify(user));
 }
 
+export function getAccessToken(): string | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
+  return localStorage.getItem(TOKEN_KEY);
+}
+
 export function getSessionUser(): SessionUser | null {
   if (typeof window === "undefined") {
     return null;

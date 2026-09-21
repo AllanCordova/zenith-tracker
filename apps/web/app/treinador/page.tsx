@@ -2,20 +2,25 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { areaPathForRole, getSessionUser } from "@/lib/session";
+import { areaPathForRole, getAccessToken, getSessionUser } from "@/lib/session";
 
 export default function TreinadorPage() {
   const router = useRouter();
+  const token = getAccessToken();
   const user = getSessionUser();
   const role = user?.role;
 
   useEffect(() => {
+    if (!token) {
+      router.push("/login");
+      return;
+    }
     if (role === "STUDENT") {
       router.push(areaPathForRole(role));
     }
-  }, [role, router]);
+  }, [token, role, router]);
 
-  if (role === "STUDENT") {
+  if (!token || role === "STUDENT") {
     return null;
   }
 
