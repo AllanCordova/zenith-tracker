@@ -47,7 +47,7 @@
   - Teste primeiro: Vitest sem JWT em `/aluno` e em `/treinador` cai em `/login` e não mostra nome, plano nem carteira. E2e: `GET /auth/me` e as rotas de área sem Bearer → 401.
   - Arquivos previstos: `apps/web/app/aluno/`, `apps/web/app/treinador/`, `apps/web/lib/`, `apps/web/__tests__/`, `apps/api/test/`
 
-- [ ] **Tarefa 8 — Redirecionar quem já entrou e sair**
+- [x] **Tarefa 8 — Redirecionar quem já entrou e sair**
   - Cobre: CA7, CA8
   - Teste primeiro: Vitest com JWT válido em `/cadastro` e `/login` cai na área do papel sem segundo `register`. Logout apaga o JWT do `localStorage`; a área autenticada seguinte exige `/login`.
   - Arquivos previstos: `apps/web/app/cadastro/`, `apps/web/app/login/`, `apps/web/app/aluno/`, `apps/web/app/treinador/`, `apps/web/lib/`, `apps/web/__tests__/`

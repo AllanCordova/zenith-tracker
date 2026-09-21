@@ -1,15 +1,28 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { saveSession } from "@/lib/session";
+import { areaPathForRole, getAccessToken, getSessionUser, saveSession } from "@/lib/session";
 import { login } from "@/repositories/auth";
 
 export default function LoginPage() {
   const router = useRouter();
+  const token = getAccessToken();
+  const sessionUser = getSessionUser();
+  const sessionRole = sessionUser?.role;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (token && sessionRole) {
+      router.push(areaPathForRole(sessionRole));
+    }
+  }, [token, sessionRole, router]);
+
+  if (token && sessionRole) {
+    return null;
+  }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -19,7 +32,7 @@ export default function LoginPage() {
       return;
     }
     saveSession(result.accessToken, result.user);
-    router.push(result.user.role === "STUDENT" ? "/aluno" : "/treinador");
+    router.push(areaPathForRole(result.user.role));
   }
 
   return (

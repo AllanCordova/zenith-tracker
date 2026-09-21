@@ -1,18 +1,31 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { saveSession } from "@/lib/session";
+import { areaPathForRole, getAccessToken, getSessionUser, saveSession } from "@/lib/session";
 import { register } from "@/repositories/auth";
 
 export default function CadastroPage() {
   const router = useRouter();
+  const token = getAccessToken();
+  const sessionUser = getSessionUser();
+  const sessionRole = sessionUser?.role;
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState<"STUDENT" | "TRAINER">("STUDENT");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (token && sessionRole) {
+      router.push(areaPathForRole(sessionRole));
+    }
+  }, [token, sessionRole, router]);
+
+  if (token && sessionRole) {
+    return null;
+  }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -23,7 +36,7 @@ export default function CadastroPage() {
         return;
       }
       saveSession(result.accessToken, result.user);
-      router.push(role === "STUDENT" ? "/aluno" : "/treinador");
+      router.push(areaPathForRole(result.user.role));
     } catch {
       setError("Não deu certo. Verifique a conexão.");
     }

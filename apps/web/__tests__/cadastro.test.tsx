@@ -3,6 +3,7 @@ import { beforeEach, expect, test, vi } from "vitest";
 import CadastroPage from "../app/cadastro/page";
 import AlunoPage from "../app/aluno/page";
 import TreinadorPage from "../app/treinador/page";
+import { saveSession } from "@/lib/session";
 
 const { push, register } = vi.hoisted(() => ({
   push: vi.fn(),
@@ -159,6 +160,38 @@ test("cadastro com e-mail já existente mostra a mensagem e não grava JWT", asy
 
   expect(localStorage.getItem("accessToken")).toBeNull();
   expect(push).not.toHaveBeenCalled();
+});
+
+test("sessão de aluno em /cadastro cai em /aluno sem segundo register", async () => {
+  saveSession("jwt-aluno", {
+    id: "user-1",
+    name: "Ana Aluna",
+    email: "ana@example.com",
+    role: "STUDENT",
+  });
+
+  render(<CadastroPage />);
+
+  await waitFor(() => {
+    expect(push).toHaveBeenCalledWith("/aluno");
+  });
+  expect(register).not.toHaveBeenCalled();
+});
+
+test("sessão de treinador em /cadastro cai em /treinador sem segundo register", async () => {
+  saveSession("jwt-treinador", {
+    id: "user-2",
+    name: "Téo Treinador",
+    email: "teo@example.com",
+    role: "TRAINER",
+  });
+
+  render(<CadastroPage />);
+
+  await waitFor(() => {
+    expect(push).toHaveBeenCalledWith("/treinador");
+  });
+  expect(register).not.toHaveBeenCalled();
 });
 
 test("falha de conexão no cadastro não mostra que o e-mail já existe", async () => {

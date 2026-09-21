@@ -13,6 +13,11 @@ export function saveSession(accessToken: string, user: SessionUser): void {
   localStorage.setItem(USER_KEY, JSON.stringify(user));
 }
 
+export function clearSession(): void {
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(USER_KEY);
+}
+
 export function getAccessToken(): string | null {
   if (typeof window === "undefined") {
     return null;

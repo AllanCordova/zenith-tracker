@@ -3,10 +3,12 @@ import { beforeEach, expect, test, vi } from "vitest";
 import LoginPage from "../app/login/page";
 import AlunoPage from "../app/aluno/page";
 import TreinadorPage from "../app/treinador/page";
+import { saveSession } from "@/lib/session";
 
-const { push, login } = vi.hoisted(() => ({
+const { push, login, register } = vi.hoisted(() => ({
   push: vi.fn(),
   login: vi.fn(),
+  register: vi.fn(),
 }));
 
 vi.mock("next/navigation", () => ({
@@ -15,6 +17,7 @@ vi.mock("next/navigation", () => ({
 
 vi.mock("@/repositories/auth", () => ({
   login: (...args: unknown[]) => login(...args),
+  register: (...args: unknown[]) => register(...args),
 }));
 
 function fillLoginForm(values: { email: string; password: string }) {
@@ -31,6 +34,7 @@ beforeEach(() => {
   localStorage.clear();
   push.mockReset();
   login.mockReset();
+  register.mockReset();
 });
 
 test("login com combinação errada não grava JWT e mostra texto genérico", async () => {
@@ -51,6 +55,40 @@ test("login com combinação errada não grava JWT e mostra texto genérico", as
 
   expect(localStorage.getItem("accessToken")).toBeNull();
   expect(push).not.toHaveBeenCalled();
+});
+
+test("sessão de aluno em /login cai em /aluno sem segundo register", async () => {
+  saveSession("jwt-aluno", {
+    id: "user-1",
+    name: "Ana Aluna",
+    email: "ana@example.com",
+    role: "STUDENT",
+  });
+
+  render(<LoginPage />);
+
+  await waitFor(() => {
+    expect(push).toHaveBeenCalledWith("/aluno");
+  });
+  expect(register).not.toHaveBeenCalled();
+  expect(login).not.toHaveBeenCalled();
+});
+
+test("sessão de treinador em /login cai em /treinador sem segundo register", async () => {
+  saveSession("jwt-treinador", {
+    id: "user-2",
+    name: "Téo Treinador",
+    email: "teo@example.com",
+    role: "TRAINER",
+  });
+
+  render(<LoginPage />);
+
+  await waitFor(() => {
+    expect(push).toHaveBeenCalledWith("/treinador");
+  });
+  expect(register).not.toHaveBeenCalled();
+  expect(login).not.toHaveBeenCalled();
 });
 
 test("login de aluno grava JWT e cai em /aluno", async () => {

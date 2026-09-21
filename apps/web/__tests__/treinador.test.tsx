@@ -1,4 +1,4 @@
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, expect, test, vi } from "vitest";
 import TreinadorPage from "../app/treinador/page";
 import { saveSession } from "@/lib/session";
@@ -42,4 +42,27 @@ test("sessão de aluno em /treinador permanece em /aluno", async () => {
     expect(push).toHaveBeenCalledWith("/aluno");
   });
   expect(screen.queryByText("carteira ainda não libera")).toBeNull();
+});
+
+test("logout apaga o JWT e a área autenticada seguinte exige /login", async () => {
+  saveSession("jwt-treinador", {
+    id: "user-2",
+    name: "Téo Treinador",
+    email: "teo@example.com",
+    role: "TRAINER",
+  });
+
+  const { unmount } = render(<TreinadorPage />);
+
+  fireEvent.click(screen.getByRole("button", { name: "Sair" }));
+
+  expect(localStorage.getItem("accessToken")).toBeNull();
+
+  unmount();
+  push.mockReset();
+  render(<TreinadorPage />);
+
+  await waitFor(() => {
+    expect(push).toHaveBeenCalledWith("/login");
+  });
 });
