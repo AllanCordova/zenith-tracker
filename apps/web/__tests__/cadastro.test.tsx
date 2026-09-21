@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, expect, test, vi } from "vitest";
 import CadastroPage from "../app/cadastro/page";
 import AlunoPage from "../app/aluno/page";
@@ -40,6 +40,7 @@ function fillCadastroForm(values: {
 }
 
 beforeEach(() => {
+  cleanup();
   localStorage.clear();
   push.mockReset();
   register.mockReset();
@@ -135,4 +136,51 @@ test("desmontar o formulário sem confirmar não chama o repositório", () => {
   unmount();
 
   expect(register).not.toHaveBeenCalled();
+});
+
+test("cadastro com e-mail já existente mostra a mensagem e não grava JWT", async () => {
+  register.mockResolvedValue(undefined);
+
+  render(<CadastroPage />);
+
+  fillCadastroForm({
+    name: "Ana Aluna",
+    email: "ana@example.com",
+    password: "Senha123",
+    confirmPassword: "Senha123",
+    roleLabel: "Aluno",
+  });
+
+  fireEvent.click(screen.getByRole("button", { name: "Confirmar" }));
+
+  await waitFor(() => {
+    expect(screen.getByText(/e-mail já existe/i)).toBeDefined();
+  });
+
+  expect(localStorage.getItem("accessToken")).toBeNull();
+  expect(push).not.toHaveBeenCalled();
+});
+
+test("falha de conexão no cadastro não mostra que o e-mail já existe", async () => {
+  register.mockRejectedValue(new Error("Failed to fetch"));
+
+  render(<CadastroPage />);
+
+  fillCadastroForm({
+    name: "Ana Aluna",
+    email: "ana@example.com",
+    password: "Senha123",
+    confirmPassword: "Senha123",
+    roleLabel: "Aluno",
+  });
+
+  fireEvent.click(screen.getByRole("button", { name: "Confirmar" }));
+
+  await waitFor(() => {
+    expect(screen.getByText(/não deu certo/i)).toBeDefined();
+  });
+
+  expect(screen.queryByText(/e-mail já existe/i)).toBeNull();
+  expect(localStorage.getItem("accessToken")).toBeNull();
+  expect(push).not.toHaveBeenCalled();
 });

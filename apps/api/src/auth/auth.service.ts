@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
@@ -25,6 +25,10 @@ export class AuthService {
     user: PublicUser;
   }> {
     const email = dto.email.toLowerCase();
+    const existing = await this.usersService.findByEmail(email);
+    if (existing) {
+      throw new ConflictException('Este e-mail já existe');
+    }
     const passwordHash = await bcrypt.hash(dto.password, 10);
     const user = await this.usersService.create({
       name: dto.name,

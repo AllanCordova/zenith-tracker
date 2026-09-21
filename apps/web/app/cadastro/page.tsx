@@ -12,12 +12,21 @@ export default function CadastroPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState<"STUDENT" | "TRAINER">("STUDENT");
+  const [error, setError] = useState("");
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const result = await register({ name, email, password, role });
-    saveSession(result.accessToken, result.user);
-    router.push(role === "STUDENT" ? "/aluno" : "/treinador");
+    try {
+      const result = await register({ name, email, password, role });
+      if (!result?.accessToken || !result.user) {
+        setError("Este e-mail já existe");
+        return;
+      }
+      saveSession(result.accessToken, result.user);
+      router.push(role === "STUDENT" ? "/aluno" : "/treinador");
+    } catch {
+      setError("Não deu certo. Verifique a conexão.");
+    }
   }
 
   return (
@@ -83,6 +92,7 @@ export default function CadastroPage() {
 
         <button type="submit">Confirmar</button>
       </form>
+      {error ? <p>{error}</p> : null}
     </main>
   );
 }

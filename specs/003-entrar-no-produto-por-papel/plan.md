@@ -22,7 +22,7 @@
   - Teste primeiro: e2e `POST /auth/register` (aluno e treinador) devolve `accessToken` + `user` sem `passwordHash`, e-mail em minúsculas, senha hasheada; `GET /auth/me` com Bearer devolve o nome. Vitest: confirmar cadastro grava JWT no `localStorage` e cai em `/aluno` ou `/treinador` com o nome e o substituto; desmontar o formulário sem confirmar não chama o repositório (CA11). Falha hoje: não há `/auth/register` nem páginas.
   - Arquivos previstos: `apps/api/src/auth/`, `apps/api/src/users/`, `apps/api/test/`, `apps/web/repositories/`, `apps/web/lib/`, `apps/web/app/cadastro/`, `apps/web/app/aluno/`, `apps/web/app/treinador/`, `apps/web/__tests__/`
 
-- [ ] **Tarefa 3 — Recusar e-mail duplicado**
+- [x] **Tarefa 3 — Recusar e-mail duplicado**
   - Cobre: CA2
   - Teste primeiro: e2e do segundo `POST /auth/register` com o mesmo e-mail em outra capitalização não cria outra linha e responde que o e-mail já existe. Vitest: a tela de cadastro mostra essa mensagem e não grava JWT.
   - Arquivos previstos: `apps/api/src/auth/`, `apps/api/test/`, `apps/web/app/cadastro/`, `apps/web/__tests__/`

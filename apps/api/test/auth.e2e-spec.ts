@@ -113,4 +113,41 @@ describe('Auth register (e2e)', () => {
 
     expect(me.body.data.name).toBe('Téo Treinador');
   });
+
+  it('POST /auth/register with the same email in another capitalization does not create another user', async () => {
+    const suffix = `${Date.now()}-dup`;
+    const storedEmail = `duplicado.ca2.${suffix}@example.com`;
+    createdEmails.push(storedEmail);
+
+    const first = await request(app.getHttpServer()).post('/auth/register').send({
+      name: 'Primeira Conta',
+      email: storedEmail,
+      password: 'Senha123',
+      role: 'STUDENT',
+    });
+
+    expect(first.status).toBe(201);
+
+    const second = await request(app.getHttpServer()).post('/auth/register').send({
+      name: 'Segunda Tentativa',
+      email: `Duplicado.CA2.${suffix}@Example.COM`,
+      password: 'OutraSenha1',
+      role: 'TRAINER',
+    });
+
+    expect(second.status).toBe(409);
+    expect(second.body).toEqual({
+      statusCode: 409,
+      message: expect.any(String),
+      error: expect.any(String),
+    });
+    expect(String(second.body.message).toLowerCase()).toMatch(/e-mail já existe/);
+    expect(second.body).not.toHaveProperty('data');
+    expect(second.body).not.toHaveProperty('accessToken');
+
+    const rows = await db.orm.public.User.where({ email: storedEmail }).all();
+    expect(rows).toHaveLength(1);
+    expect(rows[0].name).toBe('Primeira Conta');
+    expect(rows[0].role).toBe('STUDENT');
+  });
 });
