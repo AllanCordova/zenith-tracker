@@ -1,7 +1,7 @@
 # 🛠️ Architecture / Software Design Document
 
 **Projeto:** Zenith Tracker
-**Versão:** 1.1.0
+**Versão:** 1.2.0
 **Última atualização:** 2026-09-21
 
 > 🤖 **O `prd.md` responde _o quê_ o produto faz. Este responde _onde as coisas
@@ -35,8 +35,9 @@
 
 - **Backend:** NestJS **12** (projeto **CommonJS** — `nest new --type cjs`) + Prisma ORM **8** + PostgreSQL
 - **Frontend:** React via Next.js **16** (App Router). Next.js é só a casca da UI — ver §4
-- **Padrões de código do frontend:** componentes de função com hooks (sem classes); estado do servidor separado do estado de UI; páginas do App Router distintas de componentes reutilizáveis; telas interativas e qualquer código que carregue JWT são Client Components (`'use client'`). **Componente não fala com o servidor** — todo acesso à API NestJS passa por repositório
-- **Estilo:** Tailwind CSS **4** (padrão do `create-next-app` 16). Tokens de `docs/design-tokens.md` entram em `@theme` no CSS global. Cor, espaço e tipo crus fora desse mapa são defeito
+- **Padrões de código do frontend:** componentes de função com hooks (sem classes); estado do servidor (TanStack Query) separado do estado de UI (modal, tema, passo do wizard); páginas do App Router distintas de `components/ui` e `components/layout`; telas interativas e qualquer código que carregue JWT são Client Components (`'use client'`). **Componente de UI não fala com o servidor** — HTTP à NestJS só em `repositories/`, via cliente axios em `lib/http.ts`. Página e componente de UI não importam axios. Hook de domínio (`hooks/`) orquestra Query/Mutation e o repositório
+- **Estilo:** Tailwind CSS **4**. Tokens de `docs/design-tokens.md` (claro e escuro) entram em `@theme`. Tema com `next-themes` (classe `dark` no `html`). Ícones: `lucide-react`. Animação de vitrine: `motion`, só na landing. Cor, espaço e tipo crus fora do mapa de tokens são defeito
+- **Formulário no cliente:** `react-hook-form` + `zod` (`@hookform/resolvers`). A API continua com DTO + `ValidationPipe` (ID7); o schema do front não substitui o 400 do servidor
 - **Testes:**
   - `apps/api`: **Jest** + **oxlint** (gerador CJS do Nest 12)
   - `apps/web`: **Vitest** + Testing Library + **ESLint** (`eslint`, não `next lint`)
@@ -46,7 +47,7 @@
 
 ### Dependências além do gerador
 
-O `nest new` / `create-next-app` trazem o esqueleto. **Só entra no projeto o que está nesta lista** (além do que o gerador já instala):
+O `nest new` / `create-next-app` trazem o esqueleto. **Só entra no projeto o que está nesta lista** (além do que o gerador já instala). As libs do `web` abaixo estão **autorizadas aqui**; o pin no `package.json` entra no PR da camada correspondente (kit/tema, landing, HTTP, formulários). Instalá-las antes disso é prematuro; usá-las sem estar nesta tabela continua sendo defeito.
 
 | App | Pacote | Por quê |
 | :-- | :----- | :------ |
@@ -58,6 +59,13 @@ O `nest new` / `create-next-app` trazem o esqueleto. **Só entra no projeto o qu
 | `api` | `prisma` (major 8) | ORM; contrato em `src/prisma/contract.prisma` |
 | `api` | `mercadopago` | checkout e verificação do webhook (ID20, ID21) |
 | `web` | `vitest`, `@vitejs/plugin-react`, `jsdom`, `@testing-library/react`, `@testing-library/dom`, `vite-tsconfig-paths` | suíte do front (não vem no `create-next-app`) |
+| `web` | `lucide-react` | ícones (papel aluno/treinador, toggle de tema) |
+| `web` | `next-themes` | tema claro/escuro (Context + `localStorage`; classe `dark`) |
+| `web` | `motion` | animação da landing (não nas telas de cadastro/login) |
+| `web` | `axios` | cliente HTTP em `lib/http.ts`; repositórios não usam `fetch` |
+| `web` | `@tanstack/react-query` | cache e ciclo de vida das chamadas à API (ID16) |
+| `web` | `zod` | schema de validação no cliente |
+| `web` | `react-hook-form`, `@hookform/resolvers` | formulários de cadastro/login |
 
 ### 🧱 2.1. Backend — regras estruturais
 
@@ -120,9 +128,14 @@ Autenticação no Swagger: esquema Bearer JWT, o mesmo das rotas protegidas.
     │   └── test/                  # e2e Jest
     └── web/               # Next.js 16 (sem Route Handlers)
         ├── app/                   # rotas (páginas), não API
-        ├── components/            # reutilizáveis — não são página
-        ├── repositories/          # único fetch à API NestJS
+        ├── components/
+        │   ├── ui/                # Button, Input, Select, Card
+        │   └── layout/            # Header, ThemeToggle
+        ├── hooks/                 # useLogin, useRegister — orquestram Query + repositório
+        ├── repositories/          # contrato HTTP da NestJS (axios via lib/http)
         └── lib/
+            ├── http.ts            # instância axios + Bearer
+            └── session.ts         # JWT no localStorage
 ```
 
 Cada app tem o seu `package.json`. Instalar e testar: `cd apps/api` ou `cd apps/web`.
@@ -140,18 +153,35 @@ Comandos **exatos** (a partir da pasta do app). CI usa a variante `run` do Vites
 
 ## 🏗️ 4. Arquitetura Frontend
 
-> **Componente não fala com o servidor.** Toda chamada HTTP à API NestJS passa
-> por `apps/web/repositories/`. Mudança de contrato mexe só nessa camada.
+> **Componente de UI não fala com o servidor.** Toda chamada HTTP à API NestJS
+> passa por `apps/web/repositories/`, via cliente axios em `lib/http.ts`.
+> Mudança de contrato mexe só nessa camada.
+
+**Camadas.** Cada uma tem um único trabalho:
+
+| Camada | Pasta | Faz | Não faz |
+| :----- | :---- | :-- | :------ |
+| Página | `app/` | rota, composição; `'use client'` quando há JWT ou formulário | importar axios; conhecer envelope HTTP |
+| UI | `components/ui`, `components/layout` | Button, Input, Select, Card, Header, ThemeToggle | HTTP, JWT, React Query |
+| Hook de domínio | `hooks/` | `useLogin` / `useRegister`: Mutation/Query + repositório + sessão | JSX de página; instância axios |
+| Repositório | `repositories/` | contrato da NestJS (path, envelope, 401/403) | `fetch`; UI |
+| HTTP | `lib/http.ts` | instância axios, `baseURL`, Bearer | regra de negócio |
+| Sessão | `lib/session.ts` | JWT no `localStorage` | chamada de rede |
+
+Página e `components/ui` não importam axios. `Select` de papel é UI: a página de cadastro só passa `value` / `onChange`. Tema (`next-themes`) e cache (`QueryClientProvider`) envolvem o App Router no layout raiz — não nas páginas.
 
 **Next.js 16 é UI, não backend.** Proibido no `apps/web`:
 
 - `app/api/**` e Route Handlers
 - Server Actions que gravem banco, falem com Mercado Pago ou substituam a API
 - `fetch` a NestJS a partir de Server Component (o JWT mora no cliente; o ID16 pede consumo assíncrono da API NestJS com token)
+- `motion` fora da landing (`/`)
 
-Páginas em `app/` (App Router, um segmento por área: aluno / treinador). Componentes reutilizáveis em `components/`. Repositórios usam `Authorization: Bearer` e tratam 401/403 sem vazar detalhe de senha ou de qual campo falhou no login.
+Repositórios usam `Authorization: Bearer` e tratam 401/403 sem vazar detalhe de senha ou de qual campo falhou no login.
 
-Estado de servidor (dados da API) não se mistura com estado de UI (modal aberto, passo do wizard).
+Estado de servidor (dados da API, TanStack Query) não se mistura com estado de UI (modal aberto, tema, passo do wizard).
+
+**Transição.** Até o PR de HTTP, o repositório de auth ainda usa `fetch`. Até o PR de kit/tema, não há `components/ui` nem classe `dark`. Esta versão só autoriza o destino; o código e o `package.json` acompanham nos PRs seguintes.
 
 ---
 
@@ -267,6 +297,7 @@ Unicidade: `User.email`; par (`trainerId`, `studentId`) em `Enrollment`; no máx
 | :--- | :------ | :---------- |
 | 2026-09-09 | 1.0.0 | Versão inicial via `/utf-architecture` |
 | 2026-09-21 | 1.1.0 | Mapa de domínios: US01 (`auth/`, `users/`, `User`) |
+| 2026-09-21 | 1.2.0 | Front: libs de UI/tema/HTTP/formulário; camadas `ui` / `hooks` / `lib/http`; tokens claros e escuros |
 
 ---
 
