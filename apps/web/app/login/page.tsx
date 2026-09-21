@@ -3,6 +3,8 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { areaPathForRole, getAccessToken, getSessionUser, saveSession } from "@/lib/session";
+import Link from "next/link";
+import { ProductShell } from "@/components/product-shell";
 import { login } from "@/repositories/auth";
 
 export default function LoginPage() {
@@ -40,30 +42,43 @@ export default function LoginPage() {
   }
 
   return (
-    <main>
-      <h1>Entrar</h1>
-      <form onSubmit={onSubmit}>
-        <label htmlFor="email">E-mail</label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-        />
+    <ProductShell>
+      <main>
+        <h1 className="zt-titulo">Entrar</h1>
+        <form onSubmit={onSubmit}>
+          <label className="zt-label" htmlFor="email">
+            E-mail
+          </label>
+          <input
+            className="zt-input"
+            id="email"
+            name="email"
+            type="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
 
-        <label htmlFor="password">Senha</label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
+          <label className="zt-label" htmlFor="password">
+            Senha
+          </label>
+          <input
+            className="zt-input"
+            id="password"
+            name="password"
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
 
-        <button type="submit">Entrar</button>
-      </form>
-      {error ? <p>{error}</p> : null}
-    </main>
+          <button className="zt-btn" type="submit">
+            Entrar
+          </button>
+        </form>
+        {error ? <p className="zt-erro">{error}</p> : null}
+        <p className="zt-nav">
+          Ainda não tem conta? <Link href="/cadastro">Cadastro</Link>
+        </p>
+      </main>
+    </ProductShell>
   );
 }

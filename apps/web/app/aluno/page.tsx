@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { ProductShell } from "@/components/product-shell";
 import { areaPathForRole, clearSession, getAccessToken, getSessionUser } from "@/lib/session";
 
 export default function AlunoPage() {
@@ -30,13 +31,16 @@ export default function AlunoPage() {
   }
 
   return (
-    <main>
-      <p>{user?.name ?? ""}</p>
-      {/* TODO #US04: plano ainda não fechado até existir Issue da US04 */}
-      <p>plano ainda não fechado</p>
-      <button type="button" onClick={onLogout}>
-        Sair
-      </button>
-    </main>
+    <ProductShell>
+      <main>
+        <h1 className="zt-titulo">Aluno</h1>
+        <p className="zt-corpo mt-token-sm">{user?.name ?? ""}</p>
+        {/* TODO #US04: plano ainda não fechado até existir Issue da US04 */}
+        <p className="zt-apoio mt-token-lg">plano ainda não fechado</p>
+        <button className="zt-btn-perigo" type="button" onClick={onLogout}>
+          Sair
+        </button>
+      </main>
+    </ProductShell>
   );
 }
