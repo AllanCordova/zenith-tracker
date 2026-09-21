@@ -24,11 +24,15 @@ export type LoginInput = {
 
 export type LoginResult = RegisterResult;
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
+const FALLBACK_API_URL = "http://localhost:3000";
 const REGISTER_PAYLOAD_REFUSED = "Os dados não passaram";
 
+function apiUrl(): string {
+  return process.env.NEXT_PUBLIC_API_URL || FALLBACK_API_URL;
+}
+
 export async function register(input: RegisterInput): Promise<RegisterResult> {
-  const response = await fetch(`${API_URL}/auth/register`, {
+  const response = await fetch(`${apiUrl()}/auth/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
@@ -41,7 +45,7 @@ export async function register(input: RegisterInput): Promise<RegisterResult> {
 }
 
 export async function login(input: LoginInput): Promise<LoginResult> {
-  const response = await fetch(`${API_URL}/auth/login`, {
+  const response = await fetch(`${apiUrl()}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),

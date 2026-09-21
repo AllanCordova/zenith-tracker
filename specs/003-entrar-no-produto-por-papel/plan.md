@@ -10,6 +10,13 @@
 - UI: `/cadastro`, `/login`, `/aluno`, `/treinador` (Client Components). Substitutos com `// TODO #US04` e `// TODO #US05`.
 - Logout só no cliente. Sem `POST /auth/logout`.
 
+## Auditoria final (NÃO PRONTO → triagem)
+
+- Pendência 1 → Tarefa 11 (CORS + URL da API).
+- Pendência 2 → **mantida**: US02 e US03 ficam `🟡 Ready` no PRD; o engenheiro aprovou as duas histórias nesta sessão. Sem tarefa.
+- Pendência 3 → Tarefa 13 (remover `POST /probe`).
+- Pendência 4 → Tarefa 12 (e2e de auth com Postgres).
+
 ## Tarefas
 
 - [x] **Tarefa 1 — Destravar User, envelope HTTP e JWT**
@@ -61,5 +68,20 @@
   - Cobre: CA12, CA13
   - Teste primeiro: Vitest com `fetch` rejeitado no cadastro e no login mostra falha, não grava JWT, não navega à área. JWT expirado no `localStorage` ao abrir área autenticada é descartado e cai em `/login`.
   - Arquivos previstos: `apps/web/repositories/`, `apps/web/lib/`, `apps/web/app/cadastro/`, `apps/web/app/login/`, `apps/web/__tests__/`
+
+- [x] **Tarefa 11 — Liberar a UI do browser para chamar a API**
+  - Cobre: cola do CA1 (e cadastro/login no browser); auditoria final, pendência 1
+  - Teste primeiro: `OPTIONS`/`POST /auth/register` com `Origin: http://localhost:3001` não é 404 de preflight e devolve cabeçalho CORS; o `fetch` da UI não cai no Next (`:3001`). Falha hoje: `Cannot OPTIONS /auth/register`; `NEXT_PUBLIC_API_URL` vazio manda o POST para a origem do Next.
+  - Arquivos previstos: `apps/api/src/common/configure-app.ts`, `apps/api/src/main.ts`, `apps/api/test/`, `apps/web/repositories/auth.ts`
+
+- [ ] **Tarefa 12 — Comprovar o e2e de auth com Postgres no ar**
+  - Cobre: evidência ao vivo dos CAs de API; auditoria final, pendência 4
+  - Teste primeiro: `cd apps/api && npm run test:e2e` passa com PostgreSQL em `127.0.0.1:5432` (Compose da raiz). Falha hoje: `ECONNREFUSED 127.0.0.1:5432` nos 8 casos de `auth.e2e-spec.ts`.
+  - Arquivos previstos: `docker-compose.yml`, `apps/api/test/`, `apps/api/.env.example`
+
+- [ ] **Tarefa 13 — Remover a sonda `POST /probe`**
+  - Cobre: nada da spec (a spec não pede essa rota); auditoria final, pendência 3
+  - Teste primeiro: e2e deixa de bater em `/probe`; a prova de campo extra no envelope 400 passa a usar uma rota de escrita da spec (`POST /auth/register` ou `/auth/login`). Falha hoje: `AppController` ainda expõe `POST /probe` e `ProbeWriteDto` em produção.
+  - Arquivos previstos: `apps/api/src/app.controller.ts`, `apps/api/src/common/probe-write.dto.ts`, `apps/api/test/app.e2e-spec.ts`
 
 ## Critérios sem tarefa

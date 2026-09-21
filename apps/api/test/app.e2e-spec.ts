@@ -7,6 +7,7 @@ import { configureApp } from './../src/common/configure-app';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication<App>;
+  const uiOrigin = 'http://localhost:3001';
 
   beforeEach(async () => {
     process.env.JWT_SECRET ??= 'e2e-only-jwt-secret';
@@ -44,6 +45,28 @@ describe('AppController (e2e)', () => {
     expect(JSON.stringify(response.body)).not.toMatch(/stack/i);
     expect(JSON.stringify(response.body)).not.toMatch(/password/i);
     expect(JSON.stringify(response.body)).not.toMatch(/token/i);
+  });
+
+  it('OPTIONS /auth/register from the UI origin is not a 404 preflight and returns CORS', async () => {
+    const response = await request(app.getHttpServer())
+      .options('/auth/register')
+      .set('Origin', uiOrigin)
+      .set('Access-Control-Request-Method', 'POST')
+      .set('Access-Control-Request-Headers', 'content-type');
+
+    expect(response.status).not.toBe(404);
+    expect(response.text).not.toMatch(/Cannot OPTIONS/i);
+    expect(response.headers['access-control-allow-origin']).toBe(uiOrigin);
+  });
+
+  it('POST /auth/register from the UI origin returns CORS', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/auth/register')
+      .set('Origin', uiOrigin)
+      .send({});
+
+    expect(response.status).not.toBe(404);
+    expect(response.headers['access-control-allow-origin']).toBe(uiOrigin);
   });
 
   afterEach(async () => {
