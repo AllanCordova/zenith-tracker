@@ -17,6 +17,35 @@ beforeEach(() => {
   push.mockReset();
 });
 
+function jwtExpirado(): string {
+  const header = Buffer.from(JSON.stringify({ alg: "HS256", typ: "JWT" })).toString(
+    "base64url",
+  );
+  const payload = Buffer.from(JSON.stringify({ sub: "user-2", exp: 1 })).toString(
+    "base64url",
+  );
+  return `${header}.${payload}.sig`;
+}
+
+test("JWT expirado em /treinador é descartado e cai em /login", async () => {
+  saveSession(jwtExpirado(), {
+    id: "user-2",
+    name: "Téo Treinador",
+    email: "teo@example.com",
+    role: "TRAINER",
+  });
+
+  render(<TreinadorPage />);
+
+  await waitFor(() => {
+    expect(push).toHaveBeenCalledWith("/login");
+  });
+  expect(localStorage.getItem("accessToken")).toBeNull();
+  expect(localStorage.getItem("user")).toBeNull();
+  expect(screen.queryByText("Téo Treinador")).toBeNull();
+  expect(screen.queryByText("carteira ainda não libera")).toBeNull();
+});
+
 test("visitante sem JWT em /treinador cai em /login e não mostra nome nem carteira", async () => {
   render(<TreinadorPage />);
 

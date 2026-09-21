@@ -57,7 +57,7 @@
   - Teste primeiro: e2e senha curta / sem letra / sem dígito, nome vazio, e-mail sem formato, `role` ausente ou inválido, campo extra → 400, nenhuma linha `User`. Vitest: confirmação diferente não chama o repositório; as outras recusas mostram que os dados não passaram, sem senha no texto.
   - Arquivos previstos: `apps/api/src/auth/`, `apps/api/test/`, `apps/web/app/cadastro/`, `apps/web/__tests__/`
 
-- [ ] **Tarefa 10 — Tratar falha de rede e JWT expirado**
+- [x] **Tarefa 10 — Tratar falha de rede e JWT expirado**
   - Cobre: CA12, CA13
   - Teste primeiro: Vitest com `fetch` rejeitado no cadastro e no login mostra falha, não grava JWT, não navega à área. JWT expirado no `localStorage` ao abrir área autenticada é descartado e cai em `/login`.
   - Arquivos previstos: `apps/web/repositories/`, `apps/web/lib/`, `apps/web/app/cadastro/`, `apps/web/app/login/`, `apps/web/__tests__/`

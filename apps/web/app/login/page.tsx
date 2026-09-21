@@ -26,13 +26,17 @@ export default function LoginPage() {
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const result = await login({ email, password });
-    if (!result?.accessToken || !result.user) {
-      setError("A combinação não confere");
-      return;
+    try {
+      const result = await login({ email, password });
+      if (!result?.accessToken || !result.user) {
+        setError("A combinação não confere");
+        return;
+      }
+      saveSession(result.accessToken, result.user);
+      router.push(areaPathForRole(result.user.role));
+    } catch {
+      setError("Não deu certo. Verifique a conexão.");
     }
-    saveSession(result.accessToken, result.user);
-    router.push(areaPathForRole(result.user.role));
   }
 
   return (

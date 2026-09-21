@@ -37,6 +37,27 @@ beforeEach(() => {
   register.mockReset();
 });
 
+test("fetch rejeitado no login mostra falha, não grava JWT e não navega à área", async () => {
+  login.mockRejectedValue(new TypeError("Failed to fetch"));
+
+  render(<LoginPage />);
+
+  fillLoginForm({
+    email: "ana@example.com",
+    password: "Senha123",
+  });
+
+  fireEvent.click(screen.getByRole("button", { name: "Entrar" }));
+
+  await waitFor(() => {
+    expect(screen.getByText(/não deu certo/i)).toBeDefined();
+  });
+
+  expect(screen.queryByText(/combinação não confere/i)).toBeNull();
+  expect(localStorage.getItem("accessToken")).toBeNull();
+  expect(push).not.toHaveBeenCalled();
+});
+
 test("login com combinação errada não grava JWT e mostra texto genérico", async () => {
   login.mockResolvedValue(undefined);
 

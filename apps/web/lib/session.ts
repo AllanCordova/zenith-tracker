@@ -18,11 +18,39 @@ export function clearSession(): void {
   localStorage.removeItem(USER_KEY);
 }
 
+function isAccessTokenExpired(token: string): boolean {
+  const parts = token.split(".");
+  if (parts.length !== 3) {
+    return false;
+  }
+  try {
+    const padded = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+    const pad = (4 - (padded.length % 4)) % 4;
+    const payload = JSON.parse(atob(padded + "=".repeat(pad))) as {
+      exp?: number;
+    };
+    if (typeof payload.exp !== "number") {
+      return false;
+    }
+    return payload.exp * 1000 <= Date.now();
+  } catch {
+    return false;
+  }
+}
+
 export function getAccessToken(): string | null {
   if (typeof window === "undefined") {
     return null;
   }
-  return localStorage.getItem(TOKEN_KEY);
+  const token = localStorage.getItem(TOKEN_KEY);
+  if (!token) {
+    return null;
+  }
+  if (isAccessTokenExpired(token)) {
+    clearSession();
+    return null;
+  }
+  return token;
 }
 
 export function getSessionUser(): SessionUser | null {
