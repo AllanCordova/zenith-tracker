@@ -143,6 +143,18 @@
     @apply text-acao font-semibold text-texto;
   }
 
+  .zt-header-acoes {
+    @apply flex items-center gap-token-sm;
+  }
+
+  .zt-icon-btn {
+    @apply flex size-10 cursor-pointer items-center justify-center text-texto;
+  }
+
+  .zt-icon-btn:focus-visible {
+    @apply outline-2 outline-offset-2 outline-primaria;
+  }
+
   .zt-theme-toggle {
     @apply flex size-10 cursor-pointer items-center justify-center text-texto;
   }
@@ -153,6 +165,22 @@
 
   .zt-theme-toggle:disabled {
     @apply cursor-default opacity-70;
+  }
+
+  .zt-footer {
+    @apply border-t border-texto-suave bg-superficie px-token-xl py-token-lg text-texto;
+  }
+
+  .zt-footer-inner {
+    @apply mx-auto flex w-full max-w-5xl flex-col gap-token-md sm:flex-row sm:items-center sm:justify-between;
+  }
+
+  .zt-footer-nav {
+    @apply flex gap-token-lg text-apoio;
+  }
+
+  .zt-footer-nav a {
+    @apply font-semibold text-primaria;
   }
 
   .zt-select {
@@ -189,14 +217,46 @@
   }
 
   .zt-landing {
-    @apply mx-auto w-full max-w-3xl px-token-xl py-token-xl;
+    @apply mx-auto w-full max-w-5xl px-token-xl py-token-xl;
+  }
+
+  .zt-landing-hero {
+    @apply grid items-center gap-token-xl md:grid-cols-2;
+  }
+
+  .zt-landing-secao {
+    @apply mt-token-xl;
+  }
+
+  .zt-landing-problema {
+    @apply mt-token-lg grid items-start gap-token-lg md:grid-cols-2;
+  }
+
+  .zt-landing-problema-textos {
+    @apply flex flex-col gap-token-lg;
+  }
+
+  .zt-landing-passos {
+    @apply mt-token-lg grid list-none gap-token-lg p-0 md:grid-cols-2;
   }
 
   .zt-landing-grid {
-    @apply mt-token-xl grid gap-token-lg md:grid-cols-3;
+    @apply mt-token-lg grid gap-token-lg md:grid-cols-3;
   }
 
-  .zt-landing-cta {
-    @apply mt-token-xl flex flex-col gap-token-sm sm:flex-row;
+  .zt-landing-media {
+    @apply overflow-hidden bg-superficie;
+  }
+
+  .zt-landing-media img {
+    @apply block h-auto w-full;
+  }
+
+  .zt-card-media {
+    @apply -mx-token-lg -mt-token-lg mb-token-md;
+  }
+
+  .zt-link-sutil {
+    @apply mt-token-md inline-block text-apoio font-semibold text-primaria;
   }
 }

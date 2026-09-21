@@ -130,7 +130,7 @@ Autenticação no Swagger: esquema Bearer JWT, o mesmo das rotas protegidas.
         ├── app/                   # rotas (páginas), não API
         ├── components/
         │   ├── ui/                # Button, Input, Select, Card
-        │   └── layout/            # Header, ThemeToggle
+        │   └── layout/            # Header, ThemeToggle, Footer
         ├── hooks/                 # useLogin, useRegister — orquestram Query + repositório
         ├── repositories/          # contrato HTTP da NestJS (axios via lib/http)
         └── lib/
