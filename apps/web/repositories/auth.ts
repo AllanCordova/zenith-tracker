@@ -17,6 +17,13 @@ export type RegisterResult = {
   user: PublicUser;
 };
 
+export type LoginInput = {
+  email: string;
+  password: string;
+};
+
+export type LoginResult = RegisterResult;
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
 
 export async function register(input: RegisterInput): Promise<RegisterResult> {
@@ -26,5 +33,15 @@ export async function register(input: RegisterInput): Promise<RegisterResult> {
     body: JSON.stringify(input),
   });
   const envelope = (await response.json()) as { data: RegisterResult };
+  return envelope.data;
+}
+
+export async function login(input: LoginInput): Promise<LoginResult> {
+  const response = await fetch(`${API_URL}/auth/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  });
+  const envelope = (await response.json()) as { data: LoginResult };
   return envelope.data;
 }

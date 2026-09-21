@@ -150,4 +150,86 @@ describe('Auth register (e2e)', () => {
     expect(rows[0].name).toBe('Primeira Conta');
     expect(rows[0].role).toBe('STUDENT');
   });
+
+  it('POST /auth/login with the right password returns accessToken and user without passwordHash', async () => {
+    const suffix = `${Date.now()}-login`;
+    const storedEmail = `login.ca3.${suffix}@example.com`;
+    createdEmails.push(storedEmail);
+
+    await request(app.getHttpServer())
+      .post('/auth/register')
+      .send({
+        name: 'Lia Login',
+        email: storedEmail,
+        password: 'Senha123',
+        role: 'STUDENT',
+      })
+      .expect(201);
+
+    const response = await request(app.getHttpServer()).post('/auth/login').send({
+      email: `Login.CA3.${suffix}@Example.COM`,
+      password: 'Senha123',
+    });
+
+    expect(response.status).toBe(201);
+    expect(response.body.statusCode).toBe(201);
+    expect(response.body.data.accessToken).toEqual(expect.any(String));
+    expect(response.body.data.user).toEqual({
+      id: expect.any(String),
+      name: 'Lia Login',
+      email: storedEmail,
+      role: 'STUDENT',
+    });
+    expect(response.body.data.user.passwordHash).toBeUndefined();
+    expect(JSON.stringify(response.body)).not.toMatch(/passwordHash/);
+  });
+
+  it('POST /auth/login with unknown email or wrong password returns 401 with the same combination message', async () => {
+    const suffix = `${Date.now()}-login-fail`;
+    const storedEmail = `login.fail.ca3.${suffix}@example.com`;
+    createdEmails.push(storedEmail);
+
+    await request(app.getHttpServer())
+      .post('/auth/register')
+      .send({
+        name: 'Conta Existente',
+        email: storedEmail,
+        password: 'Senha123',
+        role: 'TRAINER',
+      })
+      .expect(201);
+
+    const unknownEmail = await request(app.getHttpServer())
+      .post('/auth/login')
+      .send({
+        email: `ausente.ca3.${suffix}@example.com`,
+        password: 'Senha123',
+      });
+
+    const wrongPassword = await request(app.getHttpServer())
+      .post('/auth/login')
+      .send({
+        email: storedEmail,
+        password: 'SenhaErrada1',
+      });
+
+    expect(unknownEmail.status).toBe(401);
+    expect(wrongPassword.status).toBe(401);
+    expect(unknownEmail.body).toEqual({
+      statusCode: 401,
+      message: expect.any(String),
+      error: expect.any(String),
+    });
+    expect(wrongPassword.body).toEqual(unknownEmail.body);
+    expect(String(unknownEmail.body.message).toLowerCase()).toMatch(
+      /combinação não confere/,
+    );
+    expect(String(unknownEmail.body.message).toLowerCase()).not.toMatch(
+      /e-mail|senha|password|user/,
+    );
+    expect(unknownEmail.body).not.toHaveProperty('data');
+    expect(unknownEmail.body).not.toHaveProperty('accessToken');
+    expect(JSON.stringify(unknownEmail.body)).not.toMatch(/passwordHash/);
+    expect(JSON.stringify(wrongPassword.body)).not.toMatch(/passwordHash/);
+  });
 });

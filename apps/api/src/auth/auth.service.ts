@@ -1,7 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
+import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 
 export type PublicUser = {
@@ -36,6 +37,22 @@ export class AuthService {
       passwordHash,
       role: dto.role,
     });
+
+    return {
+      accessToken: await this.signToken(user.id, user.role),
+      user: this.toPublicUser(user),
+    };
+  }
+
+  async login(dto: LoginDto): Promise<{
+    accessToken: string;
+    user: PublicUser;
+  }> {
+    const email = dto.email.toLowerCase();
+    const user = await this.usersService.findByEmail(email);
+    if (!user || !(await bcrypt.compare(dto.password, user.passwordHash))) {
+      throw new UnauthorizedException('A combinação não confere');
+    }
 
     return {
       accessToken: await this.signToken(user.id, user.role),

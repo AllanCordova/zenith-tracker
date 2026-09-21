@@ -27,7 +27,7 @@
   - Teste primeiro: e2e do segundo `POST /auth/register` com o mesmo e-mail em outra capitalização não cria outra linha e responde que o e-mail já existe. Vitest: a tela de cadastro mostra essa mensagem e não grava JWT.
   - Arquivos previstos: `apps/api/src/auth/`, `apps/api/test/`, `apps/web/app/cadastro/`, `apps/web/__tests__/`
 
-- [ ] **Tarefa 4 — Entrar com e-mail e senha da conta existente**
+- [x] **Tarefa 4 — Entrar com e-mail e senha da conta existente**
   - Cobre: CA3
   - Teste primeiro: e2e `POST /auth/login` com senha certa devolve token; e-mail errado ou senha errada → 401, mesma mensagem de combinação, sem dizer qual falhou. Vitest: `/login` com erro não grava JWT e mostra o texto genérico; com acerto cai na área do papel.
   - Arquivos previstos: `apps/api/src/auth/`, `apps/api/test/`, `apps/web/app/login/`, `apps/web/repositories/`, `apps/web/__tests__/`
