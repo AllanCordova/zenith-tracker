@@ -37,7 +37,8 @@ function fillCadastroForm(values: {
   fireEvent.change(screen.getByLabelText("Confirmar senha"), {
     target: { value: values.confirmPassword },
   });
-  fireEvent.click(screen.getByLabelText(values.roleLabel));
+  fireEvent.click(screen.getByLabelText("Papel"));
+  fireEvent.click(screen.getByRole("option", { name: values.roleLabel }));
 }
 
 beforeEach(() => {

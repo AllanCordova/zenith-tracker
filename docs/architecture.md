@@ -181,7 +181,7 @@ Repositórios usam `Authorization: Bearer` e tratam 401/403 sem vazar detalhe de
 
 Estado de servidor (dados da API, TanStack Query) não se mistura com estado de UI (modal aberto, tema, passo do wizard).
 
-**Transição.** Até o PR de HTTP, o repositório de auth ainda usa `fetch`. Até o PR de kit/tema, não há `components/ui` nem classe `dark`. Esta versão só autoriza o destino; o código e o `package.json` acompanham nos PRs seguintes.
+**Transição.** Kit de UI, tema escuro e `Select` de papel já estão no `web`. Até o PR de HTTP, o repositório de auth ainda usa `fetch`. Landing (`motion`) e formulários (`zod` / `react-hook-form`) entram nos PRs seguintes.
 
 ---
 

@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { areaPathForRole, getAccessToken, getSessionUser, saveSession } from "@/lib/session";
 import Link from "next/link";
 import { ProductShell } from "@/components/product-shell";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { login } from "@/repositories/auth";
 
 export default function LoginPage() {
@@ -46,33 +48,25 @@ export default function LoginPage() {
       <main>
         <h1 className="zt-titulo">Entrar</h1>
         <form onSubmit={onSubmit}>
-          <label className="zt-label" htmlFor="email">
-            E-mail
-          </label>
-          <input
-            className="zt-input"
+          <Input
             id="email"
             name="email"
+            label="E-mail"
             type="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
 
-          <label className="zt-label" htmlFor="password">
-            Senha
-          </label>
-          <input
-            className="zt-input"
+          <Input
             id="password"
             name="password"
+            label="Senha"
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
           />
 
-          <button className="zt-btn" type="submit">
-            Entrar
-          </button>
+          <Button type="submit">Entrar</Button>
         </form>
         {error ? <p className="zt-erro">{error}</p> : null}
         <p className="zt-nav">

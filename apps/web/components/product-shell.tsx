@@ -1,10 +1,11 @@
 import type { ReactNode } from "react";
+import { Card } from "@/components/ui/card";
 
 export function ProductShell({ children }: { children: ReactNode }) {
   return (
     <div className="zt-page">
       <div className="zt-shell">
-        <div className="zt-card">{children}</div>
+        <Card>{children}</Card>
       </div>
     </div>
   );
