@@ -4,6 +4,7 @@ import CadastroPage from "../app/cadastro/page";
 import AlunoPage from "../app/aluno/page";
 import TreinadorPage from "../app/treinador/page";
 import { saveSession } from "@/lib/session";
+import { renderWithQuery } from "./query-wrapper";
 
 const { push, register } = vi.hoisted(() => ({
   push: vi.fn(),
@@ -59,7 +60,7 @@ test("cadastro de aluno grava JWT, cai em /aluno e mostra nome e substituto", as
     },
   });
 
-  const { unmount } = render(<CadastroPage />);
+  const { unmount } = renderWithQuery(<CadastroPage />);
 
   fillCadastroForm({
     name: "Ana Aluna",
@@ -100,7 +101,7 @@ test("cadastro de treinador grava JWT, cai em /treinador e mostra nome e substit
     },
   });
 
-  const { unmount } = render(<CadastroPage />);
+  const { unmount } = renderWithQuery(<CadastroPage />);
 
   fillCadastroForm({
     name: "Téo Treinador",
@@ -125,7 +126,7 @@ test("cadastro de treinador grava JWT, cai em /treinador e mostra nome e substit
 });
 
 test("desmontar o formulário sem confirmar não chama o repositório", () => {
-  const { unmount } = render(<CadastroPage />);
+  const { unmount } = renderWithQuery(<CadastroPage />);
 
   fillCadastroForm({
     name: "Visitante",
@@ -143,7 +144,7 @@ test("desmontar o formulário sem confirmar não chama o repositório", () => {
 test("cadastro com e-mail já existente mostra a mensagem e não grava JWT", async () => {
   register.mockResolvedValue(undefined);
 
-  render(<CadastroPage />);
+  renderWithQuery(<CadastroPage />);
 
   fillCadastroForm({
     name: "Ana Aluna",
@@ -171,7 +172,7 @@ test("sessão de aluno em /cadastro cai em /aluno sem segundo register", async (
     role: "STUDENT",
   });
 
-  render(<CadastroPage />);
+  renderWithQuery(<CadastroPage />);
 
   await waitFor(() => {
     expect(push).toHaveBeenCalledWith("/aluno");
@@ -187,7 +188,7 @@ test("sessão de treinador em /cadastro cai em /treinador sem segundo register",
     role: "TRAINER",
   });
 
-  render(<CadastroPage />);
+  renderWithQuery(<CadastroPage />);
 
   await waitFor(() => {
     expect(push).toHaveBeenCalledWith("/treinador");
@@ -198,7 +199,7 @@ test("sessão de treinador em /cadastro cai em /treinador sem segundo register",
 test("falha de conexão no cadastro não mostra que o e-mail já existe", async () => {
   register.mockRejectedValue(new Error("Failed to fetch"));
 
-  render(<CadastroPage />);
+  renderWithQuery(<CadastroPage />);
 
   fillCadastroForm({
     name: "Ana Aluna",
@@ -220,7 +221,7 @@ test("falha de conexão no cadastro não mostra que o e-mail já existe", async 
 });
 
 test("confirmação diferente não chama o repositório e não cria sessão", async () => {
-  render(<CadastroPage />);
+  renderWithQuery(<CadastroPage />);
 
   fillCadastroForm({
     name: "Ana Aluna",
@@ -280,7 +281,7 @@ test.each([
   async ({ name, email, password, confirmPassword }) => {
     register.mockRejectedValue(new Error("Os dados não passaram"));
 
-    render(<CadastroPage />);
+    renderWithQuery(<CadastroPage />);
 
     fillCadastroForm({
       name,
