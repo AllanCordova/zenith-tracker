@@ -75,7 +75,7 @@ O `nest new` / `create-next-app` trazem o esqueleto. **Só entra no projeto o qu
 
 **Entrada (ID7).** Todo body/query de escrita passa por DTO com `class-validator`. `ValidationPipe` global: `whitelist: true`, `forbidNonWhitelisted: true`, `transform: true`. Campo a mais na entrada é 400.
 
-**Dados (ID8).** Único acesso ao PostgreSQL: `PrismaService` (receita Prisma 8 + Nest: cliente em `src/prisma/db.ts`). Service de domínio não instancia o cliente. CRUD relacional via Prisma; migração/contrato no repositório, nunca `db push` silencioso em produção.
+**Dados (ID8).** Único acesso ao PostgreSQL: `PrismaService` (receita Prisma 8 + Nest: fábrica `createDb` em `src/prisma/db.ts`, chamada pelo `PrismaService` **depois** do `ConfigModule` carregar o `.env` — ID17). O import de `db.ts` não lê `DATABASE_URL`. Service de domínio não instancia o cliente. CRUD relacional via Prisma; migração/contrato no repositório, nunca `db push` silencioso em produção.
 
 **Autenticação e papel (ID9).** Login devolve JWT. Rotas autenticadas: `Authorization: Bearer <token>`. `AuthGuard` (JWT) + `RolesGuard` (`STUDENT` \| `TRAINER`). Visitante só nas rotas públicas de cadastro/login. Tentativa de aluno nas rotas de treinador (e o inverso) é 403, sem vazar o recurso.
 
