@@ -4,6 +4,7 @@ import LoginPage from "../app/login/page";
 import AlunoPage from "../app/aluno/page";
 import TreinadorPage from "../app/treinador/page";
 import { saveSession } from "@/lib/session";
+import { renderWithQuery } from "./query-wrapper";
 
 const { push, login, register } = vi.hoisted(() => ({
   push: vi.fn(),
@@ -40,7 +41,7 @@ beforeEach(() => {
 test("fetch rejeitado no login mostra falha, não grava JWT e não navega à área", async () => {
   login.mockRejectedValue(new TypeError("Failed to fetch"));
 
-  render(<LoginPage />);
+  renderWithQuery(<LoginPage />);
 
   fillLoginForm({
     email: "ana@example.com",
@@ -61,7 +62,7 @@ test("fetch rejeitado no login mostra falha, não grava JWT e não navega à ár
 test("login com combinação errada não grava JWT e mostra texto genérico", async () => {
   login.mockResolvedValue(undefined);
 
-  render(<LoginPage />);
+  renderWithQuery(<LoginPage />);
 
   fillLoginForm({
     email: "ana@example.com",
@@ -86,7 +87,7 @@ test("sessão de aluno em /login cai em /aluno sem segundo register", async () =
     role: "STUDENT",
   });
 
-  render(<LoginPage />);
+  renderWithQuery(<LoginPage />);
 
   await waitFor(() => {
     expect(push).toHaveBeenCalledWith("/aluno");
@@ -103,7 +104,7 @@ test("sessão de treinador em /login cai em /treinador sem segundo register", as
     role: "TRAINER",
   });
 
-  render(<LoginPage />);
+  renderWithQuery(<LoginPage />);
 
   await waitFor(() => {
     expect(push).toHaveBeenCalledWith("/treinador");
@@ -123,7 +124,7 @@ test("login de aluno grava JWT e cai em /aluno", async () => {
     },
   });
 
-  const { unmount } = render(<LoginPage />);
+  const { unmount } = renderWithQuery(<LoginPage />);
 
   fillLoginForm({
     email: "ana@example.com",
@@ -158,7 +159,7 @@ test("login de treinador grava JWT e cai em /treinador", async () => {
     },
   });
 
-  const { unmount } = render(<LoginPage />);
+  const { unmount } = renderWithQuery(<LoginPage />);
 
   fillLoginForm({
     email: "teo@example.com",

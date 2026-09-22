@@ -1,3 +1,5 @@
+import { http } from "@/lib/http";
+
 export type RegisterInput = {
   name: string;
   email: string;
@@ -24,32 +26,24 @@ export type LoginInput = {
 
 export type LoginResult = RegisterResult;
 
-const FALLBACK_API_URL = "http://localhost:3000";
 const REGISTER_PAYLOAD_REFUSED = "Os dados não passaram";
 
-function apiUrl(): string {
-  return process.env.NEXT_PUBLIC_API_URL || FALLBACK_API_URL;
-}
+type Envelope<T> = {
+  data?: T;
+};
 
-export async function register(input: RegisterInput): Promise<RegisterResult> {
-  const response = await fetch(`${apiUrl()}/auth/register`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(input),
-  });
-  const envelope = (await response.json()) as { data: RegisterResult };
+export async function register(input: RegisterInput): Promise<RegisterResult | undefined> {
+  const response = await http.post<Envelope<RegisterResult>>("/auth/register", input);
   if (response.status === 400) {
     throw new Error(REGISTER_PAYLOAD_REFUSED);
   }
-  return envelope.data;
+  return response.data.data;
 }
 
-export async function login(input: LoginInput): Promise<LoginResult> {
-  const response = await fetch(`${apiUrl()}/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(input),
-  });
-  const envelope = (await response.json()) as { data: LoginResult };
-  return envelope.data;
+export async function login(input: LoginInput): Promise<LoginResult | undefined> {
+  const response = await http.post<Envelope<LoginResult>>("/auth/login", input);
+  if (response.status === 401 || response.status === 403) {
+    return undefined;
+  }
+  return response.data.data;
 }

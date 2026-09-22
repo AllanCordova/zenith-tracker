@@ -2,18 +2,19 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { areaPathForRole, getAccessToken, getSessionUser, saveSession } from "@/lib/session";
+import { areaPathForRole, getAccessToken, getSessionUser } from "@/lib/session";
 import Link from "next/link";
 import { ProductShell } from "@/components/product-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { RoleSelect } from "@/components/ui/role-select";
-import { register } from "@/repositories/auth";
+import { useRegister } from "@/hooks/use-register";
 
 const DADOS_NAO_PASSARAM = "Os dados não passaram";
 
 export default function CadastroPage() {
   const router = useRouter();
+  const register = useRegister();
   const token = getAccessToken();
   const sessionUser = getSessionUser();
   const sessionRole = sessionUser?.role;
@@ -41,12 +42,11 @@ export default function CadastroPage() {
       return;
     }
     try {
-      const result = await register({ name, email, password, role });
+      const result = await register.mutateAsync({ name, email, password, role });
       if (!result?.accessToken || !result.user) {
         setError("Este e-mail já existe");
         return;
       }
-      saveSession(result.accessToken, result.user);
       router.push(areaPathForRole(result.user.role));
     } catch (error) {
       if (error instanceof Error && error.message === DADOS_NAO_PASSARAM) {
