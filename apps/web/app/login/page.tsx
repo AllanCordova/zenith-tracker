@@ -1,8 +1,11 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { areaPathForRole, getAccessToken, getSessionUser } from "@/lib/session";
+import { loginSchema, type LoginFormValues } from "@/lib/auth-schema";
 import Link from "next/link";
 import { ProductShell } from "@/components/product-shell";
 import { Button } from "@/components/ui/button";
@@ -15,9 +18,14 @@ export default function LoginPage() {
   const token = getAccessToken();
   const sessionUser = getSessionUser();
   const sessionRole = sessionUser?.role;
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { handleSubmit, register } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
   useEffect(() => {
     if (token && sessionRole) {
@@ -29,10 +37,9 @@ export default function LoginPage() {
     return null;
   }
 
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function onValid(values: LoginFormValues) {
     try {
-      const result = await login.mutateAsync({ email, password });
+      const result = await login.mutateAsync(values);
       if (!result?.accessToken || !result.user) {
         setError("A combinação não confere");
         return;
@@ -47,24 +54,13 @@ export default function LoginPage() {
     <ProductShell>
       <main>
         <h1 className="zt-titulo">Entrar</h1>
-        <form onSubmit={onSubmit}>
-          <Input
-            id="email"
-            name="email"
-            label="E-mail"
-            type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-          />
+        <form
+          noValidate
+          onSubmit={handleSubmit(onValid, () => setError("A combinação não confere"))}
+        >
+          <Input id="email" label="E-mail" type="email" {...register("email")} />
 
-          <Input
-            id="password"
-            name="password"
-            label="Senha"
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
+          <Input id="password" label="Senha" type="password" {...register("password")} />
 
           <Button type="submit">Entrar</Button>
         </form>

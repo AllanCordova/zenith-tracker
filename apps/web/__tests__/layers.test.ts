@@ -33,5 +33,7 @@ test("componentes de UI não importam axios nem React Query", () => {
     expect(source).not.toMatch(/from ["']axios["']/);
     expect(source).not.toMatch(/from ["']@tanstack\/react-query["']/);
     expect(source).not.toMatch(/from ["']@\/lib\/http["']/);
+    expect(source).not.toMatch(/from ["']zod["']/);
+    expect(source).not.toMatch(/from ["']react-hook-form["']/);
   }
 });

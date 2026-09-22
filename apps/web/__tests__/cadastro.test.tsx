@@ -220,6 +220,31 @@ test("falha de conexão no cadastro não mostra que o e-mail já existe", async 
   expect(push).not.toHaveBeenCalled();
 });
 
+test("400 da API no cadastro válido ainda mostra que os dados não passaram", async () => {
+  register.mockRejectedValue(new Error("Os dados não passaram"));
+
+  renderWithQuery(<CadastroPage />);
+
+  fillCadastroForm({
+    name: "Ana Aluna",
+    email: "ana@example.com",
+    password: "Senha123",
+    confirmPassword: "Senha123",
+    roleLabel: "Aluno",
+  });
+
+  fireEvent.click(screen.getByRole("button", { name: "Confirmar" }));
+
+  await waitFor(() => {
+    expect(register).toHaveBeenCalled();
+    expect(screen.getByText(/dados não passaram/i)).toBeDefined();
+  });
+
+  expect(screen.queryByText(/e-mail já existe/i)).toBeNull();
+  expect(localStorage.getItem("accessToken")).toBeNull();
+  expect(push).not.toHaveBeenCalled();
+});
+
 test("confirmação diferente não chama o repositório e não cria sessão", async () => {
   renderWithQuery(<CadastroPage />);
 
@@ -233,8 +258,11 @@ test("confirmação diferente não chama o repositório e não cria sessão", as
 
   fireEvent.click(screen.getByRole("button", { name: "Confirmar" }));
 
+  await waitFor(() => {
+    expect(screen.getByText(/dados não passaram/i)).toBeDefined();
+  });
+
   expect(register).not.toHaveBeenCalled();
-  expect(screen.getByText(/dados não passaram/i)).toBeDefined();
   expect(document.body.textContent).not.toMatch(/Senha123|Senha456/);
   expect(localStorage.getItem("accessToken")).toBeNull();
   expect(push).not.toHaveBeenCalled();
@@ -279,8 +307,6 @@ test.each([
 ])(
   "recusa $title mostra que os dados não passaram, sem senha no texto",
   async ({ name, email, password, confirmPassword }) => {
-    register.mockRejectedValue(new Error("Os dados não passaram"));
-
     renderWithQuery(<CadastroPage />);
 
     fillCadastroForm({
@@ -294,7 +320,7 @@ test.each([
     fireEvent.submit(screen.getByRole("button", { name: "Confirmar" }).closest("form")!);
 
     await waitFor(() => {
-      expect(register).toHaveBeenCalled();
+      expect(register).not.toHaveBeenCalled();
       expect(screen.getByText(/dados não passaram/i)).toBeDefined();
     });
 

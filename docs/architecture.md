@@ -135,7 +135,8 @@ Autenticação no Swagger: esquema Bearer JWT, o mesmo das rotas protegidas.
         ├── repositories/          # contrato HTTP da NestJS (axios via lib/http)
         └── lib/
             ├── http.ts            # instância axios + Bearer
-            └── session.ts         # JWT no localStorage
+            ├── session.ts         # JWT no localStorage
+            └── auth-schema.ts     # zod de cadastro/login
 ```
 
 Cada app tem o seu `package.json`. Instalar e testar: `cd apps/api` ou `cd apps/web`.
@@ -166,6 +167,7 @@ Comandos **exatos** (a partir da pasta do app). CI usa a variante `run` do Vites
 | Hook de domínio | `hooks/` | `useLogin` / `useRegister`: Mutation/Query + repositório + sessão | JSX de página; instância axios |
 | Repositório | `repositories/` | contrato da NestJS (path, envelope, 401/403) | `fetch`; UI |
 | HTTP | `lib/http.ts` | instância axios, `baseURL`, Bearer | regra de negócio |
+| Schema | `lib/auth-schema.ts` | zod de cadastro/login; não substitui o 400 da API | envelope HTTP; JSX |
 | Sessão | `lib/session.ts` | JWT no `localStorage` | chamada de rede |
 
 Página e `components/ui` não importam axios. `Select` de papel é UI: a página de cadastro só passa `value` / `onChange`. Tema (`next-themes`) e cache (`QueryClientProvider`) envolvem o App Router no layout raiz — não nas páginas.
@@ -181,7 +183,7 @@ Repositórios usam `Authorization: Bearer` e tratam 401/403 sem vazar detalhe de
 
 Estado de servidor (dados da API, TanStack Query) não se mistura com estado de UI (modal aberto, tema, passo do wizard).
 
-**Transição.** Kit de UI, tema escuro, `Select` de papel, landing (`motion` só em `/`) e HTTP (axios + TanStack Query) já estão no `web`. Formulários (`zod` / `react-hook-form`) entram no PR seguinte.
+**Transição.** Kit de UI, tema escuro, `Select` de papel, landing (`motion` só em `/`), HTTP (axios + TanStack Query) e formulários (`zod` / `react-hook-form`) já estão no `web`.
 
 ---
 
