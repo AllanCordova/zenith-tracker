@@ -1,8 +1,11 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { areaPathForRole, getAccessToken, getSessionUser } from "@/lib/session";
+import { registerSchema, type RegisterFormValues } from "@/lib/auth-schema";
 import Link from "next/link";
 import { ProductShell } from "@/components/product-shell";
 import { Button } from "@/components/ui/button";
@@ -14,16 +17,21 @@ const DADOS_NAO_PASSARAM = "Os dados não passaram";
 
 export default function CadastroPage() {
   const router = useRouter();
-  const register = useRegister();
+  const registerAccount = useRegister();
   const token = getAccessToken();
   const sessionUser = getSessionUser();
   const sessionRole = sessionUser?.role;
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState<"STUDENT" | "TRAINER">("STUDENT");
   const [error, setError] = useState("");
+  const { control, handleSubmit, register } = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      role: "STUDENT",
+    },
+  });
 
   useEffect(() => {
     if (token && sessionRole) {
@@ -35,14 +43,14 @@ export default function CadastroPage() {
     return null;
   }
 
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (password !== confirmPassword) {
-      setError(DADOS_NAO_PASSARAM);
-      return;
-    }
+  async function onValid(values: RegisterFormValues) {
     try {
-      const result = await register.mutateAsync({ name, email, password, role });
+      const result = await registerAccount.mutateAsync({
+        name: values.name,
+        email: values.email,
+        password: values.password,
+        role: values.role,
+      });
       if (!result?.accessToken || !result.user) {
         setError("Este e-mail já existe");
         return;
@@ -61,43 +69,25 @@ export default function CadastroPage() {
     <ProductShell>
       <main>
         <h1 className="zt-titulo">Cadastro</h1>
-        <form onSubmit={onSubmit}>
-          <Input
-            id="name"
-            name="name"
-            label="Nome"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-          />
+        <form noValidate onSubmit={handleSubmit(onValid, () => setError(DADOS_NAO_PASSARAM))}>
+          <Input id="name" label="Nome" {...register("name")} />
 
-          <Input
-            id="email"
-            name="email"
-            label="E-mail"
-            type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-          />
+          <Input id="email" label="E-mail" type="email" {...register("email")} />
 
-          <Input
-            id="password"
-            name="password"
-            label="Senha"
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
+          <Input id="password" label="Senha" type="password" {...register("password")} />
 
           <Input
             id="confirmPassword"
-            name="confirmPassword"
             label="Confirmar senha"
             type="password"
-            value={confirmPassword}
-            onChange={(event) => setConfirmPassword(event.target.value)}
+            {...register("confirmPassword")}
           />
 
-          <RoleSelect value={role} onChange={setRole} />
+          <Controller
+            name="role"
+            control={control}
+            render={({ field }) => <RoleSelect value={field.value} onChange={field.onChange} />}
+          />
 
           <Button type="submit">Confirmar</Button>
         </form>
