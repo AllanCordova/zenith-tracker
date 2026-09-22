@@ -1,7 +1,7 @@
 # 🎨 Tokens de Design
 
 **Projeto:** Zenith Tracker
-**Versão:** 1.1.0
+**Versão:** 1.2.0
 **Última atualização:** 2026-09-21
 
 > 🤖 **Este documento existe para a IA parar de inventar um botão diferente a cada
@@ -50,6 +50,20 @@ viram cinza.
 | `sucesso` | `#4ade80` | confirmação, Pedido Pago, dia fechou |
 | `desabilitado` | `#3f3f46` | controle inativo, botão que ainda não pode |
 
+## Raio
+
+Cantos vivos (0) são defeito. A escala é uma só.
+
+| Token | Valor | Onde se usa |
+| --- | --- | --- |
+| `campo` | 16px | input, select |
+| `cartao` | 24px | card, painel, lista do select |
+| `midia` | 28px | foto recortada dentro do card |
+| `botao` | 999px | ação em cápsula |
+| `controle` | 999px | ícone do header (círculo) |
+
+Na landing, a mídia do hero e do problema usa `midia` de um lado e o dobro no oposto — quebra o retângulo sem inventar cor.
+
 ## Escala de espaçamento
 
 Uma progressão só, usada em tudo.
@@ -82,7 +96,7 @@ Se Geist não estiver disponível no protótipo, Inter. Nunca misturar uma terce
 
 | Estado | Aparência |
 | --- | --- |
-| normal | fundo `primaria`, texto branco, cantos 8px, sem sombra |
+| normal | fundo `primaria`, texto branco, cápsula (`botao`), sem sombra |
 | hover | mesmo fundo a 90% de opacidade; cursor de mão |
 | foco (teclado) | anel de 2px `primaria` fora do botão, visível contra `superficie` |
 | desabilitado | fundo `desabilitado`, texto `texto-suave`, sem hover, não clica |

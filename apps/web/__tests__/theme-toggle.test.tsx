@@ -46,10 +46,11 @@ test("no escuro, o toggle pede o tema claro", async () => {
   expect(setTheme).toHaveBeenCalledWith("light");
 });
 
-test("header mostra a marca e o toggle de tema", async () => {
+test("header mostra a marca, o entrar e o toggle de tema", async () => {
   render(<Header />);
 
   expect(screen.getByRole("link", { name: "Zenith Tracker" })).toBeDefined();
+  expect(screen.getByRole("link", { name: "Entrar" }).getAttribute("href")).toBe("/login");
   await waitFor(() => {
     expect(
       (screen.getByRole("button", { name: "Ativar tema escuro" }) as HTMLButtonElement).disabled,
