@@ -53,14 +53,22 @@
   --text-acao: 16px;
   --text-acao--line-height: 1.25;
   --text-acao--font-weight: 600;
-  --radius-botao: 8px;
+  --radius-botao: 999px;
+  --radius-campo: 16px;
+  --radius-cartao: 24px;
+  --radius-midia: 28px;
+  --radius-controle: 999px;
   --font-sans: var(--font-geist-sans), Inter, ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
 @layer components {
   .zt-page {
-    @apply min-h-full bg-pagina text-texto font-sans;
+    @apply relative min-h-full bg-pagina text-texto font-sans;
+  }
+
+  .zt-page-centro {
+    @apply flex min-h-full flex-1 flex-col items-center justify-center;
   }
 
   .zt-shell {
@@ -68,7 +76,7 @@
   }
 
   .zt-card {
-    @apply bg-superficie px-token-lg py-token-lg;
+    @apply rounded-cartao bg-superficie px-token-lg py-token-lg;
   }
 
   .zt-titulo {
@@ -87,12 +95,16 @@
     @apply text-apoio text-texto-suave;
   }
 
+  .zt-kicker {
+    @apply inline-flex rounded-botao bg-superficie px-token-md py-token-xs text-apoio text-primaria;
+  }
+
   .zt-label {
     @apply mt-token-md mb-token-xs block text-corpo text-texto;
   }
 
   .zt-input {
-    @apply box-border w-full border border-texto-suave bg-superficie px-token-md py-token-sm text-corpo text-texto;
+    @apply box-border w-full rounded-campo border border-texto-suave bg-pagina px-token-md py-token-sm text-corpo text-texto;
   }
 
   .zt-input:focus-visible {
@@ -104,7 +116,7 @@
   }
 
   .zt-btn {
-    @apply mt-token-lg cursor-pointer rounded-botao bg-primaria px-token-md py-token-sm text-acao font-semibold text-white shadow-none hover:opacity-90;
+    @apply mt-token-lg cursor-pointer rounded-botao bg-primaria px-token-lg py-token-sm text-acao font-semibold text-white shadow-none hover:opacity-90;
   }
 
   .zt-btn:focus-visible {
@@ -116,7 +128,7 @@
   }
 
   .zt-btn-perigo {
-    @apply mt-token-lg cursor-pointer rounded-botao bg-perigo px-token-md py-token-sm text-acao font-semibold text-white shadow-none hover:opacity-90;
+    @apply mt-token-lg cursor-pointer rounded-botao bg-perigo px-token-lg py-token-sm text-acao font-semibold text-white shadow-none hover:opacity-90;
   }
 
   .zt-btn-perigo:focus-visible {
@@ -136,7 +148,11 @@
   }
 
   .zt-header {
-    @apply flex items-center justify-between border-b border-texto-suave bg-pagina px-token-xl py-token-md text-texto;
+    @apply sticky top-0 z-20 px-token-md pt-token-md text-texto;
+  }
+
+  .zt-header-inner {
+    @apply mx-auto flex w-full max-w-5xl items-center justify-between rounded-botao bg-superficie px-token-lg py-token-sm;
   }
 
   .zt-header-marca {
@@ -144,11 +160,11 @@
   }
 
   .zt-header-acoes {
-    @apply flex items-center gap-token-sm;
+    @apply flex items-center gap-token-xs;
   }
 
   .zt-icon-btn {
-    @apply flex size-10 cursor-pointer items-center justify-center text-texto;
+    @apply flex size-10 cursor-pointer items-center justify-center rounded-controle text-texto;
   }
 
   .zt-icon-btn:focus-visible {
@@ -156,7 +172,7 @@
   }
 
   .zt-theme-toggle {
-    @apply flex size-10 cursor-pointer items-center justify-center text-texto;
+    @apply flex size-10 cursor-pointer items-center justify-center rounded-controle text-texto;
   }
 
   .zt-theme-toggle:focus-visible {
@@ -168,11 +184,11 @@
   }
 
   .zt-footer {
-    @apply border-t border-texto-suave bg-superficie px-token-xl py-token-lg text-texto;
+    @apply relative z-10 px-token-md pb-token-md text-texto;
   }
 
   .zt-footer-inner {
-    @apply mx-auto flex w-full max-w-5xl flex-col gap-token-md sm:flex-row sm:items-center sm:justify-between;
+    @apply mx-auto flex w-full max-w-5xl flex-col gap-token-md rounded-cartao bg-superficie px-token-lg py-token-lg sm:flex-row sm:items-center sm:justify-between;
   }
 
   .zt-footer-nav {
@@ -188,7 +204,7 @@
   }
 
   .zt-select-trigger {
-    @apply box-border flex w-full cursor-pointer items-center gap-token-sm border border-texto-suave bg-superficie px-token-md py-token-sm text-corpo text-texto;
+    @apply box-border flex w-full cursor-pointer items-center gap-token-sm rounded-campo border border-texto-suave bg-pagina px-token-md py-token-sm text-corpo text-texto;
   }
 
   .zt-select-trigger:focus-visible {
@@ -200,11 +216,11 @@
   }
 
   .zt-select-list {
-    @apply absolute z-10 mt-token-xs w-full list-none border border-texto-suave bg-superficie p-0;
+    @apply absolute z-10 mt-token-xs w-full list-none overflow-hidden rounded-cartao border border-texto-suave bg-superficie p-token-xs;
   }
 
   .zt-select-option {
-    @apply flex cursor-pointer items-center gap-token-sm px-token-md py-token-sm text-corpo text-texto;
+    @apply flex cursor-pointer items-center gap-token-sm rounded-campo px-token-md py-token-sm text-corpo text-texto;
   }
 
   .zt-select-option:hover,
@@ -229,34 +245,79 @@
   }
 
   .zt-landing-problema {
-    @apply mt-token-lg grid items-start gap-token-lg md:grid-cols-2;
+    @apply mt-token-lg grid items-center gap-token-lg md:grid-cols-2;
   }
 
   .zt-landing-problema-textos {
     @apply flex flex-col gap-token-lg;
   }
 
+  .zt-landing-problema-textos .zt-card:last-child {
+    @apply md:ml-token-xl;
+  }
+
   .zt-landing-passos {
     @apply mt-token-lg grid list-none gap-token-lg p-0 md:grid-cols-2;
+  }
+
+  .zt-landing-passos li:nth-child(even) {
+    @apply md:mt-token-xl;
+  }
+
+  .zt-passo-num {
+    @apply flex size-10 items-center justify-center rounded-controle bg-primaria text-apoio font-semibold text-white;
   }
 
   .zt-landing-grid {
     @apply mt-token-lg grid gap-token-lg md:grid-cols-3;
   }
 
+  .zt-landing-grid > *:nth-child(2) {
+    @apply md:mt-token-lg;
+  }
+
   .zt-landing-media {
     @apply overflow-hidden bg-superficie;
+  }
+
+  .zt-landing-hero .zt-landing-media {
+    @apply aspect-video;
+    border-radius: var(--radius-midia) calc(var(--radius-midia) * 2.5) var(--radius-midia)
+      calc(var(--radius-midia) * 2.5);
+  }
+
+  .zt-landing-problema .zt-landing-media {
+    aspect-ratio: 3 / 2;
+    border-radius: calc(var(--radius-midia) * 2.5) var(--radius-midia)
+      calc(var(--radius-midia) * 2.5) var(--radius-midia);
+  }
+
+  .zt-landing-jornada .zt-landing-media {
+    aspect-ratio: 3168 / 1344;
+    border-radius: var(--radius-cartao);
+  }
+
+  .zt-card-media .zt-landing-media {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-midia);
   }
 
   .zt-landing-media img {
     @apply block h-auto w-full;
   }
 
+  .zt-landing-hero .zt-landing-media img,
+  .zt-landing-problema .zt-landing-media img,
+  .zt-landing-jornada .zt-landing-media img,
+  .zt-card-media .zt-landing-media img {
+    @apply h-full object-cover object-center;
+  }
+
   .zt-card-media {
-    @apply -mx-token-lg -mt-token-lg mb-token-md;
+    @apply mb-token-md;
   }
 
   .zt-link-sutil {
-    @apply mt-token-md inline-block text-apoio font-semibold text-primaria;
+    @apply mt-token-md inline-flex rounded-botao bg-pagina px-token-md py-token-xs text-apoio font-semibold text-primaria;
   }
 }

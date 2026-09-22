@@ -7,26 +7,26 @@ import { Card } from "@/components/ui/card";
 
 const PILARES = [
   {
-    src: "/landing/pilar-teto.svg",
-    alt: "Linha de teto calórico que sobe e desce com o andamento da dieta",
-    width: 800,
-    height: 600,
+    src: "/landing/pilar-teto.jpeg",
+    alt: "Prato com arroz, feijão e frango ao lado de uma balança e uma curva do teto",
+    width: 2400,
+    height: 1792,
     title: "O teto muda sozinho",
     body: "Depois do setup, o teto varia com a perda ou o ganho conforme a dieta segue — sem o aluno redigitar o peso e sem o treinador autorizar cada dia.",
   },
   {
-    src: "/landing/pilar-dia.svg",
-    alt: "Dia nutricional encerrado, sem planilha",
-    width: 800,
-    height: 600,
+    src: "/landing/pilar-dia.jpeg",
+    alt: "Aluna fecha o caderno depois da refeição, sem planilha",
+    width: 2400,
+    height: 1792,
     title: "O aluno vê se o dia fechou",
     body: "Pouco tempo na tela, sem planilha, para saber se o dia fechou.",
   },
   {
-    src: "/landing/pilar-carteira.svg",
-    alt: "Carteira de alunos no painel do treinador",
-    width: 800,
-    height: 600,
+    src: "/landing/pilar-carteira.jpeg",
+    alt: "Treinadora conduz um grupo de alunos no estúdio, sem celular na mão",
+    width: 2400,
+    height: 1792,
     title: "A carteira mora no produto",
     body: "O treinador paga a assinatura e conduz o vínculo e o setup no painel — não no WhatsApp pessoal.",
   },
@@ -72,7 +72,7 @@ function LandingImage({
 }) {
   return (
     <div className="zt-landing-media">
-      {/* Slot até o webp gerado chegar; o SVG marca o tamanho. */}
+      {/* Foto gerada no slot. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={src} alt={alt} width={width} height={height} />
     </div>
@@ -98,7 +98,7 @@ export function Landing() {
         <div className="zt-landing">
           <section className="zt-landing-hero">
             <div>
-              <p className="zt-apoio">Treino híbrido</p>
+              <p className="zt-kicker">Treino híbrido</p>
               <h1 className="zt-titulo mt-token-sm">Zenith Tracker</h1>
               <p className="zt-subtitulo mt-token-sm">
                 Acompanhamento nutricional do treino híbrido.
@@ -110,10 +110,10 @@ export function Landing() {
               </p>
             </div>
             <LandingImage
-              src="/landing/hero.svg"
-              alt="Aluno e treinador no acompanhamento nutricional do treino híbrido"
-              width={1600}
-              height={900}
+              src="/landing/hero.jpeg"
+              alt="Treinadora e aluno conversam na academia, com caderno e garrafa no banco"
+              width={2752}
+              height={1536}
             />
           </section>
 
@@ -123,10 +123,10 @@ export function Landing() {
             </h2>
             <div className="zt-landing-problema">
               <LandingImage
-                src="/landing/problema.svg"
-                alt="Teto cravado no cadastro de um lado, carteira no WhatsApp do outro"
-                width={1200}
-                height={800}
+                src="/landing/problema.jpeg"
+                alt="De um lado o aluno parado diante de um número que não muda; do outro, a treinadora sobrecarregada de papéis"
+                width={2528}
+                height={1696}
               />
               <div className="zt-landing-problema-textos">
                 <Card>
@@ -156,19 +156,19 @@ export function Landing() {
               O treinador autoriza o número só no setup. Depois o automático recomeça a
               cada gravação nova — uma edição de dieta ou treino vira um setup novo.
             </p>
-            <div className="mt-token-lg">
+            <div className="zt-landing-jornada mt-token-lg">
               <LandingImage
-                src="/landing/jornada.svg"
-                alt="Quatro passos: setup, teto automático, dia fechado e carteira no painel"
-                width={1400}
-                height={560}
+                src="/landing/jornada.jpeg"
+                alt="Quatro momentos: setup, teto que varia, refeição do aluno e carteira no chão da academia"
+                width={3168}
+                height={1344}
               />
             </div>
             <ol className="zt-landing-passos">
               {PASSOS.map((passo, index) => (
                 <li key={passo.titulo}>
-                  <p className="zt-apoio">{String(index + 1).padStart(2, "0")}</p>
-                  <h3 className="zt-subtitulo mt-token-xs">{passo.titulo}</h3>
+                  <p className="zt-passo-num">{String(index + 1).padStart(2, "0")}</p>
+                  <h3 className="zt-subtitulo mt-token-sm">{passo.titulo}</h3>
                   <p className="zt-apoio mt-token-sm">{passo.corpo}</p>
                 </li>
               ))}

@@ -27,11 +27,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="flex min-h-full flex-col bg-pagina font-sans text-texto">
+      <body className="h-full min-h-full bg-pagina font-sans text-texto">
         <ThemeProvider>
-          <Header />
-          <div className="flex-1">{children}</div>
-          <Footer />
+          <div className="flex min-h-full flex-col">
+            <Header />
+            <div className="flex flex-1 flex-col">{children}</div>
+            <Footer />
+          </div>
         </ThemeProvider>
       </body>
     </html>
