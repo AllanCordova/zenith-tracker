@@ -1,8 +1,9 @@
 import { execFileSync } from 'node:child_process';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { db } from './../src/prisma/db';
+import { createDb } from './../src/prisma/db';
 
+const db = createDb(process.env.DATABASE_URL ?? '');
 const apiRoot = resolve(__dirname, '..');
 const prismaBin = resolve(apiRoot, 'node_modules/.bin/prisma');
 

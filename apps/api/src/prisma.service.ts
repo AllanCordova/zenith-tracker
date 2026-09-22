@@ -1,7 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { db } from './prisma/db';
+import { ConfigService } from '@nestjs/config';
+import { createDb, type Db } from './prisma/db';
 
 @Injectable()
 export class PrismaService {
-  readonly db = db;
+  readonly db: Db;
+
+  constructor(config: ConfigService) {
+    this.db = createDb(config.getOrThrow<string>('DATABASE_URL'));
+  }
 }

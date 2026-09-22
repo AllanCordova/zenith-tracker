@@ -5,7 +5,9 @@ import { App } from 'supertest/types';
 import * as bcrypt from 'bcrypt';
 import { AppModule } from './../src/app.module';
 import { configureApp } from './../src/common/configure-app';
-import { db } from './../src/prisma/db';
+import { createDb } from './../src/prisma/db';
+
+const db = createDb(process.env.DATABASE_URL ?? '');
 
 async function deleteUserByEmail(email: string): Promise<void> {
   await db.orm.public.User.where({ email }).delete();
