@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><title>Zenith Tracker - Painel Clínico</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={"darkMode":"class","theme":{"extend":{"colors":{"inverse-primary":"#b1cdba","inverse-surface":"#2c3138","on-primary":"#ffffff","primary":"#263f31","on-secondary":"#ffffff","on-background":"#171c23","secondary-fixed":"#d2e8da","surface-bright":"#f8f9ff","tertiary-container":"#435263","on-secondary-container":"#55695e","on-surface":"#171c23","tertiary-fixed-dim":"#b9c8dc","on-surface-variant":"#424843","secondary":"#506358","inverse-on-surface":"#edf1fb","surface-container":"#eaeef8","surface-variant":"#dee2ec","on-error-container":"#93000a","surface-tint":"#4b6454","background":"#f8f9ff","on-error":"#ffffff","on-secondary-fixed":"#0d1f17","surface-container-highest":"#dee2ec","surface":"#f8f9ff","on-primary-fixed":"#072014","on-tertiary":"#ffffff","surface-container-low":"#f0f4fd","on-tertiary-fixed":"#0d1d2b","primary-container":"#3d5647","error":"#ba1a1a","secondary-container":"#d2e8da","outline":"#727973","secondary-fixed-dim":"#b6ccbe","on-primary-container":"#aecab7","on-secondary-fixed-variant":"#384b41","surface-container-lowest":"#ffffff","surface-dim":"#d6dae4","on-tertiary-fixed-variant":"#3a4859","primary-fixed":"#cde9d6","on-tertiary-container":"#b6c5d9","tertiary-fixed":"#d5e4f9","primary-fixed-dim":"#b1cdba","tertiary":"#2c3b4b","on-primary-fixed-variant":"#334c3e","surface-container-high":"#e4e8f2","outline-variant":"#c2c8c2","error-container":"#ffdad6"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"margin-mobile":"1.25rem","space-xl":"2.5rem","margin":"2.5rem","gutter-mobile":"1rem","space-lg":"1.5rem","space-md":"1rem","space-xs":"0.25rem","gutter":"1.5rem","space-sm":"0.5rem"},"fontFamily":{"display-lg":["Plus Jakarta Sans"],"headline-md":["Plus Jakarta Sans"],"display-lg-mobile":["Plus Jakarta Sans"],"label-md":["Inter"],"headline-sm":["Plus Jakarta Sans"],"label-sm":["Inter"],"label-lg":["Inter"],"body-md":["Inter"],"headline-lg":["Plus Jakarta Sans"],"body-sm":["Inter"],"body-lg":["Inter"],"headline-lg-mobile":["Plus Jakarta Sans"],"title-md":["Plus Jakarta Sans"]},"fontSize":{"display-lg":["48px",{"lineHeight":"56px","letterSpacing":"-0.02em","fontWeight":"600"}],"headline-md":["24px",{"lineHeight":"32px","letterSpacing":"-0.01em","fontWeight":"500"}],"display-lg-mobile":["32px",{"lineHeight":"40px","letterSpacing":"-0.015em","fontWeight":"600"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"500"}],"headline-sm":["20px",{"lineHeight":"28px","fontWeight":"500"}],"label-sm":["10px",{"lineHeight":"14px","letterSpacing":"0.04em","fontWeight":"600"}],"label-lg":["14px",{"lineHeight":"20px","fontWeight":"500"}],"body-md":["14px",{"lineHeight":"22px","fontWeight":"400"}],"headline-lg":["32px",{"lineHeight":"40px","letterSpacing":"-0.015em","fontWeight":"600"}],"body-sm":["12px",{"lineHeight":"18px","fontWeight":"400"}],"body-lg":["16px",{"lineHeight":"26px","fontWeight":"400"}],"headline-lg-mobile":["24px",{"lineHeight":"32px","letterSpacing":"-0.01em","fontWeight":"600"}],"title-md":["16px",{"lineHeight":"24px","fontWeight":"600"}]}}}};</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low z-50 flex flex-col pt-space-md pb-space-lg shadow-[0_1px_8px_rgba(0,0,0,0.03)]"><div class="px-space-lg mb-space-lg flex items-center gap-space-sm"><img alt="Zenith Tracker Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VyKyghWRidKiELWXgYEUPgd6bcXXVtB_-m3e5T-WrruFJV28Rtqx53F4zxAaDO_hveLBgpHrW7m2Ra24zjhh5C-cLB0O6ymOf13ScVcCabb9awRDvCGfA0T3wPfd9EkjJI62bMOf55NdhUkyxQEmmDgG-_fuSAWG68z1vSHEck4MGzE_JgzxYGRGvB178Emif3pwKg_XRNgJsCu_mEys4DHl02EYrtezFSccIXc0YGSep-Qea6Ygx_XSM"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-tight leading-none">Zenith Tracker</span><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mt-1">Monitoramento Aluno</span></div></div><div class="px-space-md mb-space-md"><div class="p-space-md rounded-xl bg-surface-container-lowest shadow-[0_2px_8px_rgba(30,35,42,0.02)]"><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Aluno em Atendimento</span><p class="font-title-md text-title-md text-on-surface mt-0.5">Lucas Mendes</p><p class="font-body-sm text-body-sm text-secondary">Protocolo Metabólico 12S</p></div></div><nav class="flex-1 px-space-md flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary font-label-lg rounded-xl"><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="visao-aluno-metabolica" href="#"><span class="material-symbols-outlined text-[20px]">bar_chart</span><span class="font-label-lg text-label-lg">Painel Metabólico</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="plano-alimentar" href="#"><span class="material-symbols-outlined text-[20px]">restaurant</span><span class="font-label-lg text-label-lg">Plano Alimentar</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="biomarcadores-rotina" href="#"><span class="material-symbols-outlined text-[20px]">biotech</span><span class="font-label-lg text-label-lg">Biomarcadores</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="registro-diario" href="#"><span class="material-symbols-outlined text-[20px]">history_edu</span><span class="font-label-lg text-label-lg">Diário de Consumo</span></a></nav><div class="px-space-md pt-space-md"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-secondary hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="carteira-alunos" href="wallet.html"><span class="material-symbols-outlined text-[18px]">arrow_back</span><span class="font-label-md text-label-md">Retornar à Carteira</span></a></div></aside><div class="pl-72 flex flex-col min-h-screen"><header class="fixed top-0 left-72 right-0 h-16 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl"><div class="flex items-center gap-space-md"><span class="font-label-md text-label-md text-on-surface-variant">Supervisão Clínica</span><span class="text-outline-variant">•</span><span class="font-label-md text-label-md text-primary font-medium">Dr. Allan Silva</span></div><div class="flex items-center gap-space-md"><div class="text-right hidden sm:block"><p class="font-label-lg text-label-lg text-on-surface leading-tight">Dr. Allan Silva</p><p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Treinador &amp; Fisiologista</p></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKmbuP4CR1SpDNeRHjQzjOOsm85hZWzb9Ot4LRUFlT3y3GFwr8HhU4hp8mZvFAqKXfixxU108OdOW22E37rOXZVyQu_P9c4IRtl7zcnUqyKeb7ZIqkMVBb9iqBQ0ySGkniFiDhZ3NYG7GiiGV1ia_U2TX9EfnhHDv-6o_-NlMu5k-bVsv1HH_LDSVPXsJ9IlfYWMFVq1xBkZStw-Yi9znpDjbr-zOXKaLdc5oq6Y5c-jjUWV03aIIE"/></div></header><main class="relative pt-16 bg-surface flex-1 px-space-xl"><div class="flex flex-col w-full">
+<!-- Stepper de Navegação Superior -->
+<div class="w-full pt-space-lg pb-space-md">
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between max-w-4xl mx-auto relative">
+<div class="absolute left-8 right-8 top-1/2 -translate-y-1/2 h-0.5 bg-surface-container -z-0"></div>
+<!-- Passo 1: Concluído -->
+<a href="nutritionalplane.html" class="relative z-10 flex items-center gap-space-sm bg-surface-container-lowest pr-space-md no-underline">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Passo 01</span>
+<span class="font-label-md text-label-md text-on-surface font-medium">Dados Pessoais</span>
+</div>
+</a>
+<!-- Passo 2: Concluído -->
+<a href="activty-plane.html" class="relative z-10 flex items-center gap-space-sm bg-surface-container-lowest px-space-md no-underline">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Passo 02</span>
+<span class="font-label-md text-label-md text-on-surface font-medium">Rotina &amp; Atividade</span>
+</div>
+</a>
+<!-- Passo 3: Ativo / Atual -->
+<a href="comfirm-plane.html" class="relative z-10 flex items-center gap-space-sm bg-surface-container-lowest pl-space-md no-underline">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-md text-label-md shadow-md ring-4 ring-primary-fixed">
+<span>03</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-primary font-semibold uppercase tracking-wider">Passo 03</span>
+<span class="font-label-md text-label-md text-primary font-semibold">Confirmação</span>
+</div>
+</a>
+</div>
+</div>
+</div>
+<!-- Header da Tela -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md mt-space-md mb-space-lg">
+<div>
+<div class="flex items-center gap-space-xs text-secondary font-label-sm text-label-sm uppercase tracking-wider mb-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span>
+<span>ETAPA 03 DE 03</span>
+<span>•</span>
+<span>PRESCRIÇÃO CLÍNICA</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Confirmação e Prescrição Nutricional</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Valide os alvos energéticos diários de Lucas Mendes antes de ativar o protocolo metabólico.</p>
+</div>
+<!-- Quick Profile Badge -->
+<div class="flex items-center gap-space-md bg-surface-container-lowest px-space-md py-space-sm rounded-xl shadow-sm self-start md:self-auto">
+<img alt="Foto de Lucas Mendes" class="w-10 h-10 rounded-full object-cover" data-alt="Portrait photo of Lucas Mendes, male athlete in athletic apparel, soft clean natural lighting, minimal studio aesthetic, muted organic tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7JyCd7NVi3KRDzcFSeHRYppp6EzW03r0Si7xnVuM_XhvKrq9gSB7j6_NSblTHTtpkBfKJrrD-i4fVpEYNmpiQeBbNTkKoXM5zov-Vpi1ohBUtHE2pLiWSOhUtvCLhtONO4CqG9T9lhY4QliQMz8PusDe-6iE9VHjpDLRp1zTfR1EqKMEghb4dyC3aqR7Fq6J4XkS4AyUlwXhbru8yVRHOZgsMq35iL7NffSnTCYZXyTxR3eb9Izir"/>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface leading-tight">Lucas Mendes</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">83.5 kg • 182 cm • 28 anos</span>
+</div>
+<span class="ml-2 font-label-sm text-label-sm px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed uppercase">Protocolo 12S</span>
+</div>
+</div>
+<!-- Grid Principal (2 Colunas com Split 8 / 4) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg pb-space-xl items-start">
+<!-- Coluna Esquerda: Edição e Calibração dos Macronutrientes (8 cols) -->
+<div class="lg:col-span-8 flex flex-col gap-space-lg">
+<!-- Card: Alvo Calórico Geral -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md pb-space-md mb-space-lg">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Meta Calórica Diária</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Definição do VET (Valor Energético Total) com base nas necessidades computadas.</p>
+</div>
+<div class="flex items-center gap-space-sm bg-surface-container-low px-space-md py-1.5 rounded-lg">
+<span class="material-symbols-outlined text-[18px] text-primary">auto_fix_high</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Cálculo Assistido: Eutrofia</span>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-md items-center">
+<div class="sm:col-span-2 flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface-variant" for="input-target-kcal">Valor Energético Programado (kcal/dia)</label>
+<div class="flex items-center rounded-lg bg-surface-container-low px-space-md py-2 focus-within:bg-surface-container-lowest focus-within:ring-2 focus-within:ring-primary-container transition-all">
+<span class="material-symbols-outlined text-secondary mr-space-sm">local_fire_department</span>
+<input class="w-full bg-transparent font-display-lg text-display-lg text-primary font-semibold outline-none focus:outline-none" id="input-target-kcal" type="number" value="2450"/>
+<span class="font-title-md text-title-md text-secondary ml-space-sm">kcal</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col justify-between h-full">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Delta vs TMB</span>
+<span class="font-label-sm text-label-sm font-semibold text-primary">+610 kcal</span>
+</div>
+<div class="mt-2">
+<div class="flex justify-between items-baseline mb-1">
+<span class="font-label-md text-label-md text-on-surface font-medium">Balanço</span>
+<span class="font-label-sm text-label-sm text-secondary">Leve Superávit</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 72%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Barra de Distribuição Visual Dinâmica -->
+<div class="mt-space-lg pt-space-md">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Divisão de Macroproporção Calórica</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold" id="label-ratio-sum">100% Alocado</span>
+</div>
+<!-- Segmented Progress Bar -->
+<div class="w-full h-3 rounded-full bg-surface-container-high flex overflow-hidden gap-0.5">
+<div class="bg-primary h-full transition-all duration-300" id="bar-protein" style="width: 30%;" title="Proteína: 30%"></div>
+<div class="bg-secondary h-full transition-all duration-300" id="bar-carbs" style="width: 50%;" title="Carboidratos: 50%"></div>
+<div class="bg-tertiary-fixed-dim h-full transition-all duration-300" id="bar-fats" style="width: 20%;" title="Lipídios: 20%"></div>
+</div>
+<div class="flex flex-wrap items-center gap-space-lg mt-space-sm text-on-surface-variant">
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-sm bg-primary"></span>
+<span class="font-label-sm text-label-sm">Proteínas (<span id="pct-protein">30</span>%)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-sm bg-secondary"></span>
+<span class="font-label-sm text-label-sm">Carboidratos (<span id="pct-carbs">50</span>%)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-sm bg-tertiary-fixed-dim"></span>
+<span class="font-label-sm text-label-sm">Lipídios (<span id="pct-fats">20</span>%)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Card: Parametrização Interativa dos Macronutrientes -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<div class="flex items-center justify-between pb-space-sm mb-space-md">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Prescrição Fina de Macronutrientes</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Ajuste as gramaturas por quilo corporal ou volume calórico absoluto.</p>
+</div>
+<button class="text-secondary hover:text-primary transition-colors flex items-center gap-1 font-label-sm text-label-sm" id="btn-reset-macros" type="button">
+<span class="material-symbols-outlined text-[16px]">restart_alt</span>
+<span>Restaurar Padrão</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<!-- Macronutriente 1: Proteína -->
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-title-md text-title-md text-on-surface">Proteínas</span>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-semibold" id="ratio-protein-kg">2.2 g/kg</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md">Síntese proteica muscular e recuperação tecidual.</p>
+</div>
+<div class="space-y-space-sm pt-space-xs">
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant block mb-1" for="input-protein-grams">Gramatura Diária</label>
+<div class="flex items-center bg-surface-container-lowest rounded-lg px-space-md py-1.5 focus-within:ring-1 focus-within:ring-primary transition-all">
+<input class="w-full bg-transparent font-headline-sm text-headline-sm text-on-surface font-semibold outline-none" id="input-protein-grams" step="1" type="number" value="184"/>
+<span class="font-label-md text-label-md text-secondary ml-1">g</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Total Calórico</span>
+<span class="font-label-md text-label-md text-on-surface font-medium" id="kcal-protein">736 kcal</span>
+</div>
+</div>
+</div>
+<!-- Macronutriente 2: Carboidratos -->
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-title-md text-title-md text-on-surface">Carboidratos</span>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-semibold" id="ratio-carbs-kg">3.7 g/kg</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md">Manutenção de glicogênio e performance em treino.</p>
+</div>
+<div class="space-y-space-sm pt-space-xs">
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant block mb-1" for="input-carbs-grams">Gramatura Diária</label>
+<div class="flex items-center bg-surface-container-lowest rounded-lg px-space-md py-1.5 focus-within:ring-1 focus-within:ring-primary transition-all">
+<input class="w-full bg-transparent font-headline-sm text-headline-sm text-on-surface font-semibold outline-none" id="input-carbs-grams" step="1" type="number" value="306"/>
+<span class="font-label-md text-label-md text-secondary ml-1">g</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Total Calórico</span>
+<span class="font-label-md text-label-md text-on-surface font-medium" id="kcal-carbs">1.224 kcal</span>
+</div>
+</div>
+</div>
+<!-- Macronutriente 3: Gorduras -->
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim"></span>
+<span class="font-title-md text-title-md text-on-surface">Gorduras Totais</span>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-semibold" id="ratio-fats-kg">0.65 g/kg</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md">Equilíbrio hormonal e absorção de lipossolúveis.</p>
+</div>
+<div class="space-y-space-sm pt-space-xs">
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant block mb-1" for="input-fats-grams">Gramatura Diária</label>
+<div class="flex items-center bg-surface-container-lowest rounded-lg px-space-md py-1.5 focus-within:ring-1 focus-within:ring-primary transition-all">
+<input class="w-full bg-transparent font-headline-sm text-headline-sm text-on-surface font-semibold outline-none" id="input-fats-grams" step="1" type="number" value="54"/>
+<span class="font-label-md text-label-md text-secondary ml-1">g</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Total Calórico</span>
+<span class="font-label-md text-label-md text-on-surface font-medium" id="kcal-fats">486 kcal</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Alerta de Convergência Dinâmica -->
+<div class="mt-space-md p-space-md rounded-xl bg-secondary-fixed/50 flex items-center gap-space-md" id="convergence-banner">
+<span class="material-symbols-outlined text-primary text-[20px]">verified</span>
+<div class="flex-1 text-on-secondary-fixed">
+<span class="font-label-md text-label-md font-semibold">Balanço Energético Convergente: </span>
+<span class="font-body-sm text-body-sm" id="convergence-text">A soma calórica dos macronutrientes (2.446 kcal) está aderente à meta estabelecida de 2.450 kcal (+/- 0.2%).</span>
+</div>
+</div>
+</div>
+<!-- Estratégia de Fracionamento e Hidratação -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Ritmo Circadiano</span>
+<h3 class="font-title-md text-title-md text-on-surface mt-0.5">Fracionamento Recomendado</h3>
+</div>
+<div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+</div>
+</div>
+<div class="mt-space-md space-y-2">
+<div class="flex justify-between items-center text-body-sm py-1">
+<span class="text-on-surface-variant">Refeições Principais</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">3 (Café, Almoço, Jantar)</span>
+</div>
+<div class="flex justify-between items-center text-body-sm py-1">
+<span class="text-on-surface-variant">Janelas Peri-Treino</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">2 (Pré e Pós Imediato)</span>
+</div>
+<div class="flex justify-between items-center text-body-sm py-1">
+<span class="text-on-surface-variant">Intervalo Médio</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">3h 30m entre aportes</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Aporte Hídrico Mínimo</span>
+<h3 class="font-title-md text-title-md text-on-surface mt-0.5">Meta de Hidratação</h3>
+</div>
+<div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">water_drop</span>
+</div>
+</div>
+<div class="mt-space-md">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-display-lg text-display-lg text-primary font-semibold">3.8</span>
+<span class="font-title-md text-title-md text-secondary">litros / dia</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Estimado em 45ml por quilo corporal devido ao perfil de treino de força hipertrófico.</p>
+</div>
+</div>
+</div>
+<!-- Ações de Navegação e Salvamento -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-space-md pt-space-sm">
+<a href="activty-plane.html" class="w-full sm:w-auto px-space-lg py-2.5 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container transition-all flex items-center justify-center gap-space-xs font-label-md text-label-md">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span>Voltar para Etapa 2 (Rotina)</span>
+</a>
+<div class="flex items-center gap-space-md w-full sm:w-auto">
+<button class="w-full sm:w-auto px-space-lg py-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container-high text-on-surface transition-all font-label-md text-label-md" type="button">
+            Salvar Rascunho
+          </button>
+<a href="wallet.html" class="w-full sm:w-auto px-space-xl py-2.5 rounded-lg bg-primary-container hover:bg-primary text-on-primary shadow-sm hover:shadow transition-all flex items-center justify-center gap-space-sm font-label-md text-label-md font-medium" id="btn-save-confirm">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+<span>Salvar e Ativar Prescrição</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Coluna Direita: Balanço Energético Consolidado e Publicação (4 cols) -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg">
+<!-- Card Consolidado: Balanço Energético -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<div class="flex items-center justify-between pb-space-sm mb-space-md">
+<h3 class="font-title-md text-title-md text-on-surface">Balanço Energético Consolidado</h3>
+<span class="material-symbols-outlined text-secondary text-[20px]">monitor_heart</span>
+</div>
+<!-- Equação Energética Decomposta -->
+<div class="space-y-space-md">
+<div class="p-space-md rounded-xl bg-surface-container-low">
+<div class="flex justify-between items-center text-label-sm font-label-sm text-secondary uppercase tracking-wider mb-1">
+<span>Metabolismo Basal (TMB)</span>
+<span>Katch-McArdle</span>
+</div>
+<div class="flex items-baseline justify-between">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">1.840</span>
+<span class="font-label-md text-label-md text-on-surface-variant">kcal / repouso</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-[11px] block mt-0.5">Calculado a partir de 83.5kg e 14.8% gordura.</span>
+</div>
+<div class="flex items-center justify-center -my-2 text-secondary">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-low">
+<div class="flex justify-between items-center text-label-sm font-label-sm text-secondary uppercase tracking-wider mb-1">
+<span>Gasto da Rotina Diária</span>
+<span>NEAT + EAT</span>
+</div>
+<div class="flex items-baseline justify-between">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">410</span>
+<span class="font-label-md text-label-md text-on-surface-variant">kcal / atividade</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-[11px] block mt-0.5">Musculação 5x/semana + 8.500 passos diários.</span>
+</div>
+<div class="flex items-center justify-center -my-2 text-secondary">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-low">
+<div class="flex justify-between items-center text-label-sm font-label-sm text-secondary uppercase tracking-wider mb-1">
+<span>Ajuste Programado</span>
+<span>Superávit Limpo</span>
+</div>
+<div class="flex items-baseline justify-between">
+<span class="font-headline-sm text-headline-sm text-primary font-semibold">+200</span>
+<span class="font-label-md text-label-md text-on-surface-variant">kcal / dia</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-[11px] block mt-0.5">Foco em hipertrofia controlada sem acúmulo lipídico.</span>
+</div>
+<div class="pt-space-sm">
+<div class="p-space-md rounded-xl bg-primary text-on-primary">
+<div class="flex justify-between items-center text-label-sm uppercase tracking-wider opacity-80 mb-1">
+<span>VET Prescrito Total</span>
+<span>Alvo Final</span>
+</div>
+<div class="flex items-baseline justify-between">
+<span class="font-headline-lg text-headline-lg font-semibold tracking-tight">2.450</span>
+<span class="font-label-md text-label-md opacity-90">kcal / 24 horas</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Card: Status e Compartilhamento Direto com o Aluno -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<div class="flex items-center gap-space-sm mb-space-md">
+<div class="w-3 h-3 rounded-full bg-primary-container animate-pulse"></div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Status do Protocolo</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface mb-space-xs">Plano Pronto para Envio</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-lg">
+          A confirmação sincronizará os macros com o aplicativo móvel de Lucas Mendes instantaneamente, disparando o lembrete de início.
+        </p>
+<!-- Preview do Aluno no App -->
+<div class="bg-surface-container-low p-space-md rounded-xl mb-space-lg">
+<div class="flex items-center gap-space-md mb-space-sm">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">smartphone</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Notificação Push Agendada</span>
+<span class="font-label-sm text-label-sm text-secondary">"Seu novo plano nutricional está liberado!"</span>
+</div>
+</div>
+<div class="flex items-center justify-between text-label-sm text-secondary pt-1">
+<span>Dispositivo: iPhone 14 Pro</span>
+<span class="flex items-center gap-1 text-primary">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+              Sincronização Ativa
+            </span>
+</div>
+</div>
+<button class="w-full py-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface transition-all flex items-center justify-center gap-space-sm font-label-md text-label-md font-medium" id="btn-share-student" type="button">
+<span class="material-symbols-outlined text-[18px]">send</span>
+<span>Compartilhar com Lucas Mendes</span>
+</button>
+<p class="text-center font-label-sm text-label-sm text-secondary mt-space-sm">
+          Acesso liberado sob registro profissional CRN/CREF #84920
+        </p>
+</div>
+<!-- Card: Auditoria Clínica -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[20px]">verified_user</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-medium">Auditoria Biométrica Automática</span>
+<span class="font-body-sm text-body-sm text-secondary">Nenhum marcador em zona de contraindicação alimentar.</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  (function initPrescriptionCalculator() {
+    const targetKcalInput = document.getElementById('input-target-kcal');
+    const proteinInput = document.getElementById('input-protein-grams');
+    const carbsInput = document.getElementById('input-carbs-grams');
+    const fatsInput = document.getElementById('input-fats-grams');
+
+    const proteinKcalLabel = document.getElementById('kcal-protein');
+    const carbsKcalLabel = document.getElementById('kcal-carbs');
+    const fatsKcalLabel = document.getElementById('kcal-fats');
+
+    const proteinRatioKg = document.getElementById('ratio-protein-kg');
+    const carbsRatioKg = document.getElementById('ratio-carbs-kg');
+    const fatsRatioKg = document.getElementById('ratio-fats-kg');
+
+    const barProtein = document.getElementById('bar-protein');
+    const barCarbs = document.getElementById('bar-carbs');
+    const barFats = document.getElementById('bar-fats');
+
+    const pctProtein = document.getElementById('pct-protein');
+    const pctCarbs = document.getElementById('pct-carbs');
+    const pctFats = document.getElementById('pct-fats');
+
+    const convergenceBanner = document.getElementById('convergence-banner');
+    const convergenceText = document.getElementById('convergence-text');
+    const ratioSumLabel = document.getElementById('label-ratio-sum');
+    const resetBtn = document.getElementById('btn-reset-macros');
+
+    const studentWeight = 83.5; // kg de Lucas Mendes
+
+    function updateCalculations() {
+      const pGrams = parseFloat(proteinInput.value) || 0;
+      const cGrams = parseFloat(carbsInput.value) || 0;
+      const fGrams = parseFloat(fatsInput.value) || 0;
+      const targetKcal = parseFloat(targetKcalInput.value) || 1;
+
+      // Calorias por macronutriente: P: 4, C: 4, F: 9
+      const pKcal = Math.round(pGrams * 4);
+      const cKcal = Math.round(cGrams * 4);
+      const fKcal = Math.round(fGrams * 9);
+      const totalCalcKcal = pKcal + cKcal + fKcal;
+
+      proteinKcalLabel.textContent = pKcal.toLocaleString('pt-BR') + ' kcal';
+      carbsKcalLabel.textContent = cKcal.toLocaleString('pt-BR') + ' kcal';
+      fatsKcalLabel.textContent = fKcal.toLocaleString('pt-BR') + ' kcal';
+
+      // Relação por Kg corporal
+      proteinRatioKg.textContent = (pGrams / studentWeight).toFixed(1) + ' g/kg';
+      carbsRatioKg.textContent = (cGrams / studentWeight).toFixed(1) + ' g/kg';
+      fatsRatioKg.textContent = (fGrams / studentWeight).toFixed(2) + ' g/kg';
+
+      // Percentuais
+      const pPct = totalCalcKcal > 0 ? Math.round((pKcal / totalCalcKcal) * 100) : 0;
+      const cPct = totalCalcKcal > 0 ? Math.round((cKcal / totalCalcKcal) * 100) : 0;
+      const fPct = totalCalcKcal > 0 ? Math.max(0, 100 - pPct - cPct) : 0;
+
+      pctProtein.textContent = pPct;
+      pctCarbs.textContent = cPct;
+      pctFats.textContent = fPct;
+
+      barProtein.style.width = pPct + '%';
+      barCarbs.style.width = cPct + '%';
+      barFats.style.width = fPct + '%';
+
+      // Verificação de Aderência à Meta
+      const delta = Math.abs(totalCalcKcal - targetKcal);
+      const deltaPercent = (delta / targetKcal) * 100;
+
+      if (deltaPercent <= 1.5) {
+        convergenceBanner.className = 'mt-space-md p-space-md rounded-xl bg-secondary-fixed/50 flex items-center gap-space-md';
+        convergenceBanner.querySelector('.material-symbols-outlined').textContent = 'verified';
+        convergenceText.textContent = 'A soma calórica dos macronutrientes (' + totalCalcKcal.toLocaleString('pt-BR') + ' kcal) está rigorosamente aderente à meta de ' + targetKcal.toLocaleString('pt-BR') + ' kcal (' + deltaPercent.toFixed(1) + '% de variação).';
+        ratioSumLabel.textContent = '100% Alocado';
+      } else {
+        convergenceBanner.className = 'mt-space-md p-space-md rounded-xl bg-surface-container-high flex items-center gap-space-md';
+        convergenceBanner.querySelector('.material-symbols-outlined').textContent = 'tune';
+        convergenceText.textContent = 'Diferença de ' + (totalCalcKcal > targetKcal ? '+' : '') + (totalCalcKcal - targetKcal) + ' kcal em relação à meta pretendida (' + totalCalcKcal.toLocaleString('pt-BR') + ' vs ' + targetKcal.toLocaleString('pt-BR') + ' kcal).';
+        ratioSumLabel.textContent = Math.round((totalCalcKcal / targetKcal) * 100) + '% da meta';
+      }
+    }
+
+    // Ouvintes nos inputs
+    [targetKcalInput, proteinInput, carbsInput, fatsInput].forEach(function(input) {
+      if (input) {
+        input.addEventListener('input', updateCalculations);
+      }
+    });
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', function() {
+        targetKcalInput.value = '2450';
+        proteinInput.value = '184';
+        carbsInput.value = '306';
+        fatsInput.value = '54';
+        updateCalculations();
+      });
+    }
+
+    const saveBtn = document.getElementById('btn-save-confirm');
+    if (saveBtn) {
+      saveBtn.addEventListener('click', function() {
+        const originalText = saveBtn.innerHTML;
+        saveBtn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">refresh</span><span>Ativando Protocolo...</span>';
+        setTimeout(function() {
+          saveBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">done_all</span><span>Prescrição Ativada com Sucesso!</span>';
+          saveBtn.classList.remove('bg-primary-container');
+          saveBtn.classList.add('bg-primary');
+        }, 900);
+      });
+    }
+
+    const shareBtn = document.getElementById('btn-share-student');
+    if (shareBtn) {
+      shareBtn.addEventListener('click', function() {
+        const originalContent = shareBtn.innerHTML;
+        shareBtn.innerHTML = '<span class="material-symbols-outlined text-[18px] text-primary">check</span><span>Enviado para Lucas Mendes</span>';
+        setTimeout(function() {
+          shareBtn.innerHTML = originalContent;
+        }, 3000);
+      });
+    }
+  })();
+</script></main><footer class="w-full bg-surface-container-low shadow-[0_-1px_6px_rgba(0,0,0,0.02)] mt-space-xl"><div class="w-full px-space-xl py-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md"><div class="flex items-center gap-space-md text-center md:text-left"><span class="font-label-md text-label-md text-on-surface-variant">© Zenith Tracker — Todos os direitos reservados</span><span class="hidden sm:inline text-on-surface-variant">•</span><span class="font-body-sm text-body-sm text-secondary flex items-center gap-space-xs"><span class="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span>Suporte Nutricional e Metabólico Ativo</span></div><div class="flex items-center gap-space-lg"><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Diretrizes Clínicas</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Privacidade</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Central de Ajuda</a></div></div></footer></div></body></html>

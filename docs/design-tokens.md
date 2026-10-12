@@ -128,6 +128,15 @@ Visitante: ícone de uma pessoa no header liga a `/login`. Sessão: o mesmo slot
 
 ## Protótipo
 
-**Referência visual:** `design.html` (landing), `login.html`, `register.html` — layout. Cor e espaço seguem este arquivo, não a paleta verde desses HTML.
+**Link:** https://allancordova.github.io/zenith-tracker/
 
-**Telas:** as 5 da jornada de assinatura, quando o protótipo existir: (1) painel com assinatura inativa, (2) escolha do plano, (3) Pedido Pendente / saída para o checkout, (4) volta com pagamento ainda em aberto, (5) Assinatura Ativa e carteira liberada. Não prototipar telas que não estejam nessa jornada enquanto o link estiver pendente.
+HTML estático em `prototype/`, publicado pelo GitHub Pages. A entrada é a carteira.
+
+**Telas:**
+
+1. Carteira de alunos — `wallet.html`. Plano Nutricional abre o plano daquele aluno.
+2. Dados pessoais — `nutritionalplane.html`. Idade, peso, altura e sexo biológico.
+3. Rotina e atividade — `activty-plane.html`.
+4. Confirmação — `comfirm-plane.html`. Salvar e Ativar Prescrição volta à carteira.
+
+As telas 2, 3 e 4 são o mesmo plano. A casca fica; o passo no menu muda. Retornar à Carteira volta para a lista. Prosseguir avança o passo.
