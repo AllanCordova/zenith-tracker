@@ -13,9 +13,14 @@ test("páginas de entrada não importam axios, o cliente HTTP nem o repositório
   for (const file of ["app/login/page.tsx", "app/cadastro/page.tsx"]) {
     const source = sourceOf(file);
     expect(source).not.toMatch(/from ["']axios["']/);
+    expect(source).not.toMatch(/from ["']sonner["']/);
     expect(source).not.toMatch(/from ["']@\/lib\/http["']/);
     expect(source).not.toMatch(/from ["']@\/repositories\//);
   }
+});
+
+test("toast de ação fica no canto superior direito", () => {
+  expect(sourceOf("components/layout/app-toaster.tsx")).toMatch(/position=["']top-right["']/);
 });
 
 test("componentes de UI não importam axios nem React Query", () => {
@@ -25,9 +30,11 @@ test("componentes de UI não importam axios nem React Query", () => {
     "components/ui/select.tsx",
     "components/ui/card.tsx",
     "components/ui/role-select.tsx",
+    "components/ui/form-error.tsx",
     "components/layout/header.tsx",
     "components/layout/footer.tsx",
     "components/layout/theme-toggle.tsx",
+    "components/layout/app-toaster.tsx",
   ]) {
     const source = sourceOf(file);
     expect(source).not.toMatch(/from ["']axios["']/);

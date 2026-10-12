@@ -1,8 +1,8 @@
 # 🛠️ Architecture / Software Design Document
 
 **Projeto:** Zenith Tracker
-**Versão:** 1.2.0
-**Última atualização:** 2026-09-21
+**Versão:** 1.4.0
+**Última atualização:** 2026-09-22
 
 > 🤖 **O `prd.md` responde _o quê_ o produto faz. Este responde _onde as coisas
 > moram e como se chamam_.** Detalhe de tela — rota, componente, contrato —
@@ -36,7 +36,7 @@
 - **Backend:** NestJS **12** (projeto **CommonJS** — `nest new --type cjs`) + Prisma ORM **8** + PostgreSQL
 - **Frontend:** React via Next.js **16** (App Router). Next.js é só a casca da UI — ver §4
 - **Padrões de código do frontend:** componentes de função com hooks (sem classes); estado do servidor (TanStack Query) separado do estado de UI (modal, tema, passo do wizard); páginas do App Router distintas de `components/ui` e `components/layout`; telas interativas e qualquer código que carregue JWT são Client Components (`'use client'`). **Componente de UI não fala com o servidor** — HTTP à NestJS só em `repositories/`, via cliente axios em `lib/http.ts`. Página e componente de UI não importam axios. Hook de domínio (`hooks/`) orquestra Query/Mutation e o repositório
-- **Estilo:** Tailwind CSS **4**. Tokens de `docs/design-tokens.md` (claro e escuro) entram em `@theme`. Tema com `next-themes` (classe `dark` no `html`). Ícones: `lucide-react`. Animação de vitrine: `motion`, só na landing. Cor, espaço e tipo crus fora do mapa de tokens são defeito
+- **Estilo:** Tailwind CSS **4**. Tokens de `docs/design-tokens.md` (claro e escuro) entram em `@theme`. Visual minimalista preto e branco: `background`, `foreground`, `surface`, `primary`. Espaçamento só na escala do Tailwind (`p-4`, `gap-6`), sem tokens de espaço. Geist + Geist Mono nos kickers. Tema com `next-themes` (classe `dark` no `html`). Ícones: `lucide-react`. Animação de vitrine: `motion`, só na landing. Cor crua fora do mapa de tokens é defeito
 - **Formulário no cliente:** `react-hook-form` + `zod` (`@hookform/resolvers`). A API continua com DTO + `ValidationPipe` (ID7); o schema do front não substitui o 400 do servidor
 - **Testes:**
   - `apps/api`: **Jest** + **oxlint** (gerador CJS do Nest 12)
@@ -66,6 +66,7 @@ O `nest new` / `create-next-app` trazem o esqueleto. **Só entra no projeto o qu
 | `web` | `@tanstack/react-query` | cache e ciclo de vida das chamadas à API (ID16) |
 | `web` | `zod` | schema de validação no cliente |
 | `web` | `react-hook-form`, `@hookform/resolvers` | formulários de cadastro/login |
+| `web` | `sonner` | toast de ação (sucesso/erro) no layout, canto superior direito; páginas usam `lib/toast.ts`, não importam `sonner` |
 
 ### 🧱 2.1. Backend — regras estruturais
 
@@ -129,14 +130,15 @@ Autenticação no Swagger: esquema Bearer JWT, o mesmo das rotas protegidas.
     └── web/               # Next.js 16 (sem Route Handlers)
         ├── app/                   # rotas (páginas), não API
         ├── components/
-        │   ├── ui/                # Button, Input, Select, Card
-        │   └── layout/            # Header, ThemeToggle, Footer
-        ├── hooks/                 # useLogin, useRegister — orquestram Query + repositório
+        │   ├── ui/                # Button, Input, Select, Card, FormError
+        │   └── layout/            # Header, ThemeToggle, Footer, AppToaster
+        ├── hooks/                 # useLogin, useRegister, useHasSession
         ├── repositories/          # contrato HTTP da NestJS (axios via lib/http)
         └── lib/
             ├── http.ts            # instância axios + Bearer
             ├── session.ts         # JWT no localStorage
-            └── auth-schema.ts     # zod de cadastro/login
+            ├── auth-schema.ts     # zod de cadastro/login
+            └── toast.ts           # wrapper do sonner
 ```
 
 Cada app tem o seu `package.json`. Instalar e testar: `cd apps/api` ou `cd apps/web`.
@@ -163,14 +165,14 @@ Comandos **exatos** (a partir da pasta do app). CI usa a variante `run` do Vites
 | Camada | Pasta | Faz | Não faz |
 | :----- | :---- | :-- | :------ |
 | Página | `app/` | rota, composição; `'use client'` quando há JWT ou formulário | importar axios; conhecer envelope HTTP |
-| UI | `components/ui`, `components/layout` | Button, Input, Select, Card, Header, ThemeToggle | HTTP, JWT, React Query |
-| Hook de domínio | `hooks/` | `useLogin` / `useRegister`: Mutation/Query + repositório + sessão | JSX de página; instância axios |
+| UI | `components/ui`, `components/layout` | Button, Input (erro no campo), Select, Card, FormError, Header, Footer, ThemeToggle, AppToaster | HTTP, React Query |
+| Hook de domínio | `hooks/` | `useLogin` / `useRegister` / `useHasSession`: Mutation/Query + repositório + sessão | JSX de página; instância axios |
 | Repositório | `repositories/` | contrato da NestJS (path, envelope, 401/403) | `fetch`; UI |
 | HTTP | `lib/http.ts` | instância axios, `baseURL`, Bearer | regra de negócio |
 | Schema | `lib/auth-schema.ts` | zod de cadastro/login; não substitui o 400 da API | envelope HTTP; JSX |
 | Sessão | `lib/session.ts` | JWT no `localStorage` | chamada de rede |
 
-Página e `components/ui` não importam axios. `Select` de papel é UI: a página de cadastro só passa `value` / `onChange`. Tema (`next-themes`) e cache (`QueryClientProvider`) envolvem o App Router no layout raiz — não nas páginas.
+Página e `components/ui` não importam axios. `Input` reserva espaço e mostra o erro do campo (`role="alert"`). `FormError` cobre recusa do servidor que não é de um campo. Toast de ação passa por `lib/toast.ts` (canto superior direito). Header e Footer leem a sessão só para o chrome (entrar vs sair); não chamam a API. `Select` de papel é UI: a página de cadastro só passa `value` / `onChange`. Tema (`next-themes`), cache (`QueryClientProvider`) e `AppToaster` (sonner) envolvem o App Router no layout raiz — não nas páginas.
 
 **Next.js 16 é UI, não backend.** Proibido no `apps/web`:
 
@@ -299,6 +301,9 @@ Unicidade: `User.email`; par (`trainerId`, `studentId`) em `Enrollment`; no máx
 | :--- | :------ | :---------- |
 | 2026-09-09 | 1.0.0 | Versão inicial via `/utf-architecture` |
 | 2026-09-21 | 1.1.0 | Mapa de domínios: US01 (`auth/`, `users/`, `User`) |
+| 2026-09-22 | 1.4.0 | Visual editorial-atlético: tokens de papel/`linha`/`display`, split de entrada, chrome de borda |
+| 2026-09-22 | 1.3.1 | Header/Footer: sessão no chrome; Input com erro de campo; toast no canto superior direito |
+| 2026-09-22 | 1.3.0 | Front: `FormError`, toast (`sonner` via `lib/toast.ts`) |
 | 2026-09-21 | 1.2.0 | Front: libs de UI/tema/HTTP/formulário; camadas `ui` / `hooks` / `lib/http`; tokens claros e escuros |
 
 ---

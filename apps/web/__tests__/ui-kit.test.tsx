@@ -13,6 +13,31 @@ beforeEach(() => {
 test("Input associa o rótulo ao campo", () => {
   render(<Input id="name" label="Nome" name="name" value="" onChange={() => undefined} />);
   expect(screen.getByLabelText("Nome")).toBeDefined();
+  expect(screen.queryByRole("alert")).toBeNull();
+});
+
+test("Input reserva espaço e mostra o erro do campo", () => {
+  const { rerender } = render(
+    <Input id="email" label="E-mail" name="email" value="" onChange={() => undefined} />,
+  );
+  const vazio = screen.getByLabelText("E-mail").parentElement;
+  const alturaVazia = vazio?.getBoundingClientRect().height ?? 0;
+
+  rerender(
+    <Input
+      id="email"
+      label="E-mail"
+      name="email"
+      value=""
+      error="Informe um e-mail válido"
+      onChange={() => undefined}
+    />,
+  );
+
+  expect(screen.getByRole("alert").textContent).toBe("Informe um e-mail válido");
+  expect(screen.getByLabelText("E-mail").getAttribute("aria-invalid")).toBe("true");
+  const alturaComErro = screen.getByLabelText("E-mail").parentElement?.getBoundingClientRect().height ?? 0;
+  expect(alturaComErro).toBeGreaterThanOrEqual(alturaVazia);
 });
 
 test("Button dispara o clique e o de perigo continua sendo um botão", () => {

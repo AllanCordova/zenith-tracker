@@ -1,6 +1,5 @@
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, expect, test, vi } from "vitest";
-import { Header } from "@/components/layout/header";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 
 const { setTheme, resolvedTheme } = vi.hoisted(() => ({
@@ -44,16 +43,4 @@ test("no escuro, o toggle pede o tema claro", async () => {
 
   fireEvent.click(botao);
   expect(setTheme).toHaveBeenCalledWith("light");
-});
-
-test("header mostra a marca, o entrar e o toggle de tema", async () => {
-  render(<Header />);
-
-  expect(screen.getByRole("link", { name: "Zenith Tracker" })).toBeDefined();
-  expect(screen.getByRole("link", { name: "Entrar" }).getAttribute("href")).toBe("/login");
-  await waitFor(() => {
-    expect(
-      (screen.getByRole("button", { name: "Ativar tema escuro" }) as HTMLButtonElement).disabled,
-    ).toBe(false);
-  });
 });

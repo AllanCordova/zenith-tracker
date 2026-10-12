@@ -7,15 +7,25 @@ export type SessionUser = {
 
 const TOKEN_KEY = "accessToken";
 const USER_KEY = "user";
+const SESSION_EVENT = "zt-session";
+
+function notifySession() {
+  if (typeof window === "undefined") {
+    return;
+  }
+  window.dispatchEvent(new Event(SESSION_EVENT));
+}
 
 export function saveSession(accessToken: string, user: SessionUser): void {
   localStorage.setItem(TOKEN_KEY, accessToken);
   localStorage.setItem(USER_KEY, JSON.stringify(user));
+  notifySession();
 }
 
 export function clearSession(): void {
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(USER_KEY);
+  notifySession();
 }
 
 function isAccessTokenExpired(token: string): boolean {
@@ -66,4 +76,23 @@ export function getSessionUser(): SessionUser | null {
 
 export function areaPathForRole(role: SessionUser["role"]): "/aluno" | "/treinador" {
   return role === "STUDENT" ? "/aluno" : "/treinador";
+}
+
+export function hasSession(): boolean {
+  if (typeof window === "undefined") {
+    return false;
+  }
+  return Boolean(localStorage.getItem(TOKEN_KEY));
+}
+
+export function subscribeSession(onChange: () => void) {
+  if (typeof window === "undefined") {
+    return () => undefined;
+  }
+  window.addEventListener("storage", onChange);
+  window.addEventListener(SESSION_EVENT, onChange);
+  return () => {
+    window.removeEventListener("storage", onChange);
+    window.removeEventListener(SESSION_EVENT, onChange);
+  };
 }
