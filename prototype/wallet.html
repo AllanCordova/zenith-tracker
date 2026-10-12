@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><title>Zenith Tracker</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={"darkMode":"class","theme":{"extend":{"colors":{"inverse-primary":"#b1cdba","inverse-surface":"#2c3138","on-primary":"#ffffff","primary":"#263f31","on-secondary":"#ffffff","on-background":"#171c23","secondary-fixed":"#d2e8da","surface-bright":"#f8f9ff","tertiary-container":"#435263","on-secondary-container":"#55695e","on-surface":"#171c23","tertiary-fixed-dim":"#b9c8dc","on-surface-variant":"#424843","secondary":"#506358","inverse-on-surface":"#edf1fb","surface-container":"#eaeef8","surface-variant":"#dee2ec","on-error-container":"#93000a","surface-tint":"#4b6454","background":"#f8f9ff","on-error":"#ffffff","on-secondary-fixed":"#0d1f17","surface-container-highest":"#dee2ec","surface":"#f8f9ff","on-primary-fixed":"#072014","on-tertiary":"#ffffff","surface-container-low":"#f0f4fd","on-tertiary-fixed":"#0d1d2b","primary-container":"#3d5647","error":"#ba1a1a","secondary-container":"#d2e8da","outline":"#727973","secondary-fixed-dim":"#b6ccbe","on-primary-container":"#aecab7","on-secondary-fixed-variant":"#384b41","surface-container-lowest":"#ffffff","surface-dim":"#d6dae4","on-tertiary-fixed-variant":"#3a4859","primary-fixed":"#cde9d6","on-tertiary-container":"#b6c5d9","tertiary-fixed":"#d5e4f9","primary-fixed-dim":"#b1cdba","tertiary":"#2c3b4b","on-primary-fixed-variant":"#334c3e","surface-container-high":"#e4e8f2","outline-variant":"#c2c8c2","error-container":"#ffdad6"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"margin-mobile":"1.25rem","space-xl":"2.5rem","margin":"2.5rem","gutter-mobile":"1rem","space-lg":"1.5rem","space-md":"1rem","space-xs":"0.25rem","gutter":"1.5rem","space-sm":"0.5rem"},"fontFamily":{"display-lg":["Plus Jakarta Sans"],"headline-md":["Plus Jakarta Sans"],"display-lg-mobile":["Plus Jakarta Sans"],"label-md":["Inter"],"headline-sm":["Plus Jakarta Sans"],"label-sm":["Inter"],"label-lg":["Inter"],"body-md":["Inter"],"headline-lg":["Plus Jakarta Sans"],"body-sm":["Inter"],"body-lg":["Inter"],"headline-lg-mobile":["Plus Jakarta Sans"],"title-md":["Plus Jakarta Sans"]},"fontSize":{"display-lg":["48px",{"lineHeight":"56px","letterSpacing":"-0.02em","fontWeight":"600"}],"headline-md":["24px",{"lineHeight":"32px","letterSpacing":"-0.01em","fontWeight":"500"}],"display-lg-mobile":["32px",{"lineHeight":"40px","letterSpacing":"-0.015em","fontWeight":"600"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"500"}],"headline-sm":["20px",{"lineHeight":"28px","fontWeight":"500"}],"label-sm":["10px",{"lineHeight":"14px","letterSpacing":"0.04em","fontWeight":"600"}],"label-lg":["14px",{"lineHeight":"20px","fontWeight":"500"}],"body-md":["14px",{"lineHeight":"22px","fontWeight":"400"}],"headline-lg":["32px",{"lineHeight":"40px","letterSpacing":"-0.015em","fontWeight":"600"}],"body-sm":["12px",{"lineHeight":"18px","fontWeight":"400"}],"body-lg":["16px",{"lineHeight":"26px","fontWeight":"400"}],"headline-lg-mobile":["24px",{"lineHeight":"32px","letterSpacing":"-0.01em","fontWeight":"600"}],"title-md":["16px",{"lineHeight":"24px","fontWeight":"600"}]}}}};</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased min-h-screen flex flex-col justify-between"><header class="fixed top-0 w-full z-50 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 w-full px-margin flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="Zenith Tracker Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VyKyghWRidKiELWXgYEUPgd6bcXXVtB_-m3e5T-WrruFJV28Rtqx53F4zxAaDO_hveLBgpHrW7m2Ra24zjhh5C-cLB0O6ymOf13ScVcCabb9awRDvCGfA0T3wPfd9EkjJI62bMOf55NdhUkyxQEmmDgG-_fuSAWG68z1vSHEck4MGzE_JgzxYGRGvB178Emif3pwKg_XRNgJsCu_mEys4DHl02EYrtezFSccIXc0YGSep-Qea6Ygx_XSM"/><span class="font-headline-sm text-headline-sm text-primary tracking-tight">Zenith Tracker</span></div><nav class="flex items-center" data-active-classes="bg-secondary-container text-on-secondary-fixed-variant rounded-xl font-label-lg"><a aria-current="page" class="px-space-md py-space-xs transition-colors bg-secondary-container text-on-secondary-fixed-variant rounded-xl font-label-lg" data-path="carteira-alunos" href="#">Carteira</a></nav><div class="flex items-center gap-space-md"><div class="text-right hidden sm:block"><p class="font-label-lg text-label-lg text-on-surface leading-tight">Dr. Allan Silva</p><p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Treinador &amp; Fisiologista</p></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKmbuP4CR1SpDNeRHjQzjOOsm85hZWzb9Ot4LRUFlT3y3GFwr8HhU4hp8mZvFAqKXfixxU108OdOW22E37rOXZVyQu_P9c4IRtl7zcnUqyKeb7ZIqkMVBb9iqBQ0ySGkniFiDhZ3NYG7GiiGV1ia_U2TX9EfnhHDv-6o_-NlMu5k-bVsv1HH_LDSVPXsJ9IlfYWMFVq1xBkZStw-Yi9znpDjbr-zOXKaLdc5oq6Y5c-jjUWV03aIIE"/></div></div></header><main class="w-full pt-16 bg-surface flex-1 px-margin"><div class="flex flex-col w-full">
+<!-- Sub-header / Clinical Context Bar -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md mb-space-lg">
+<div>
+<span class="font-label-sm text-label-sm text-secondary tracking-widest uppercase block mb-space-xs">Módulo Clínico • Gestão de Atletas</span>
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">Carteira de Alunos</h1>
+</div>
+<div class="flex items-center gap-space-sm bg-surface-container-low px-space-md py-space-xs rounded-full">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-md text-label-md text-on-surface-variant"><strong class="text-on-surface font-title-md">28</strong> atletas em acompanhamento ativo</span>
+</div>
+</div>
+<!-- Telemetry / Micro Stats Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-md mb-space-xl">
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex items-center justify-between">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Aderência Calórica Média</p>
+<p class="font-display-lg text-headline-lg text-primary mt-space-xs">93.4<span class="font-title-md text-label-lg text-secondary">%</span></p>
+</div>
+<div class="w-12 h-12 rounded-xl bg-secondary-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[24px]">vital_signs</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex items-center justify-between">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Revisões Nutricionais Pendentes</p>
+<p class="font-display-lg text-headline-lg text-on-surface mt-space-xs">05<span class="font-title-md text-label-lg text-on-surface-variant">/28</span></p>
+</div>
+<div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[24px]">assignment_late</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex items-center justify-between">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Biomarcadores em Zona Alvo</p>
+<p class="font-display-lg text-headline-lg text-primary mt-space-xs">88<span class="font-title-md text-label-lg text-secondary">%</span></p>
+</div>
+<div class="w-12 h-12 rounded-xl bg-secondary-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[24px]">monitoring</span>
+</div>
+</div>
+</div>
+<!-- 1. Input de search com botão de procura -->
+<section class="w-full mb-space-lg">
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm">
+<form class="flex flex-col sm:flex-row items-center gap-space-sm w-full" id="search-form" onsubmit="event.preventDefault();">
+<div class="relative flex-1 w-full">
+<span class="material-symbols-outlined absolute left-space-md top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px] pointer-events-none">
+            search
+          </span>
+<input class="w-full h-10 pl-11 pr-space-md bg-surface-container-low text-on-surface font-body-md text-body-md rounded-lg placeholder:text-on-surface-variant/70 focus:outline-none focus:bg-surface-container transition-colors" id="student-search-input" placeholder="Buscar aluno por nome ou matrícula..." type="text"/>
+</div>
+<button class="w-full sm:w-auto h-10 px-space-lg bg-primary-container hover:bg-primary text-on-primary font-label-lg text-label-lg rounded-lg flex items-center justify-center gap-space-xs transition-colors shrink-0 shadow-sm" id="btn-search-trigger" type="button">
+<span class="material-symbols-outlined text-[18px]">manage_search</span>
+<span>Buscar Aluno</span>
+</button>
+</form>
+</div>
+</section>
+<!-- 2. Lista dos alunos em tabela minimalista e elegante -->
+<section class="w-full">
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+<!-- Section Internal Header / Metadata Filters -->
+<div class="px-space-lg py-space-md bg-surface-container-low/50 flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-secondary text-[20px]">group</span>
+<h2 class="font-title-md text-title-md text-on-surface">Atletas Cadastrados</h2>
+<span class="bg-secondary-container text-on-secondary-fixed-variant font-label-sm text-label-sm px-space-xs py-0.5 rounded-full" id="student-count-badge">
+            5 listados
+          </span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase mr-space-xs">Status:</span>
+<button class="px-space-sm py-1 bg-primary text-on-primary rounded font-label-sm text-label-sm">Todos</button>
+<button class="px-space-sm py-1 bg-surface-container text-on-surface-variant hover:text-on-surface rounded font-label-sm text-label-sm transition-colors">Hipertrofia</button>
+<button class="px-space-sm py-1 bg-surface-container text-on-surface-variant hover:text-on-surface rounded font-label-sm text-label-sm transition-colors">Performance</button>
+</div>
+</div>
+<!-- Desktop & Tablet Table View -->
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left" id="students-table">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">
+<th class="py-space-md px-space-lg" scope="col">Aluno</th>
+<th class="py-space-md px-space-md hidden md:table-cell" scope="col">Protocolo Atual</th>
+<th class="py-space-md px-space-md hidden lg:table-cell" scope="col">Aderência Metabólica</th>
+<th class="py-space-md px-space-md hidden sm:table-cell" scope="col">Último Check-in</th>
+<th class="py-space-md px-space-lg text-right" scope="col">Ação</th>
+</tr>
+</thead>
+<tbody class="divide-y-0" id="students-tbody">
+<!-- Student 1: Lucas Mendes -->
+<tr class="student-row hover:bg-surface-container-low/40 transition-colors group">
+<td class="py-space-md px-space-lg">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="relative w-11 h-11 rounded-full overflow-hidden shrink-0 bg-secondary-container shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Close-up athlete portrait of Lucas Mendes, male 28 years old, focused expression, studio lighting with soft green ambient reflections, clinical neutral aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdBdsshwBLBI6L-mqiMFWNJv65BokCvcUiIxwCSMjw9FBGdBgjUfVH00NdyglHXSawEgEKfAuWgQ3JGNfr-LvEYoIOpuglpqNunKWYN7vFv9g1X85z7x5MYwDnzhXmkEdLqXeXY5a4TGez9EqXgIqdFEsK50seBmi5cHl8kPWW-nRxIALAhAO3xFTg5s-yI4VWCQmyMRsS2XRkv7DE6e23BiGy6R61LnVqcpg-m-NaKmL1VtBleJ6B"/>
+</div>
+<div class="min-w-0">
+<p class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors truncate">
+                      Lucas Mendes
+                    </p>
+<div class="flex items-center gap-space-xs">
+<span class="font-body-sm text-body-sm text-on-surface-variant">MAT: #ZN-8841</span>
+<span class="text-on-surface-variant/40 text-label-sm">•</span>
+<span class="font-label-sm text-label-sm text-secondary bg-secondary-container px-1.5 py-0.2 rounded">Hipertrofia</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md hidden md:table-cell">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Fase 2: Superávit Controlado</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">3.150 kcal • 190g P</span>
+</div>
+</td>
+<td class="py-space-md px-space-md hidden lg:table-cell">
+<div class="w-36">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-sm text-label-sm text-primary font-medium">96%</span>
+<span class="font-label-sm text-label-sm text-secondary">Excelente</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 96%"></div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md hidden sm:table-cell">
+<span class="font-body-sm text-body-sm text-on-surface">Hoje, 08:30</span>
+<span class="block font-label-sm text-label-sm text-secondary">Log completo</span>
+</td>
+<td class="py-space-md px-space-lg text-right">
+<a class="inline-flex items-center justify-center gap-space-xs h-9 px-space-md bg-surface-container-low hover:bg-primary-container hover:text-on-primary text-primary font-label-md text-label-md rounded-lg transition-colors group-hover:shadow-sm" href="nutritionalplane.html">
+<span class="material-symbols-outlined text-[18px]">restaurant_menu</span>
+<span>Plano Nutricional</span>
+</a>
+</td>
+</tr>
+<!-- Student 2: Camila Rocha -->
+<tr class="student-row hover:bg-surface-container-low/40 transition-colors group">
+<td class="py-space-md px-space-lg">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="relative w-11 h-11 rounded-full overflow-hidden shrink-0 bg-secondary-container shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Editorial portrait of Camila Rocha, female 31 years old, marathon runner, calm determination, bright natural diffuse lighting, earth-toned minimalist sports clothing" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsEcR9RqvFD_DXi-IFHIcK_89y57btsQMqBWbmQTEZjbAU4vwRt4rO1p-ALv5DRc2tVq0TyZ8WebXtpZZKDR2213c2kvnuKHZ1zikg5Zwln53m0FkgBTSG5vWCbdN2K60KoGVsrpNEXbAgkTxilCmzmyvUz6TC46qCPidPmIvypbRoOrLo6VwiUT0pou7nnKhLOGUoW0t7Hfg9_GGxKh_CQzMj9VcGNSUt4R1HlFJpskHoPpSlhTvr"/>
+</div>
+<div class="min-w-0">
+<p class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors truncate">
+                      Camila Rocha
+                    </p>
+<div class="flex items-center gap-space-xs">
+<span class="font-body-sm text-body-sm text-on-surface-variant">MAT: #ZN-7902</span>
+<span class="text-on-surface-variant/40 text-label-sm">•</span>
+<span class="font-label-sm text-label-sm text-secondary bg-secondary-container px-1.5 py-0.2 rounded">Endurance</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md hidden md:table-cell">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Carbo-Loading &amp; Reposição</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">2.420 kcal • 340g C</span>
+</div>
+</td>
+<td class="py-space-md px-space-md hidden lg:table-cell">
+<div class="w-36">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-sm text-label-sm text-primary font-medium">92%</span>
+<span class="font-label-sm text-label-sm text-secondary">Estável</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 92%"></div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md hidden sm:table-cell">
+<span class="font-body-sm text-body-sm text-on-surface">Ontem, 21:15</span>
+<span class="block font-label-sm text-label-sm text-secondary">Biomarcadores atualizados</span>
+</td>
+<td class="py-space-md px-space-lg text-right">
+<a class="inline-flex items-center justify-center gap-space-xs h-9 px-space-md bg-surface-container-low hover:bg-primary-container hover:text-on-primary text-primary font-label-md text-label-md rounded-lg transition-colors group-hover:shadow-sm" href="nutritionalplane.html">
+<span class="material-symbols-outlined text-[18px]">restaurant_menu</span>
+<span>Plano Nutricional</span>
+</a>
+</td>
+</tr>
+<!-- Student 3: Felipe Costa -->
+<tr class="student-row hover:bg-surface-container-low/40 transition-colors group">
+<td class="py-space-md px-space-lg">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="relative w-11 h-11 rounded-full overflow-hidden shrink-0 bg-secondary-container shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Minimalist headshot portrait of Felipe Costa, male 34 years old, crossfit athlete, short beard, warm indoor studio lighting with muted sage green accents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCa1zj-4tyTLNPgZ4Bq33V-P3TqfCRLViF4zeHmC52XbZlJB2D07zFXEoF73XW7VbOqqG5HUJEdzBJnCF8Ysk8K6AWAkQ_jk-8AGiBBgNvfiyu2j081G6AvDz6ZLvW736Vrnq8xb1Mm49Pck_FEd08dLNBgR6WpBVEZS9BnzX-b2_xDhkwmT5dEk7PsPy_6Ta8V3XdQ1MIRM6jLuR3DD-wL40VYb3m8hlgjLxgcpDaChM7BkHeajnga"/>
+</div>
+<div class="min-w-0">
+<p class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors truncate">
+                      Felipe Costa
+                    </p>
+<div class="flex items-center gap-space-xs">
+<span class="font-body-sm text-body-sm text-on-surface-variant">MAT: #ZN-6619</span>
+<span class="text-on-surface-variant/40 text-label-sm">•</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-1.5 py-0.2 rounded">Recomposição</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md hidden md:table-cell">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Déficit Metabólico Leve</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">2.100 kcal • 175g P</span>
+</div>
+</td>
+<td class="py-space-md px-space-md hidden lg:table-cell">
+<div class="w-36">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">84%</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Ajustar Fibra</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 84%"></div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md hidden sm:table-cell">
+<span class="font-body-sm text-body-sm text-on-surface">Há 2 dias</span>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">Check-in pendente</span>
+</td>
+<td class="py-space-md px-space-lg text-right">
+<a class="inline-flex items-center justify-center gap-space-xs h-9 px-space-md bg-surface-container-low hover:bg-primary-container hover:text-on-primary text-primary font-label-md text-label-md rounded-lg transition-colors group-hover:shadow-sm" href="nutritionalplane.html">
+<span class="material-symbols-outlined text-[18px]">restaurant_menu</span>
+<span>Plano Nutricional</span>
+</a>
+</td>
+</tr>
+<!-- Student 4: Beatriz Souza -->
+<tr class="student-row hover:bg-surface-container-low/40 transition-colors group">
+<td class="py-space-md px-space-lg">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="relative w-11 h-11 rounded-full overflow-hidden shrink-0 bg-secondary-container shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Clinical and modern portrait of Beatriz Souza, female 26 years old, swimmer, natural skin tones, soft clean overhead lighting, minimalist athletic backdrop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFgY-1iNQQZA7MS0KXlHd5bXwQ2pX3UDKiTJct7VU3yMP-CzrgDi6GvPg5iqVQMYZxmW53odv11GRW0M5_RUueyrq21zPv_0PbiiRPSIeYc_GQZHuE9N9kw0PTBKEq14yezfVk6B6jHMDbO-5wVk1whLHuCPq8gqmfPfCt4Fais9GAzsxoE22euZnTjg_ulxs0iWtXcTh1nRf4v_C4HNd4WjD79WDpU9P0wLYL03zqNwCsgrA74lua"/>
+</div>
+<div class="min-w-0">
+<p class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors truncate">
+                      Beatriz Souza
+                    </p>
+<div class="flex items-center gap-space-xs">
+<span class="font-body-sm text-body-sm text-on-surface-variant">MAT: #ZN-5510</span>
+<span class="text-on-surface-variant/40 text-label-sm">•</span>
+<span class="font-label-sm text-label-sm text-secondary bg-secondary-container px-1.5 py-0.2 rounded">Performance</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md hidden md:table-cell">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Manutenção Eucarórica</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">2.680 kcal • 140g P</span>
+</div>
+</td>
+<td class="py-space-md px-space-md hidden lg:table-cell">
+<div class="w-36">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-sm text-label-sm text-primary font-medium">98%</span>
+<span class="font-label-sm text-label-sm text-secondary">Ótimo</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 98%"></div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md hidden sm:table-cell">
+<span class="font-body-sm text-body-sm text-on-surface">Hoje, 07:10</span>
+<span class="block font-label-sm text-label-sm text-secondary">Pré-treino registrado</span>
+</td>
+<td class="py-space-md px-space-lg text-right">
+<a class="inline-flex items-center justify-center gap-space-xs h-9 px-space-md bg-surface-container-low hover:bg-primary-container hover:text-on-primary text-primary font-label-md text-label-md rounded-lg transition-colors group-hover:shadow-sm" href="nutritionalplane.html">
+<span class="material-symbols-outlined text-[18px]">restaurant_menu</span>
+<span>Plano Nutricional</span>
+</a>
+</td>
+</tr>
+<!-- Student 5: Rafael Lima -->
+<tr class="student-row hover:bg-surface-container-low/40 transition-colors group">
+<td class="py-space-md px-space-lg">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="relative w-11 h-11 rounded-full overflow-hidden shrink-0 bg-secondary-container shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Editorial close portrait of Rafael Lima, male 29 years old, triathlete, subtle smile, clean modern architectural lighting, high detail, botanical subtle background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjXPJlHfVduntdK0Pzfgd6nb4vUXRTUYePj496eRvja9-fMHG1qelj4cTBv27SNq-RM9vNDkYMHtWoiYlAyOEbCUpTeh_3glIuR0zDh0ae5iOF14DIDI0HeWJRfasHga5_G4SS4cypafYqn3tBw7OVLUCUjkfmsrPXzh3garMYY0i4M_neNne854zgcEYyzR2JuViPI6qIMDRlVBlisNrqadPnIFkmhzlYkMsFfIPjiJOqVspN7kUe"/>
+</div>
+<div class="min-w-0">
+<p class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors truncate">
+                      Rafael Lima
+                    </p>
+<div class="flex items-center gap-space-xs">
+<span class="font-body-sm text-body-sm text-on-surface-variant">MAT: #ZN-4328</span>
+<span class="text-on-surface-variant/40 text-label-sm">•</span>
+<span class="font-label-sm text-label-sm text-secondary bg-secondary-container px-1.5 py-0.2 rounded">Cutting Fino</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md hidden md:table-cell">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Ciclo de Carboidratos</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">1.950 kcal • 210g P</span>
+</div>
+</td>
+<td class="py-space-md px-space-md hidden lg:table-cell">
+<div class="w-36">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-sm text-label-sm text-primary font-medium">91%</span>
+<span class="font-label-sm text-label-sm text-secondary">Alinhado</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 91%"></div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md hidden sm:table-cell">
+<span class="font-body-sm text-body-sm text-on-surface">Ontem, 19:40</span>
+<span class="block font-label-sm text-label-sm text-secondary">Hidratação batida</span>
+</td>
+<td class="py-space-md px-space-lg text-right">
+<a class="inline-flex items-center justify-center gap-space-xs h-9 px-space-md bg-surface-container-low hover:bg-primary-container hover:text-on-primary text-primary font-label-md text-label-md rounded-lg transition-colors group-hover:shadow-sm" href="nutritionalplane.html">
+<span class="material-symbols-outlined text-[18px]">restaurant_menu</span>
+<span>Plano Nutricional</span>
+</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Empty State (hidden by default) -->
+<div class="hidden p-space-xl text-center flex-col items-center justify-center" id="no-results-state">
+<span class="material-symbols-outlined text-secondary text-[40px] mb-space-sm">person_search</span>
+<p class="font-title-md text-title-md text-on-surface">Nenhum aluno encontrado</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 max-w-sm">
+          Verifique a ortografia do nome ou os dígitos da matrícula cadastrada e tente novamente.
+        </p>
+<button class="mt-space-md h-9 px-space-md bg-surface-container text-on-surface hover:bg-surface-container-high font-label-md text-label-md rounded-lg transition-colors" onclick="resetSearch()" type="button">
+          Limpar busca
+        </button>
+</div>
+<!-- Pagination / Footer Info -->
+<div class="px-space-lg py-space-md bg-surface-container-low/40 flex flex-col sm:flex-row items-center justify-between gap-space-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant">
+          Exibindo atletas prioritários de acordo com o calendário de revisão clínica
+        </span>
+<div class="flex items-center gap-space-xs">
+<button class="w-8 h-8 rounded flex items-center justify-center bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" title="Página anterior">
+<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+</button>
+<span class="font-label-sm text-label-sm text-on-surface px-space-xs">1 de 6</span>
+<button class="w-8 h-8 rounded flex items-center justify-center bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" title="Próxima página">
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive Search Filtering Script -->
+<script>
+    (function initStudentSearch() {
+      const searchInput = document.getElementById('student-search-input');
+      const searchTrigger = document.getElementById('btn-search-trigger');
+      const rows = document.querySelectorAll('.student-row');
+      const noResults = document.getElementById('no-results-state');
+      const countBadge = document.getElementById('student-count-badge');
+
+      function filterStudents() {
+        const query = searchInput.value.toLowerCase().trim();
+        let visibleCount = 0;
+
+        rows.forEach(row => {
+          const text = row.textContent.toLowerCase();
+          if (text.includes(query)) {
+            row.style.display = '';
+            visibleCount++;
+          } else {
+            row.style.display = 'none';
+          }
+        });
+
+        if (visibleCount === 0) {
+          noResults.classList.remove('hidden');
+          noResults.classList.add('flex');
+        } else {
+          noResults.classList.add('hidden');
+          noResults.classList.remove('flex');
+        }
+
+        if (countBadge) {
+          countBadge.textContent = visibleCount + (visibleCount === 1 ? ' listado' : ' listados');
+        }
+      }
+
+      if (searchInput) {
+        searchInput.addEventListener('input', filterStudents);
+      }
+      if (searchTrigger) {
+        searchTrigger.addEventListener('click', filterStudents);
+      }
+
+      window.resetSearch = function() {
+        if (searchInput) {
+          searchInput.value = '';
+          filterStudents();
+          searchInput.focus();
+        }
+      };
+    })();
+  </script>
+</div></main><footer class="w-full bg-surface-container-low shadow-[0_-1px_6px_rgba(0,0,0,0.02)] mt-space-xl"><div class="w-full px-margin py-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md"><div class="flex flex-col sm:flex-row items-center gap-space-sm sm:gap-space-md text-center sm:text-left"><span class="font-label-md text-label-md text-on-surface-variant">© Zenith Tracker — Todos os direitos reservados</span><span class="hidden sm:inline text-on-surface-variant">•</span><span class="font-body-sm text-body-sm text-secondary flex items-center gap-space-xs"><span class="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span>Suporte Nutricional e Metabólico Ativo</span></div><div class="flex items-center gap-space-lg"><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Diretrizes Clínicas</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Privacidade</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Central de Ajuda</a></div></div></footer></body></html>
