@@ -1,8 +1,8 @@
 # 🎨 Tokens de Design
 
 **Projeto:** Zenith Tracker
-**Versão:** 1.2.0
-**Última atualização:** 2026-09-21
+**Versão:** 1.4.0
+**Última atualização:** 2026-09-22
 
 > 🤖 **Este documento existe para a IA parar de inventar um botão diferente a cada
 > tela.** Não é um design system — é o mínimo que dá à prototipagem assistida algo a
@@ -14,97 +14,120 @@
 
 Nome semântico, nunca `azul-2` — a cor muda, o papel dela não. Os mesmos nomes
 valem no claro e no escuro; o valor muda com a classe `dark` no `html`
-(`next-themes`). No CSS, entram em `@theme` (`--color-primaria`, …).
+(`next-themes`). No CSS, entram em `@theme` (`--color-background`, …).
 
-A primária é verde de “no caminho”; perigo não se usa para alerta de meta —
-alerta de desvio usa `perigo` só quando a ação é irreversível ou o pagamento
-falhou. O medidor sincero usa `sucesso` / `texto-suave`, não um terceiro verde.
+O tema é preto e branco. Ação principal é o próprio texto invertido: preto no
+claro, branco no escuro. Perigo não se usa para alerta de meta — alerta de
+desvio usa `danger` só quando a ação é irreversível ou o pagamento falhou. O
+medidor sincero usa `success` / `muted-foreground`.
+
+`border` é traço estrutural. Campo usa `input`. Foco usa `ring`.
 
 ### Claro (padrão)
 
 | Token | Valor | Onde se usa |
 | --- | --- | --- |
-| `primaria` | `#16a34a` | ação principal: contratar, gravar plano, entrar |
-| `pagina` | `#fafafa` | fundo da viewport |
-| `superficie` | `#ffffff` | fundo de card, painel e formulário |
-| `texto` | `#0a0a0a` | texto padrão |
-| `texto-suave` | `#71717a` | legenda, apoio, estado Pendente |
-| `perigo` | `#dc2626` | erro, recusa de pagamento, exclusão |
-| `sucesso` | `#15803d` | confirmação, Pedido Pago, dia fechou |
-| `desabilitado` | `#d4d4d8` | controle inativo, botão que ainda não pode |
+| `background` | `#ffffff` | fundo da viewport |
+| `foreground` | `#0a0a0a` | texto padrão |
+| `surface` | `#ffffff` | fundo de card sobre o fundo, quando precisa separar |
+| `surface-muted` | `#f4f4f5` | painel, formulário, faixa, hover de ícone |
+| `border` | `#e4e4e7` | traço de header, footer, lista |
+| `input` | `#d4d4d8` | borda de campo |
+| `ring` | `#0a0a0a` | anel de foco |
+| `primary` | `#0a0a0a` | ação principal |
+| `primary-foreground` | `#fafafa` | texto sobre `primary` |
+| `primary-hover` | `#262626` | hover da ação principal |
+| `muted-foreground` | `#71717a` | legenda, apoio, estado Pendente |
+| `danger` | `#dc2626` | erro, recusa de pagamento, exclusão |
+| `danger-foreground` | `#fafafa` | texto sobre `danger` |
+| `danger-surface` | `#fef2f2` | faixa de erro |
+| `success` | `#16a34a` | confirmação, Pedido Pago, dia fechou |
+| `success-foreground` | `#fafafa` | texto sobre `success` |
+| `success-surface` | `#f0fdf4` | faixa de confirmação |
+| `warning` | `#d97706` | aviso |
+| `warning-surface` | `#fffbeb` | faixa de aviso |
 
 ### Escuro (classe `dark`)
 
 Os papéis não mudam. Superfície fica acima da página; texto claro sobre fundo
-escuro. Primária, perigo e sucesso permanecem verdes/vermelhos de ação — não
-viram cinza.
+escuro. A primária inverte: fundo claro, texto escuro.
 
 | Token | Valor | Onde se usa |
 | --- | --- | --- |
-| `primaria` | `#22c55e` | ação principal (um passo mais claro que no claro, para contrastar) |
-| `pagina` | `#09090b` | fundo da viewport |
-| `superficie` | `#18181b` | fundo de card, painel e formulário |
-| `texto` | `#fafafa` | texto padrão |
-| `texto-suave` | `#a1a1aa` | legenda, apoio, estado Pendente |
-| `perigo` | `#f87171` | erro, recusa de pagamento, exclusão |
-| `sucesso` | `#4ade80` | confirmação, Pedido Pago, dia fechou |
-| `desabilitado` | `#3f3f46` | controle inativo, botão que ainda não pode |
+| `background` | `#0a0a0a` | fundo da viewport |
+| `foreground` | `#fafafa` | texto padrão |
+| `surface` | `#111113` | card |
+| `surface-muted` | `#1c1c1f` | painel, formulário, faixa |
+| `border` | `#27272a` | traço de header, footer, lista |
+| `input` | `#3f3f46` | borda de campo |
+| `ring` | `#fafafa` | anel de foco |
+| `primary` | `#fafafa` | ação principal |
+| `primary-foreground` | `#0a0a0a` | texto sobre `primary` |
+| `primary-hover` | `#e4e4e7` | hover da ação principal |
+| `muted-foreground` | `#a1a1aa` | legenda, apoio |
+| `danger` | `#ef4444` | erro, recusa, exclusão |
+| `danger-foreground` | `#fafafa` | texto sobre `danger` |
+| `danger-surface` | `#1f1315` | faixa de erro |
+| `success` | `#22c55e` | confirmação, dia fechou |
+| `success-foreground` | `#04210f` | texto sobre `success` |
+| `success-surface` | `#0c1f14` | faixa de confirmação |
+| `warning` | `#f59e0b` | aviso |
+| `warning-surface` | `#201803` | faixa de aviso |
+
+Controle desabilitado: fundo `surface-muted`, texto `muted-foreground`. Não há token à parte.
 
 ## Raio
 
-Cantos vivos (0) são defeito. A escala é uma só.
+Um só: `0.625rem`, o `rounded-lg` do Tailwind (`--radius-lg`). Cantos vivos (0) são defeito. Ícone do header usa `rounded-full`.
 
-| Token | Valor | Onde se usa |
-| --- | --- | --- |
-| `campo` | 16px | input, select |
-| `cartao` | 24px | card, painel, lista do select |
-| `midia` | 28px | foto recortada dentro do card |
-| `botao` | 999px | ação em cápsula |
-| `controle` | 999px | ícone do header (círculo) |
+## Espaçamento
 
-Na landing, a mídia do hero e do problema usa `midia` de um lado e o dobro no oposto — quebra o retângulo sem inventar cor.
+A escala do Tailwind. Não há `--spacing-token-*` nem utilitário `p-token-*`.
 
-## Escala de espaçamento
-
-Uma progressão só, usada em tudo.
-
-| Token | Valor |
+| Uso | Classe |
 | --- | --- |
-| `xs` | 4px |
-| `sm` | 8px |
-| `md` | 16px |
-| `lg` | 24px |
-| `xl` | 40px |
-
-Espaço interno de botão: `sm` vertical, `md` horizontal. Espaço entre campo e rótulo: `xs`. Entre blocos de uma jornada: `lg`. Margem da página: `xl`.
-
-No CSS (`@theme`), estes valores entram como `--spacing-token-xs` … `--spacing-token-xl` (utilitários `p-token-md`). Sem o prefixo `token-`, o Token `md` (16px) sombrearia o `max-w-md` do Tailwind.
+| entre rótulo e campo, erro de campo | `mt-1` / `mb-1` |
+| entre campos, apoio | `mt-2` / `gap-2` |
+| padding de campo e de botão | `px-4` `py-3` / `px-6` `py-3` |
+| entre blocos | `gap-6` / `mt-6` |
+| margem de página | `px-4` `py-8`; no desktop, `md:px-8` `md:py-16` ou `md:py-24` |
+| faixa larga da landing | `py-10` |
 
 ## Tipografia
 
-| Token | Família · tamanho · peso | Papel |
-| --- | --- | --- |
-| `titulo` | Geist · 32px · 700 | nome da jornada, teto calórico em destaque |
-| `subtitulo` | Geist · 20px · 600 | seção (plano, pedido, carteira) |
-| `corpo` | Geist · 16px · 400 | texto corrido, critério, mensagem |
-| `apoio` | Geist · 14px · 400 | legenda, status do Pedido, macro em gramas |
-| `acao` | Geist · 16px · 600 | rótulo de botão |
+Geist no texto. Geist Mono no kicker e no número de passo. Terceira família é defeito.
 
-Se Geist não estiver disponível no protótipo, Inter. Nunca misturar uma terceira família.
+Tamanho é a escala do Tailwind, não um token de tipo à parte.
+
+| Papel | Classe |
+| --- | --- |
+| hero | `text-5xl font-bold tracking-tight` |
+| título de jornada | `text-4xl font-bold tracking-tight` |
+| seção | `text-xl font-semibold` ou `text-3xl font-bold` |
+| corpo | `text-base` |
+| apoio, botão, rótulo | `text-sm`; rótulo e botão `font-semibold` |
+| kicker | `font-mono text-xs font-semibold uppercase tracking-widest` |
 
 ## Estados de botão
 
 | Estado | Aparência |
 | --- | --- |
-| normal | fundo `primaria`, texto branco, cápsula (`botao`), sem sombra |
-| hover | mesmo fundo a 90% de opacidade; cursor de mão |
-| foco (teclado) | anel de 2px `primaria` fora do botão, visível contra `superficie` |
-| desabilitado | fundo `desabilitado`, texto `texto-suave`, sem hover, não clica |
-| carregando | aparência de desabilitado + rótulo “Aguarde…”; não aceita segundo clique — é o que impede dois Pedidos no mesmo confirmar |
+| normal | fundo `primary`, texto `primary-foreground`, `rounded-lg`, sem sombra |
+| hover | fundo `primary-hover` |
+| foco (teclado) | anel de 2px `ring` |
+| desabilitado | fundo `surface-muted`, texto `muted-foreground`, sem hover, não clica |
+| carregando | aparência de desabilitado + rótulo “Aguarde…”; não aceita segundo clique |
 
-O botão de perigo (recusar, sair sem salvar) usa fundo `perigo` e os mesmos estados, trocando o anel de foco para `perigo`. Texto do botão de ação permanece branco nos dois temas.
+O botão de perigo usa fundo `danger` e texto `danger-foreground`. No formulário o botão ocupa a largura do painel.
+
+## Chrome
+
+Header e footer no desktop ocupam a largura da viewport. Header: fundo `background` com traço `border` embaixo, altura `h-20`, blur. Footer: traço `border` em cima, tipografia de apoio — não replica o header.
+
+Visitante: ícone de uma pessoa no header liga a `/login`. Sessão: o mesmo slot vira logout. Rodapé logado não mostra Cadastro nem Entrar. Na landing, o header ganha âncoras das seções.
 
 ## Protótipo
 
-**Link:** pendência — ainda não há Figma/Stitch publicado.
+**Referência visual:** `design.html` (landing), `login.html`, `register.html` — layout. Cor e espaço seguem este arquivo, não a paleta verde desses HTML.
+
 **Telas:** as 5 da jornada de assinatura, quando o protótipo existir: (1) painel com assinatura inativa, (2) escolha do plano, (3) Pedido Pendente / saída para o checkout, (4) volta com pagamento ainda em aberto, (5) Assinatura Ativa e carteira liberada. Não prototipar telas que não estejam nessa jornada enquanto o link estiver pendente.

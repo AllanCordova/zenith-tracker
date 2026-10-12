@@ -3,8 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ProductShell } from "@/components/product-shell";
-import { Button } from "@/components/ui/button";
-import { areaPathForRole, clearSession, getAccessToken, getSessionUser } from "@/lib/session";
+import { areaPathForRole, getAccessToken, getSessionUser } from "@/lib/session";
 
 export default function AlunoPage() {
   const router = useRouter();
@@ -26,21 +25,16 @@ export default function AlunoPage() {
     return null;
   }
 
-  function onLogout() {
-    clearSession();
-    router.push("/login");
-  }
-
   return (
     <ProductShell>
       <main>
-        <h1 className="zt-titulo">Aluno</h1>
-        <p className="zt-corpo mt-token-sm">{user?.name ?? ""}</p>
-        {/* TODO #US04: plano ainda não fechado até existir Issue da US04 */}
-        <p className="zt-apoio mt-token-lg">plano ainda não fechado</p>
-        <Button variant="danger" type="button" onClick={onLogout}>
-          Sair
-        </Button>
+        <p className="zt-kicker">Área do aluno</p>
+        <h1 className="zt-titulo mt-2">Aluno</h1>
+        <p className="zt-subtitulo mt-2">{user?.name ?? ""}</p>
+        <section className="zt-area-bloco">
+          {/* TODO #US04: plano ainda não fechado até existir Issue da US04 */}
+          <p className="zt-apoio">plano ainda não fechado</p>
+        </section>
       </main>
     </ProductShell>
   );

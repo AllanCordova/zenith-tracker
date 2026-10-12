@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ProductShell } from "@/components/product-shell";
 import { Button } from "@/components/ui/button";
+import { toastSuccess } from "@/lib/toast";
 import { areaPathForRole, clearSession, getAccessToken, getSessionUser } from "@/lib/session";
 
 export default function TreinadorPage() {
@@ -28,6 +29,7 @@ export default function TreinadorPage() {
 
   function onLogout() {
     clearSession();
+    toastSuccess("Você saiu");
     router.push("/login");
   }
 
@@ -35,9 +37,9 @@ export default function TreinadorPage() {
     <ProductShell>
       <main>
         <h1 className="zt-titulo">Treinador</h1>
-        <p className="zt-corpo mt-token-sm">{user?.name ?? ""}</p>
+        <p className="zt-corpo mt-2">{user?.name ?? ""}</p>
         {/* TODO #US05: carteira ainda não libera até existir Issue da US05 */}
-        <p className="zt-apoio mt-token-lg">carteira ainda não libera</p>
+        <p className="zt-apoio mt-6">carteira ainda não libera</p>
         <Button variant="danger" type="button" onClick={onLogout}>
           Sair
         </Button>

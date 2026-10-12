@@ -6,10 +6,11 @@ import TreinadorPage from "../app/treinador/page";
 import { saveSession } from "@/lib/session";
 import { renderWithQuery } from "./query-wrapper";
 
-const { push, login, register } = vi.hoisted(() => ({
+const { push, login, register, toastSuccess } = vi.hoisted(() => ({
   push: vi.fn(),
   login: vi.fn(),
   register: vi.fn(),
+  toastSuccess: vi.fn(),
 }));
 
 vi.mock("next/navigation", () => ({
@@ -19,6 +20,10 @@ vi.mock("next/navigation", () => ({
 vi.mock("@/repositories/auth", () => ({
   login: (...args: unknown[]) => login(...args),
   register: (...args: unknown[]) => register(...args),
+}));
+
+vi.mock("@/lib/toast", () => ({
+  toastSuccess: (...args: unknown[]) => toastSuccess(...args),
 }));
 
 function fillLoginForm(values: { email: string; password: string }) {
@@ -36,6 +41,7 @@ beforeEach(() => {
   push.mockReset();
   login.mockReset();
   register.mockReset();
+  toastSuccess.mockReset();
 });
 
 test("fetch rejeitado no login mostra falha, não grava JWT e não navega à área", async () => {
@@ -57,6 +63,18 @@ test("fetch rejeitado no login mostra falha, não grava JWT e não navega à ár
   expect(screen.queryByText(/combinação não confere/i)).toBeNull();
   expect(localStorage.getItem("accessToken")).toBeNull();
   expect(push).not.toHaveBeenCalled();
+});
+
+test("login vazio mostra o erro do campo e não fala que a combinação não confere", async () => {
+  renderWithQuery(<LoginPage />);
+
+  fireEvent.click(screen.getByRole("button", { name: "Entrar" }));
+
+  await waitFor(() => {
+    expect(screen.getByText("Informe um e-mail válido")).toBeDefined();
+  });
+  expect(screen.queryByText(/combinação não confere/i)).toBeNull();
+  expect(login).not.toHaveBeenCalled();
 });
 
 test("login com combinação errada não grava JWT e mostra texto genérico", async () => {
@@ -140,6 +158,7 @@ test("login de aluno grava JWT e cai em /aluno", async () => {
     });
     expect(localStorage.getItem("accessToken")).toBe("jwt-aluno");
     expect(push).toHaveBeenCalledWith("/aluno");
+    expect(toastSuccess).toHaveBeenCalledWith("Você entrou");
   });
 
   unmount();
@@ -171,6 +190,7 @@ test("login de treinador grava JWT e cai em /treinador", async () => {
   await waitFor(() => {
     expect(localStorage.getItem("accessToken")).toBe("jwt-treinador");
     expect(push).toHaveBeenCalledWith("/treinador");
+    expect(toastSuccess).toHaveBeenCalledWith("Você entrou");
   });
 
   unmount();

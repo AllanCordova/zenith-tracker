@@ -6,9 +6,10 @@ import TreinadorPage from "../app/treinador/page";
 import { saveSession } from "@/lib/session";
 import { renderWithQuery } from "./query-wrapper";
 
-const { push, register } = vi.hoisted(() => ({
+const { push, register, toastSuccess } = vi.hoisted(() => ({
   push: vi.fn(),
   register: vi.fn(),
+  toastSuccess: vi.fn(),
 }));
 
 vi.mock("next/navigation", () => ({
@@ -17,6 +18,10 @@ vi.mock("next/navigation", () => ({
 
 vi.mock("@/repositories/auth", () => ({
   register: (...args: unknown[]) => register(...args),
+}));
+
+vi.mock("@/lib/toast", () => ({
+  toastSuccess: (...args: unknown[]) => toastSuccess(...args),
 }));
 
 function fillCadastroForm(values: {
@@ -47,6 +52,7 @@ beforeEach(() => {
   localStorage.clear();
   push.mockReset();
   register.mockReset();
+  toastSuccess.mockReset();
 });
 
 test("cadastro de aluno grava JWT, cai em /aluno e mostra nome e substituto", async () => {
@@ -81,6 +87,7 @@ test("cadastro de aluno grava JWT, cai em /aluno e mostra nome e substituto", as
     });
     expect(localStorage.getItem("accessToken")).toBe("jwt-aluno");
     expect(push).toHaveBeenCalledWith("/aluno");
+    expect(toastSuccess).toHaveBeenCalledWith("Conta criada");
   });
 
   unmount();
@@ -116,6 +123,7 @@ test("cadastro de treinador grava JWT, cai em /treinador e mostra nome e substit
   await waitFor(() => {
     expect(localStorage.getItem("accessToken")).toBe("jwt-treinador");
     expect(push).toHaveBeenCalledWith("/treinador");
+    expect(toastSuccess).toHaveBeenCalledWith("Conta criada");
   });
 
   unmount();
@@ -259,7 +267,7 @@ test("confirmação diferente não chama o repositório e não cria sessão", as
   fireEvent.click(screen.getByRole("button", { name: "Confirmar" }));
 
   await waitFor(() => {
-    expect(screen.getByText(/dados não passaram/i)).toBeDefined();
+    expect(screen.getByText("As senhas não coincidem")).toBeDefined();
   });
 
   expect(register).not.toHaveBeenCalled();
@@ -275,6 +283,7 @@ test.each([
     email: "ana@example.com",
     password: "Abcdef1",
     confirmPassword: "Abcdef1",
+    message: "A senha precisa de pelo menos 8 caracteres",
   },
   {
     title: "senha sem letra",
@@ -282,6 +291,7 @@ test.each([
     email: "ana@example.com",
     password: "12345678",
     confirmPassword: "12345678",
+    message: "A senha precisa de letra",
   },
   {
     title: "senha sem dígito",
@@ -289,6 +299,7 @@ test.each([
     email: "ana@example.com",
     password: "Abcdefgh",
     confirmPassword: "Abcdefgh",
+    message: "A senha precisa de número",
   },
   {
     title: "nome vazio",
@@ -296,6 +307,7 @@ test.each([
     email: "ana@example.com",
     password: "Senha123",
     confirmPassword: "Senha123",
+    message: "Informe o nome",
   },
   {
     title: "e-mail sem formato",
@@ -303,10 +315,11 @@ test.each([
     email: "nao-e-email",
     password: "Senha123",
     confirmPassword: "Senha123",
+    message: "Informe um e-mail válido",
   },
 ])(
-  "recusa $title mostra que os dados não passaram, sem senha no texto",
-  async ({ name, email, password, confirmPassword }) => {
+  "recusa $title mostra o erro do campo, sem senha no texto",
+  async ({ name, email, password, confirmPassword, message }) => {
     renderWithQuery(<CadastroPage />);
 
     fillCadastroForm({
@@ -321,10 +334,11 @@ test.each([
 
     await waitFor(() => {
       expect(register).not.toHaveBeenCalled();
-      expect(screen.getByText(/dados não passaram/i)).toBeDefined();
+      expect(screen.getByText(message)).toBeDefined();
     });
 
     expect(screen.queryByText(/e-mail já existe/i)).toBeNull();
+    expect(screen.queryByText(/dados não passaram/i)).toBeNull();
     expect(document.body.textContent).not.toContain(password);
     expect(localStorage.getItem("accessToken")).toBeNull();
     expect(push).not.toHaveBeenCalled();
