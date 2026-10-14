@@ -3,71 +3,46 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
-  Tema minimalista preto e branco.
+  Paleta única copiada de apps/client/src/styles.css do diet.
   Utilitários: bg-background, text-foreground, bg-primary, etc.
   Espaçamento é a escala do Tailwind (p-4, gap-6, …). Sem tokens de espaço.
 */
 
 :root {
-  --background: #ffffff;
-  --foreground: #0a0a0a;
+  --paper: #efeae2;
+  --sheet: #f7f3ec;
+  --ink: #1c1916;
+  --muted: #6d655c;
+  --line: #e4dcd2;
+  --copper: #c56a3a;
+  --forest: #1e6b4a;
+  --rose: #a33b32;
 
-  --surface: #ffffff;
-  --surface-muted: #f4f4f5;
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --surface: var(--sheet);
+  --surface-muted: var(--paper);
 
-  --border: #e4e4e7;
-  --input: #d4d4d8;
-  --ring: #0a0a0a;
+  --border: var(--line);
+  --input: var(--line);
+  --ring: var(--copper);
 
-  --primary: #0a0a0a;
-  --primary-foreground: #fafafa;
-  --primary-hover: #262626;
+  --primary: var(--copper);
+  --primary-foreground: var(--sheet);
+  --primary-hover: var(--copper);
 
-  --muted-foreground: #71717a;
+  --muted-foreground: var(--muted);
 
-  --danger: #dc2626;
-  --danger-foreground: #fafafa;
-  --danger-surface: #fef2f2;
+  --danger: var(--rose);
+  --danger-foreground: var(--sheet);
+  --danger-surface: color-mix(in srgb, var(--rose) 10%, var(--sheet));
 
-  --success: #16a34a;
-  --success-foreground: #fafafa;
-  --success-surface: #f0fdf4;
+  --success: var(--forest);
+  --success-foreground: var(--sheet);
+  --success-surface: color-mix(in srgb, var(--forest) 10%, var(--sheet));
 
-  --warning: #d97706;
-  --warning-surface: #fffbeb;
-
-  --radius: 0.625rem;
+  --radius: 1rem;
   color-scheme: light;
-}
-
-.dark {
-  --background: #0a0a0a;
-  --foreground: #fafafa;
-
-  --surface: #111113;
-  --surface-muted: #1c1c1f;
-
-  --border: #27272a;
-  --input: #3f3f46;
-  --ring: #fafafa;
-
-  --primary: #fafafa;
-  --primary-foreground: #0a0a0a;
-  --primary-hover: #e4e4e7;
-
-  --muted-foreground: #a1a1aa;
-
-  --danger: #ef4444;
-  --danger-foreground: #fafafa;
-  --danger-surface: #1f1315;
-
-  --success: #22c55e;
-  --success-foreground: #04210f;
-  --success-surface: #0c1f14;
-
-  --warning: #f59e0b;
-  --warning-surface: #201803;
-  color-scheme: dark;
 }
 
 @theme inline {
@@ -95,13 +70,19 @@
   --color-success-foreground: var(--success-foreground);
   --color-success-surface: var(--success-surface);
 
-  --color-warning: var(--warning);
-  --color-warning-surface: var(--warning-surface);
+  --color-paper: var(--paper);
+  --color-sheet: var(--sheet);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-copper: var(--copper);
+  --color-forest: var(--forest);
+  --color-rose: var(--rose);
 
   --radius-lg: var(--radius);
 
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-sans: var(--font-outfit), "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), "Fraunces", ui-serif, Georgia, serif;
 }
 
 * {
@@ -116,6 +97,12 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-serif), "Fraunces", ui-serif, Georgia, serif;
 }
 
 @layer components {
@@ -136,11 +123,11 @@ body {
   }
 
   .zt-display {
-    @apply text-5xl font-bold tracking-tight text-foreground;
+    @apply font-serif text-5xl font-semibold tracking-tight text-foreground;
   }
 
   .zt-titulo {
-    @apply text-4xl font-bold tracking-tight text-foreground;
+    @apply font-serif text-4xl font-semibold tracking-tight text-foreground;
   }
 
   .zt-subtitulo {
@@ -156,7 +143,7 @@ body {
   }
 
   .zt-kicker {
-    @apply inline-flex rounded-full bg-surface-muted px-3 py-1 font-mono text-xs font-semibold uppercase tracking-widest text-foreground;
+    @apply text-xs font-medium uppercase tracking-[0.16em] text-copper;
   }
 
   .zt-campo {
@@ -168,7 +155,7 @@ body {
   }
 
   .zt-input {
-    @apply box-border w-full rounded-lg border border-input bg-background px-4 py-3 text-base text-foreground;
+    @apply box-border w-full rounded-lg border border-input bg-surface px-4 py-3 text-base text-foreground;
   }
 
   .zt-input:focus-visible {
@@ -188,7 +175,7 @@ body {
   }
 
   .zt-btn {
-    @apply mt-6 w-full cursor-pointer rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-hover;
+    @apply mt-6 w-full cursor-pointer rounded-full bg-primary px-4 py-3 text-sm font-medium text-primary-foreground hover:bg-primary-hover;
   }
 
   .zt-btn:focus-visible {
@@ -196,11 +183,11 @@ body {
   }
 
   .zt-btn:disabled {
-    @apply cursor-not-allowed bg-surface-muted text-muted-foreground hover:bg-surface-muted;
+    @apply cursor-not-allowed opacity-50;
   }
 
   .zt-btn-perigo {
-    @apply mt-6 w-full cursor-pointer rounded-lg bg-danger px-6 py-3 text-sm font-semibold text-danger-foreground hover:opacity-90;
+    @apply mt-6 w-full cursor-pointer rounded-full bg-danger px-4 py-3 text-sm font-medium text-danger-foreground hover:opacity-90;
   }
 
   .zt-btn-perigo:focus-visible {
@@ -284,7 +271,7 @@ body {
   }
 
   .zt-select-trigger {
-    @apply box-border flex w-full cursor-pointer items-center gap-2 rounded-lg border border-input bg-background px-4 py-3 text-base text-foreground;
+    @apply box-border flex w-full cursor-pointer items-center gap-2 rounded-lg border border-input bg-surface px-4 py-3 text-base text-foreground;
   }
 
   .zt-select-trigger:focus-visible {

@@ -184,7 +184,7 @@ export function Landing() {
                   </span>
                   <div>
                     <h3 className="text-lg font-semibold text-foreground">Área do treinador</h3>
-                    <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                    <p className="text-xs font-medium uppercase tracking-[0.16em] text-copper">
                       Setup e carteira
                     </p>
                   </div>
@@ -213,7 +213,7 @@ export function Landing() {
                   </span>
                   <div>
                     <h3 className="text-lg font-semibold text-foreground">Área do aluno</h3>
-                    <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                    <p className="text-xs font-medium uppercase tracking-[0.16em] text-copper">
                       Dia sem planilha
                     </p>
                   </div>
@@ -304,7 +304,7 @@ export function Landing() {
             <ol className="mt-10 grid list-none gap-10 p-0 md:grid-cols-2">
               {PASSOS.map((passo, index) => (
                 <li key={passo.titulo}>
-                  <p className="font-mono text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                  <p className="text-xs font-medium uppercase tracking-[0.16em] text-copper">
                     {String(index + 1).padStart(2, "0")}
                   </p>
                   <h3 className="mt-2 text-xl font-semibold text-foreground">{passo.titulo}</h3>
