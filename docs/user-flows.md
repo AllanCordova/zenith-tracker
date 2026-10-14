@@ -2,7 +2,7 @@
 
 **Projeto:** Zenith Tracker
 **Versão:** 1.0.0
-**Última atualização:** 2026-09-08
+**Última atualização:** 2026-10-14
 
 > 🤖 **Este documento é a fonte da verdade sobre O QUE A PESSOA VIVE na tela** —
 > o caminho do primeiro clique até o objetivo, e principalmente os pontos onde ela
@@ -35,7 +35,8 @@ flowchart TD
     I -->|"fecha a aba / cai a rede / some"| X1[["Some no checkout — e daí?"]]
     J --> L["Pessoa pode voltar pela tela de retorno"]
     L --> M{"Notificação autenticada já chegou?"}
-    X1 --> M
+    X1 --> Q["Reabre o painel — a tela de retorno não abriu"]
+    Q --> M
     M -->|"ainda não"| N["Pedido continua Pendente — carteira bloqueada"]
     N --> O["Espera a notificação — a tela de retorno não decide"]
     O --> M

@@ -1,8 +1,8 @@
 # 🎨 Tokens de Design
 
 **Projeto:** Zenith Tracker
-**Versão:** 1.4.0
-**Última atualização:** 2026-09-22
+**Versão:** 1.5.0
+**Última atualização:** 2026-10-14
 
 > 🤖 **Este documento existe para a IA parar de inventar um botão diferente a cada
 > tela.** Não é um design system — é o mínimo que dá à prototipagem assistida algo a
@@ -130,13 +130,15 @@ Visitante: ícone de uma pessoa no header liga a `/login`. Sessão: o mesmo slot
 
 **Link:** https://allancordova.github.io/zenith-tracker/
 
-HTML estático em `prototype/`, publicado pelo GitHub Pages. A entrada é a carteira.
+HTML estático em `prototype/`, publicado pelo GitHub Pages. Cores, raio e tipo vêm deste arquivo (Geist, preto e branco). A entrada do visitante é o login da US01. US04, US05 e US06 continuam `Draft` e não têm tela aqui.
 
 **Telas:**
 
-1. Carteira de alunos — `wallet.html`. Plano Nutricional abre o plano daquele aluno.
-2. Dados pessoais — `nutritionalplane.html`. Idade, peso, altura e sexo biológico.
-3. Rotina e atividade — `activty-plane.html`.
-4. Confirmação — `comfirm-plane.html`. Salvar e Ativar Prescrição volta à carteira.
+1. Entrar — `login.html`. A combinação que não confere está em `login-erro.html`.
+2. Cadastro — `cadastro.html`. E-mail já cadastrado está em `cadastro-erro.html`. Treinador segue para a carteira; aluno cai em `aluno.html` e, se tenta a área do treinador, continua lá.
+3. Carteira de alunos — `wallet.html`. Plano nutricional abre o plano daquele aluno.
+4. Dados pessoais — `nutritionalplane.html`. Idade, peso, altura e sexo biológico.
+5. Rotina e atividade — `activty-plane.html`.
+6. Revisão — `comfirm-plane.html`. Gravar o setup volta à carteira.
 
-As telas 2, 3 e 4 são o mesmo plano. A casca fica; o passo no menu muda. Retornar à Carteira volta para a lista. Prosseguir avança o passo.
+As telas 4, 5 e 6 são o mesmo plano. A casca fica; o passo no menu muda. Retornar à carteira volta para a lista. Prosseguir avança o passo.
