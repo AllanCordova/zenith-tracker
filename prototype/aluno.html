@@ -11,32 +11,42 @@
 <link rel="stylesheet" href="tokens.css"/>
 </head>
 <body>
-<header class="header">
-  <a class="marca" href="aluno.html">Zenith Tracker</a>
-  <div class="header-acoes">
-    <a class="icon-btn" href="login.html" aria-label="Sair">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6H5v12h4"/><path d="M10 12h9"/><path d="M16 8l4 4-4 4"/></svg>
-    </a>
-    <button class="icon-btn" type="button" data-theme aria-label="Tema">Aa</button>
+<div class="app">
+  <aside class="side">
+    <div class="marca-bloco">
+      <span class="mark">Z</span>
+      <div>
+        <p class="marca-nome">Zenith Tracker</p>
+        <p class="apoio">Acompanhamento</p>
+      </div>
+    </div>
+    <nav class="side-nav" aria-label="Área do aluno">
+      <a class="nav-item ativo" href="aluno.html">Área</a>
+    </nav>
+    <div class="side-fim">
+      <button class="icon-btn" type="button" data-theme aria-label="Tema">Aa</button>
+      <a class="sair" href="login.html">Sair</a>
+    </div>
+  </aside>
+  <div class="coluna">
+    <header class="mobile-bar">
+      <p class="marca-nome">Zenith Tracker</p>
+      <a class="sair" href="login.html">Sair</a>
+    </header>
+    <main class="miolo">
+      <p class="kicker">Área do aluno</p>
+      <h1>Ana Lima</h1>
+      <section class="painel">
+        <p class="apoio" style="margin-top:0">Plano ainda não fechado</p>
+        <p id="papel" class="erro" hidden>Você continua na área do aluno.</p>
+        <p class="nav"><a href="aluno.html#papel">Abrir a área do treinador</a></p>
+      </section>
+    </main>
+    <nav class="dock" aria-label="Área do aluno">
+      <a class="ativo" href="aluno.html">Área</a>
+    </nav>
   </div>
-</header>
-<main>
-  <div class="wrap wrap-form">
-    <p class="kicker">Área do aluno</p>
-    <h1>Aluno</h1>
-    <p class="apoio">Ana Lima</p>
-    <section class="panel">
-      <p class="apoio" style="margin-top:0">Plano ainda não fechado</p>
-      <p id="papel" class="erro" hidden>Você continua na área do aluno.</p>
-      <p class="nav"><a href="aluno.html#papel">Abrir a área do treinador</a></p>
-    </section>
-  </div>
-</main>
-<footer class="footer">
-  <div class="footer-inner">
-    <span>Zenith Tracker</span>
-  </div>
-</footer>
+</div>
 <script src="theme.js"></script>
 <script>
   function mostrarPapel() {

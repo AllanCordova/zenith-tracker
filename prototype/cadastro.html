@@ -11,63 +11,60 @@
 <link rel="stylesheet" href="tokens.css"/>
 </head>
 <body>
-<header class="header">
-  <a class="marca" href="login.html">Zenith Tracker</a>
-  <div class="header-acoes">
-    <a class="icon-btn" href="login.html" aria-label="Entrar">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="3"/><path d="M5 19c1.5-3 3.5-4.5 7-4.5S17.5 16 19 19"/></svg>
-    </a>
-    <button class="icon-btn" type="button" data-theme aria-label="Tema">Aa</button>
-  </div>
-</header>
-<main>
-  <div class="wrap wrap-form">
-    <p class="kicker">Conta</p>
-    <h1>Cadastro</h1>
-    <p class="apoio">O papel escolhido aqui não muda sozinho depois.</p>
-    <form class="panel" id="cadastro" action="aluno.html">
-      <div class="campo">
-        <label for="name">Nome</label>
-        <input id="name" name="name" type="text" autocomplete="name"/>
-      </div>
-      <div class="campo">
-        <label for="email">E-mail</label>
-        <input id="email" name="email" type="email" autocomplete="username"/>
-      </div>
-      <div class="campo">
-        <label for="password">Senha</label>
-        <input id="password" name="password" type="password" autocomplete="new-password"/>
-      </div>
-      <div class="campo">
-        <label for="confirmPassword">Confirmar senha</label>
-        <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password"/>
-      </div>
-      <div class="campo">
-        <label for="papel">Papel</label>
-        <select id="papel" name="papel">
-          <option value="aluno.html">Aluno</option>
-          <option value="wallet.html">Treinador</option>
-        </select>
-      </div>
-      <button class="btn" type="submit">Confirmar</button>
+<div class="split">
+  <section class="vitrine">
+    <p class="marca-nome">Zenith Tracker</p>
+    <div>
+      <p class="vitrine-titulo">Nutrição do treino híbrido, no papel certo.</p>
+      <p class="apoio" style="color:inherit;opacity:.7">O papel escolhido aqui não muda sozinho depois.</p>
+    </div>
+    <p class="apoio" style="color:inherit;opacity:.6">Aluno ou treinador — cada um entra na própria área.</p>
+  </section>
+  <main class="auth">
+    <div class="auth-caixa">
+      <h1>Criar conta</h1>
+      <form id="cadastro" action="aluno.html">
+        <div class="campo">
+          <label for="name">Nome</label>
+          <input id="name" name="name" type="text" autocomplete="name"/>
+        </div>
+        <div class="papeis" role="group" aria-label="Papel">
+          <button type="button" class="papel" id="papel-aluno" aria-pressed="true">Aluno</button>
+          <button type="button" class="papel" id="papel-treinador" aria-pressed="false">Treinador</button>
+        </div>
+        <div class="campo">
+          <label for="email">E-mail</label>
+          <input id="email" name="email" type="email" autocomplete="username"/>
+        </div>
+        <div class="campo">
+          <label for="password">Senha</label>
+          <input id="password" name="password" type="password" autocomplete="new-password"/>
+        </div>
+        <div class="campo">
+          <label for="confirmPassword">Confirmar senha</label>
+          <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password"/>
+        </div>
+        <button class="btn" type="submit">Criar conta</button>
+      </form>
       <p class="nav">E-mail já cadastrado: <a href="cadastro-erro.html">este e-mail já existe</a></p>
-    </form>
-    <p class="nav">Já tem uma conta? <a href="login.html">Entrar</a></p>
-  </div>
-</main>
-<footer class="footer">
-  <div class="footer-inner">
-    <span>Zenith Tracker</span>
-    <span><a href="cadastro.html">Cadastro</a> · <a href="login.html">Entrar</a></span>
-  </div>
-</footer>
+      <p class="nav"><a href="login.html">Já tenho conta</a></p>
+    </div>
+  </main>
+</div>
 <script src="theme.js"></script>
 <script>
   var form = document.getElementById("cadastro");
-  var papel = document.getElementById("papel");
-  form.addEventListener("submit", function () {
-    form.action = papel.value;
-  });
+  var aluno = document.getElementById("papel-aluno");
+  var treinador = document.getElementById("papel-treinador");
+  var destino = "aluno.html";
+  function escolher(papel) {
+    destino = papel === "treinador" ? "painel.html" : "aluno.html";
+    aluno.setAttribute("aria-pressed", papel === "aluno" ? "true" : "false");
+    treinador.setAttribute("aria-pressed", papel === "treinador" ? "true" : "false");
+  }
+  aluno.addEventListener("click", function () { escolher("aluno"); });
+  treinador.addEventListener("click", function () { escolher("treinador"); });
+  form.addEventListener("submit", function () { form.action = destino; });
 </script>
 </body>
 </html>

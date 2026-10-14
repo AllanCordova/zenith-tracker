@@ -11,53 +11,44 @@
 <link rel="stylesheet" href="tokens.css"/>
 </head>
 <body>
-<header class="header">
-  <a class="marca" href="wallet.html">Zenith Tracker</a>
-  <div class="header-acoes">
-    <a class="icon-btn" href="login.html" aria-label="Sair">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6H5v12h4"/><path d="M10 12h9"/><path d="M16 8l4 4-4 4"/></svg>
-    </a>
-    <button class="icon-btn" type="button" data-theme aria-label="Tema">Aa</button>
+<div class="app">
+  <aside class="side">
+    <div class="marca-bloco">
+      <span class="mark">Z</span>
+      <div>
+        <p class="marca-nome">Zenith Tracker</p>
+        <p class="apoio">Painel</p>
+      </div>
+    </div>
+    <nav class="side-nav" aria-label="Painel">
+      <a class="nav-item ativo" href="wallet.html">Carteira</a>
+      <a class="nav-item" href="assinatura-ativa.html">Assinatura</a>
+    </nav>
+    <div class="side-fim">
+      <button class="icon-btn" type="button" data-theme aria-label="Tema">Aa</button>
+      <a class="sair" href="login.html">Sair</a>
+    </div>
+  </aside>
+  <div class="coluna">
+    <header class="mobile-bar">
+      <p class="marca-nome">Zenith Tracker</p>
+      <a class="sair" href="login.html">Sair</a>
+    </header>
+    <main class="miolo">
+      <h1>Carteira</h1>
+      <p class="apoio">Quem está na consultoria e se o plano já foi gravado.</p>
+      <ul class="lista">
+        <li><a class="aluno" href="nutritionalplane.html"><span><strong>Lucas Mendes</strong><span class="apoio">Vigente</span></span><span class="link">Plano</span></a></li>
+        <li><a class="aluno" href="nutritionalplane.html"><span><strong>Camila Rocha</strong><span class="apoio">Vazio</span></span><span class="link">Plano</span></a></li>
+        <li><a class="aluno" href="nutritionalplane.html"><span><strong>Felipe Costa</strong><span class="apoio">Vigente</span></span><span class="link">Plano</span></a></li>
+      </ul>
+    </main>
+    <nav class="dock" aria-label="Painel">
+      <a class="ativo" href="wallet.html">Carteira</a>
+      <a href="assinatura-ativa.html">Assinatura</a>
+    </nav>
   </div>
-</header>
-<main>
-  <div class="wrap">
-    <p class="kicker">Treinador</p>
-    <h1>Carteira</h1>
-    <p class="apoio">Quem está na consultoria e se o plano já foi gravado.</p>
-    <table class="lista">
-      <thead>
-        <tr>
-          <th>Aluno</th>
-          <th>Plano</th>
-          <th>Ação</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Lucas Mendes</td>
-          <td>Vigente</td>
-          <td><a class="btn-inline" href="nutritionalplane.html">Plano nutricional</a></td>
-        </tr>
-        <tr>
-          <td>Camila Rocha</td>
-          <td>Vazio</td>
-          <td><a class="btn-inline" href="nutritionalplane.html">Plano nutricional</a></td>
-        </tr>
-        <tr>
-          <td>Felipe Costa</td>
-          <td>Vigente</td>
-          <td><a class="btn-inline" href="nutritionalplane.html">Plano nutricional</a></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</main>
-<footer class="footer">
-  <div class="footer-inner">
-    <span>Zenith Tracker</span>
-  </div>
-</footer>
+</div>
 <script src="theme.js"></script>
 </body>
 </html>

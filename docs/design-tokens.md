@@ -92,15 +92,19 @@ Visitante: ícone de uma pessoa no header liga a `/login`. Sessão: o mesmo slot
 
 **Link:** https://allancordova.github.io/zenith-tracker/
 
-HTML estático em `prototype/`, publicado pelo GitHub Pages. Cores, raio e tipo vêm deste arquivo (Outfit, Fraunces e a paleta do diet). A entrada do visitante é o login da US01. US04, US05 e US06 continuam `Draft` e não têm tela aqui.
+HTML estático em `prototype/`, publicado pelo GitHub Pages. Cores, raio e tipo vêm deste arquivo (Outfit e Fraunces). A entrada é dividida. Com sessão, o desktop tem menu lateral e o celular tem dock. A entrada do visitante é o login da US01.
 
 **Telas:**
 
 1. Entrar — `login.html`. A combinação que não confere está em `login-erro.html`.
-2. Cadastro — `cadastro.html`. E-mail já cadastrado está em `cadastro-erro.html`. Treinador segue para a carteira; aluno cai em `aluno.html` e, se tenta a área do treinador, continua lá.
-3. Carteira de alunos — `wallet.html`. Plano nutricional abre o plano daquele aluno.
-4. Dados pessoais — `nutritionalplane.html`. Idade, peso, altura e sexo biológico.
-5. Rotina e atividade — `activty-plane.html`.
-6. Revisão — `comfirm-plane.html`. Gravar o setup volta à carteira.
+2. Cadastro — `cadastro.html`. E-mail já cadastrado está em `cadastro-erro.html`. Aluno cai em `aluno.html` e, se tenta a área do treinador, continua lá. Treinador cai no painel sem assinatura.
+3. Painel bloqueado — `painel.html`. Sem Assinatura Ativa a carteira não abre e nenhum pedido existe.
+4. Escolher o plano — `assinatura.html`. Sem assinatura, a tela diz que não há uma ativa e oferece Mensal e Anual. Confirmar abre o checkout. Sair sem confirmar não cria pedido.
+5. Checkout do gateway — `checkout.html`. Pagar abre o retorno. Cancelar recusa o pedido. Fechar a aba reabre o painel com o pedido ainda Pendente.
+6. Retorno — `retorno.html`. A notificação ainda não chegou: o pedido continua Pendente. Dali se simula aprovação ou recusa.
+7. Pedido reaproveitado — `assinatura-reaproveita.html`.
+8. Assinatura já ativa — `assinatura-ativa.html`. Mostra o plano vigente. Escolher de novo não cria pedido.
+9. Carteira — `wallet.html`, só depois da notificação aprovada. Plano nutricional abre o plano daquele aluno.
+10. Antropometria, rotina e revisão — `nutritionalplane.html`, `activty-plane.html`, `comfirm-plane.html`. Coluna de passos e painel. A rotina continua no meio, na ordem deste produto.
 
-As telas 4, 5 e 6 são o mesmo plano. A casca fica; o passo no menu muda. Retornar à carteira volta para a lista. Prosseguir avança o passo.
+As telas 10 são o mesmo plano. A casca fica; o passo muda. Não há tela de alimento, treino, marca, conversa ou medidor: isso continua fora deste protótipo.
