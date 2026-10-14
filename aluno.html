@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Aluno — Zenith Tracker</title>
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&family=Geist+Mono:wght@600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="tokens.css"/>
+</head>
+<body>
+<header class="header">
+  <a class="marca" href="aluno.html">Zenith Tracker</a>
+  <div class="header-acoes">
+    <a class="icon-btn" href="login.html" aria-label="Sair">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6H5v12h4"/><path d="M10 12h9"/><path d="M16 8l4 4-4 4"/></svg>
+    </a>
+    <button class="icon-btn" type="button" data-theme aria-label="Tema">Aa</button>
+  </div>
+</header>
+<main>
+  <div class="wrap wrap-form">
+    <p class="kicker">Área do aluno</p>
+    <h1>Aluno</h1>
+    <p class="apoio">Ana Lima</p>
+    <section class="panel">
+      <p class="apoio" style="margin-top:0">Plano ainda não fechado</p>
+      <p id="papel" class="erro" hidden>Você continua na área do aluno.</p>
+      <p class="nav"><a href="aluno.html#papel">Abrir a área do treinador</a></p>
+    </section>
+  </div>
+</main>
+<footer class="footer">
+  <div class="footer-inner">
+    <span>Zenith Tracker</span>
+  </div>
+</footer>
+<script src="theme.js"></script>
+<script>
+  function mostrarPapel() {
+    if (location.hash === "#papel") document.getElementById("papel").hidden = false;
+  }
+  mostrarPapel();
+  window.addEventListener("hashchange", mostrarPapel);
+</script>
+</body>
+</html>
