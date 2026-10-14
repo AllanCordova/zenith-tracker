@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Pagamento em aberto — Zenith Tracker</title>
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="tokens.css"/>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="marca-bloco">
+      <span class="mark">Z</span>
+      <div>
+        <p class="marca-nome">Zenith Tracker</p>
+        <p class="apoio">Painel</p>
+      </div>
+    </div>
+    <nav class="side-nav" aria-label="Painel">
+      <a class="nav-item ativo" href="painel-pendente.html">Assinatura</a>
+    </nav>
+    <div class="side-fim">
+      <button class="icon-btn" type="button" data-theme aria-label="Tema">Aa</button>
+      <a class="sair" href="login.html">Sair</a>
+    </div>
+  </aside>
+  <div class="coluna">
+    <header class="mobile-bar">
+      <p class="marca-nome">Zenith Tracker</p>
+      <a class="sair" href="login.html">Sair</a>
+    </header>
+    <main class="miolo">
+      <p class="kicker">Reabriu o painel</p>
+      <h1>Pagamento em aberto</h1>
+      <p class="aviso" role="status">A tela de retorno não abriu. O pedido continua Pendente, a carteira não libera, e isso não conta como pago nem como desistência.</p>
+      <p class="nav"><a href="assinatura-reaproveita.html">Tentar criar outro pedido</a></p>
+      <p class="nav"><a href="wallet.html">Simular notificação aprovada — carteira libera</a></p>
+      <p class="nav"><a href="painel-recusado.html">Simular recusa ou expiração</a></p>
+    </main>
+    <nav class="dock" aria-label="Painel">
+      <a class="ativo" href="painel-pendente.html">Assinatura</a>
+    </nav>
+  </div>
+</div>
+<script src="theme.js"></script>
+</body>
+</html>

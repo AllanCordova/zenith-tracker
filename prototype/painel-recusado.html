@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Pedido recusado — Zenith Tracker</title>
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="tokens.css"/>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="marca-bloco">
+      <span class="mark">Z</span>
+      <div>
+        <p class="marca-nome">Zenith Tracker</p>
+        <p class="apoio">Painel</p>
+      </div>
+    </div>
+    <nav class="side-nav" aria-label="Painel">
+      <a class="nav-item ativo" href="assinatura.html">Assinatura</a>
+    </nav>
+    <div class="side-fim">
+      <button class="icon-btn" type="button" data-theme aria-label="Tema">Aa</button>
+      <a class="sair" href="login.html">Sair</a>
+    </div>
+  </aside>
+  <div class="coluna">
+    <header class="mobile-bar">
+      <p class="marca-nome">Zenith Tracker</p>
+      <a class="sair" href="login.html">Sair</a>
+    </header>
+    <main class="miolo">
+      <p class="kicker">Recusado ou expirado</p>
+      <h1>A assinatura não ativou</h1>
+      <p class="erro" role="alert">O pedido ficou Recusado ou Expirado. A carteira continua bloqueada. Dá para gerar um pedido novo.</p>
+      <p class="nav"><a class="btn" href="assinatura.html">Contratar de novo</a></p>
+    </main>
+    <nav class="dock" aria-label="Painel">
+      <a class="ativo" href="assinatura.html">Assinatura</a>
+    </nav>
+  </div>
+</div>
+<script src="theme.js"></script>
+</body>
+</html>

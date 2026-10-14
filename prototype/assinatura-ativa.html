@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Assinatura ativa — Zenith Tracker</title>
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="tokens.css"/>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="marca-bloco">
+      <span class="mark">Z</span>
+      <div>
+        <p class="marca-nome">Zenith Tracker</p>
+        <p class="apoio">Painel</p>
+      </div>
+    </div>
+    <nav class="side-nav" aria-label="Painel">
+      <a class="nav-item" href="wallet.html">Carteira</a>
+      <a class="nav-item ativo" href="assinatura-ativa.html">Assinatura</a>
+    </nav>
+    <div class="side-fim">
+      <button class="icon-btn" type="button" data-theme aria-label="Tema">Aa</button>
+      <a class="sair" href="login.html">Sair</a>
+    </div>
+  </aside>
+  <div class="coluna">
+    <header class="mobile-bar">
+      <p class="marca-nome">Zenith Tracker</p>
+      <a class="sair" href="login.html">Sair</a>
+    </header>
+    <main class="miolo">
+      <h1>Assinatura</h1>
+      <section class="painel">
+        <p class="rotulo">Assinatura atual</p>
+        <p class="marca-nome">Mensal</p>
+        <p class="apoio">Válida até 13/11/2026</p>
+      </section>
+      <p class="apoio">O painel da carteira só abre com pagamento confirmado. Fechar a aba do checkout não libera nem bloqueia o que já foi pago.</p>
+      <div class="planos">
+        <button type="button" class="escolha" data-plano="monthly" aria-pressed="false">
+          <p class="marca-nome">Mensal</p>
+          <p class="atual">Plano atual</p>
+          <p class="apoio">Painel da carteira, renovado todo mês.</p>
+          <p class="preco">R$&nbsp;49,90</p>
+        </button>
+        <button type="button" class="escolha" data-plano="yearly" aria-pressed="false">
+          <p class="marca-nome">Anual</p>
+          <p class="apoio">O mesmo painel, com o ano fechado.</p>
+          <p class="preco">R$&nbsp;399,00</p>
+        </button>
+      </div>
+      <a class="btn" id="confirmar" href="assinatura-ativa.html" aria-disabled="true">Confirmar e ir ao checkout</a>
+      <p class="nav"><a href="wallet.html">Voltar à carteira</a></p>
+    </main>
+    <nav class="dock" aria-label="Painel">
+      <a href="wallet.html">Carteira</a>
+      <a class="ativo" href="assinatura-ativa.html">Assinatura</a>
+    </nav>
+  </div>
+</div>
+<script src="theme.js"></script>
+<script>
+  var planos = document.querySelectorAll(".escolha");
+  var confirmar = document.getElementById("confirmar");
+  planos.forEach(function (plano) {
+    plano.addEventListener("click", function () {
+      planos.forEach(function (outro) { outro.setAttribute("aria-pressed", "false"); });
+      plano.setAttribute("aria-pressed", "true");
+      var mesmo = plano.getAttribute("data-plano") === "monthly";
+      confirmar.textContent = mesmo ? "Este já é o seu plano" : "A assinatura já está ativa";
+      confirmar.setAttribute("aria-disabled", "true");
+    });
+  });
+</script>
+</body>
+</html>
