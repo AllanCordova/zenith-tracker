@@ -3,62 +3,75 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Rotina — Zenith Tracker</title>
+<title>Setup — Zenith Tracker</title>
 <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&family=Geist+Mono:wght@600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="tokens.css"/>
 </head>
 <body>
-<header class="header">
-  <a class="marca" href="wallet.html">Zenith Tracker</a>
-  <div class="header-acoes">
-    <a class="icon-btn" href="login.html" aria-label="Sair">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6H5v12h4"/><path d="M10 12h9"/><path d="M16 8l4 4-4 4"/></svg>
-    </a>
-    <button class="icon-btn" type="button" data-theme aria-label="Tema">Aa</button>
-  </div>
-</header>
-<main>
-  <div class="wrap wrap-form">
-    <p class="kicker">Passo 02</p>
-    <h1>Rotina e atividade</h1>
-    <p class="apoio">Esportes e a frequência semanal de cada um. A soma entra no cálculo do gasto.</p>
-    <nav class="passos" aria-label="Passos do plano">
-      <a class="passo" href="nutritionalplane.html">01 Dados</a>
-      <a class="passo ativo" href="activty-plane.html">02 Rotina</a>
-      <a class="passo" href="comfirm-plane.html">03 Revisão</a>
+<div class="app">
+  <aside class="side">
+    <div class="marca-bloco">
+      <span class="mark">Z</span>
+      <div>
+        <p class="marca-nome">Zenith Tracker</p>
+        <p class="apoio">Painel</p>
+      </div>
+    </div>
+    <nav class="side-nav" aria-label="Painel">
+      <a class="nav-item ativo" href="wallet.html">Carteira</a>
+      <a class="nav-item" href="assinatura-ativa.html">Assinatura</a>
     </nav>
-    <form class="panel" action="comfirm-plane.html">
-      <div class="campo">
-        <label for="esporte">Esporte</label>
-        <input id="esporte" name="esporte" type="text" value="Musculação"/>
+    <div class="side-fim">
+      <button class="icon-btn" type="button" data-theme aria-label="Tema">Aa</button>
+      <a class="sair" href="login.html">Sair</a>
+    </div>
+  </aside>
+  <div class="coluna">
+    <header class="mobile-bar">
+      <p class="marca-nome">Zenith Tracker</p>
+      <a class="sair" href="login.html">Sair</a>
+    </header>
+    <main class="miolo">
+      <div class="setup">
+        <ol class="setup-passos" aria-label="Passos do plano">
+          <li><a href="nutritionalplane.html">Antropometria</a></li>
+          <li><a class="ativo" href="activty-plane.html">Rotina</a></li>
+          <li><a href="comfirm-plane.html">Revisão</a></li>
+        </ol>
+        <form action="comfirm-plane.html">
+          <p class="nome-aluno">Lucas Mendes</p>
+          <h1>Setup</h1>
+          <div class="painel grade-campos">
+            <div class="campo">
+              <label for="esporte">Esporte</label>
+              <input id="esporte" name="esporte" type="text" value="Musculação"/>
+            </div>
+            <div class="campo">
+              <label for="frequencia">Frequência semanal</label>
+              <input id="frequencia" name="frequencia" type="number" min="0" value="4"/>
+            </div>
+            <div class="campo">
+              <label for="esporte-2">Esporte</label>
+              <input id="esporte-2" name="esporte-2" type="text" value="Corrida"/>
+            </div>
+            <div class="campo">
+              <label for="frequencia-2">Frequência semanal</label>
+              <input id="frequencia-2" name="frequencia-2" type="number" min="0" value="2"/>
+            </div>
+          </div>
+          <button class="btn" type="submit">Continuar</button>
+        </form>
       </div>
-      <div class="campo">
-        <label for="frequencia">Frequência semanal</label>
-        <input id="frequencia" name="frequencia" type="number" inputmode="numeric" min="0" value="4"/>
-      </div>
-      <div class="campo">
-        <label for="esporte-2">Esporte</label>
-        <input id="esporte-2" name="esporte-2" type="text" value="Corrida"/>
-      </div>
-      <div class="campo">
-        <label for="frequencia-2">Frequência semanal</label>
-        <input id="frequencia-2" name="frequencia-2" type="number" inputmode="numeric" min="0" value="2"/>
-      </div>
-      <div class="acoes">
-        <a class="link" href="nutritionalplane.html">Voltar aos dados</a>
-        <button class="btn-inline" type="submit">Prosseguir</button>
-      </div>
-    </form>
+    </main>
+    <nav class="dock" aria-label="Painel">
+      <a class="ativo" href="wallet.html">Carteira</a>
+      <a href="assinatura-ativa.html">Assinatura</a>
+    </nav>
   </div>
-</main>
-<footer class="footer">
-  <div class="footer-inner">
-    <span>Zenith Tracker</span>
-  </div>
-</footer>
+</div>
 <script src="theme.js"></script>
 </body>
 </html>

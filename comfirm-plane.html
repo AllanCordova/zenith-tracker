@@ -3,75 +3,90 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Revisão — Zenith Tracker</title>
+<title>Setup — Zenith Tracker</title>
 <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&family=Geist+Mono:wght@600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="tokens.css"/>
 </head>
 <body>
-<header class="header">
-  <a class="marca" href="wallet.html">Zenith Tracker</a>
-  <div class="header-acoes">
-    <a class="icon-btn" href="login.html" aria-label="Sair">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6H5v12h4"/><path d="M10 12h9"/><path d="M16 8l4 4-4 4"/></svg>
-    </a>
-    <button class="icon-btn" type="button" data-theme aria-label="Tema">Aa</button>
-  </div>
-</header>
-<main>
-  <div class="wrap wrap-form">
-    <p class="kicker">Passo 03</p>
-    <h1>Revisão</h1>
-    <p class="apoio">Aceite ou edite o teto sugerido, ajuste os macros e grave a margem. O aluno vê o teto e os macros — nunca a margem nem o sugerido bruto.</p>
-    <nav class="passos" aria-label="Passos do plano">
-      <a class="passo" href="nutritionalplane.html">01 Dados</a>
-      <a class="passo" href="activty-plane.html">02 Rotina</a>
-      <a class="passo ativo" href="comfirm-plane.html">03 Revisão</a>
+<div class="app">
+  <aside class="side">
+    <div class="marca-bloco">
+      <span class="mark">Z</span>
+      <div>
+        <p class="marca-nome">Zenith Tracker</p>
+        <p class="apoio">Painel</p>
+      </div>
+    </div>
+    <nav class="side-nav" aria-label="Painel">
+      <a class="nav-item ativo" href="wallet.html">Carteira</a>
+      <a class="nav-item" href="assinatura-ativa.html">Assinatura</a>
     </nav>
-    <form class="panel" action="wallet.html">
-      <fieldset class="campo" style="border:0;padding:0;margin:1rem 0 0">
-        <legend class="link">Objetivo</legend>
-        <div class="opcoes">
-          <label class="opcao"><input type="radio" name="objetivo" value="emagrecimento"/> Emagrecimento</label>
-          <label class="opcao"><input type="radio" name="objetivo" value="hipertrofia" checked/> Hipertrofia</label>
-          <label class="opcao"><input type="radio" name="objetivo" value="manutencao"/> Manutenção</label>
-        </div>
-      </fieldset>
-      <div class="campo">
-        <label for="teto">Teto sugerido (kcal)</label>
-        <input id="teto" name="teto" type="number" inputmode="numeric" value="2860"/>
+    <div class="side-fim">
+      <button class="icon-btn" type="button" data-theme aria-label="Tema">Aa</button>
+      <a class="sair" href="login.html">Sair</a>
+    </div>
+  </aside>
+  <div class="coluna">
+    <header class="mobile-bar">
+      <p class="marca-nome">Zenith Tracker</p>
+      <a class="sair" href="login.html">Sair</a>
+    </header>
+    <main class="miolo">
+      <div class="setup">
+        <ol class="setup-passos" aria-label="Passos do plano">
+          <li><a href="nutritionalplane.html">Antropometria</a></li>
+          <li><a href="activty-plane.html">Rotina</a></li>
+          <li><a class="ativo" href="comfirm-plane.html">Revisão</a></li>
+        </ol>
+        <form action="wallet.html">
+          <p class="nome-aluno">Lucas Mendes</p>
+          <h1>Setup</h1>
+          <div class="painel grade-campos">
+            <p class="apoio">Sugestão do motor: 2.860 kcal. O aluno vê o teto e os macros — nunca a margem nem o sugerido bruto.</p>
+            <div class="campo">
+              <label for="objetivo">Objetivo</label>
+              <select id="objetivo" name="objetivo">
+                <option value="emagrecimento">Emagrecimento</option>
+                <option value="hipertrofia" selected>Hipertrofia</option>
+                <option value="manutencao">Manutenção</option>
+              </select>
+            </div>
+            <div class="campo">
+              <label for="teto">Teto aceito</label>
+              <input id="teto" name="teto" type="number" value="2860" required/>
+            </div>
+            <div class="grade-macros">
+              <div class="campo">
+                <label for="proteina">Proteína</label>
+                <input id="proteina" name="proteina" type="number" value="184"/>
+              </div>
+              <div class="campo">
+                <label for="carboidrato">Carboidrato</label>
+                <input id="carboidrato" name="carboidrato" type="number" value="353"/>
+              </div>
+              <div class="campo">
+                <label for="gordura">Gordura</label>
+                <input id="gordura" name="gordura" type="number" value="79"/>
+              </div>
+            </div>
+            <div class="campo">
+              <label for="margem">Margem de erro (kcal) — o aluno não vê</label>
+              <input id="margem" name="margem" type="number" value="100"/>
+            </div>
+          </div>
+          <button class="btn" type="submit">Gravar setup</button>
+        </form>
       </div>
-      <div class="campo">
-        <label for="proteina">Proteína (g)</label>
-        <input id="proteina" name="proteina" type="number" inputmode="numeric" value="184"/>
-      </div>
-      <div class="campo">
-        <label for="gordura">Gordura (g)</label>
-        <input id="gordura" name="gordura" type="number" inputmode="numeric" value="79"/>
-      </div>
-      <div class="campo">
-        <label for="carboidrato">Carboidrato (g)</label>
-        <input id="carboidrato" name="carboidrato" type="number" inputmode="numeric" value="353"/>
-      </div>
-      <div class="campo">
-        <label for="margem">Margem de erro (kcal)</label>
-        <input id="margem" name="margem" type="number" inputmode="numeric" value="100"/>
-        <p class="apoio">Invisível para o aluno.</p>
-      </div>
-      <div class="acoes">
-        <a class="link" href="activty-plane.html">Voltar à rotina</a>
-        <button class="btn-inline" type="submit">Gravar setup</button>
-      </div>
-    </form>
+    </main>
+    <nav class="dock" aria-label="Painel">
+      <a class="ativo" href="wallet.html">Carteira</a>
+      <a href="assinatura-ativa.html">Assinatura</a>
+    </nav>
   </div>
-</main>
-<footer class="footer">
-  <div class="footer-inner">
-    <span>Zenith Tracker</span>
-  </div>
-</footer>
+</div>
 <script src="theme.js"></script>
 </body>
 </html>

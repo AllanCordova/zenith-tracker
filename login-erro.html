@@ -7,45 +7,40 @@
 <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&family=Geist+Mono:wght@600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="tokens.css"/>
 </head>
 <body>
-<header class="header">
-  <a class="marca" href="login.html">Zenith Tracker</a>
-  <div class="header-acoes">
-    <a class="icon-btn" href="login.html" aria-label="Entrar">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="3"/><path d="M5 19c1.5-3 3.5-4.5 7-4.5S17.5 16 19 19"/></svg>
-    </a>
-    <button class="icon-btn" type="button" data-theme aria-label="Tema">Aa</button>
-  </div>
-</header>
-<main>
-  <div class="wrap wrap-form">
-    <p class="kicker">Sessão</p>
-    <h1>Entrar</h1>
-    <p class="apoio">A área abre no papel da conta.</p>
-    <form class="panel" action="login-erro.html">
-      <div class="campo">
-        <label for="email">E-mail</label>
-        <input id="email" name="email" type="email" value="ana@zenith.dev" autocomplete="username"/>
-      </div>
-      <div class="campo">
-        <label for="password">Senha</label>
-        <input id="password" name="password" type="password" value="senha-errada" autocomplete="current-password"/>
-      </div>
-      <p class="erro" role="alert">A combinação não confere</p>
-      <button class="btn" type="submit">Entrar</button>
-    </form>
-    <p class="nav">Ainda não tem conta? <a href="cadastro.html">Cadastro</a></p>
-  </div>
-</main>
-<footer class="footer">
-  <div class="footer-inner">
-    <span>Zenith Tracker</span>
-    <span><a href="cadastro.html">Cadastro</a> · <a href="login.html">Entrar</a></span>
-  </div>
-</footer>
+<div class="split">
+  <section class="vitrine">
+    <p class="marca-nome">Zenith Tracker</p>
+    <div>
+      <p class="vitrine-titulo">O teto acompanha a dieta. A carteira fica num lugar só.</p>
+      <p class="apoio" style="color:inherit;opacity:.7">Treino híbrido, sem redigitar o peso e sem viver no WhatsApp.</p>
+    </div>
+    <p class="apoio" style="color:inherit;opacity:.6">Aluno ou treinador — cada um entra na própria área.</p>
+  </section>
+  <main class="auth">
+    <div class="auth-caixa">
+      <h1>Entrar</h1>
+      <p class="apoio">A área abre no papel da conta.</p>
+      <form action="login-erro.html">
+        <div class="campo">
+          <label for="email">E-mail</label>
+          <input id="email" name="email" type="email" value="ana@zenith.dev"/>
+        </div>
+        <div class="campo">
+          <label for="password">Senha</label>
+          <input id="password" name="password" type="password" value="senha-errada"/>
+        </div>
+        <p class="erro" role="alert">A combinação não confere</p>
+        <button class="btn" type="submit">Entrar</button>
+      </form>
+      <p class="nav"><a href="login.html">Tentar de novo</a></p>
+      <p class="nav"><a href="cadastro.html">Ainda não tenho conta</a></p>
+    </div>
+  </main>
+</div>
 <script src="theme.js"></script>
 </body>
 </html>
