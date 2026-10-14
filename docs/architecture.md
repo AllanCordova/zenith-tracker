@@ -1,8 +1,8 @@
 # 🛠️ Architecture / Software Design Document
 
 **Projeto:** Zenith Tracker
-**Versão:** 1.4.0
-**Última atualização:** 2026-09-22
+**Versão:** 1.5.0
+**Última atualização:** 2026-10-14
 
 > 🤖 **O `prd.md` responde _o quê_ o produto faz. Este responde _onde as coisas
 > moram e como se chamam_.** Detalhe de tela — rota, componente, contrato —
@@ -21,7 +21,7 @@
 | Fluxos da IA | `.agents/workflows/` | PRD, backlog, jornadas e tokens, architecture, setup, ciclo por Issue, ciclo por tarefa, tutor |
 | Agentes (subagentes) | `.agents/agents/` (cascas em `.claude/`, `.cursor/` e `.opencode/`) | Implementador, revisores, auditor final e tutor |
 | Ficha da disciplina | `docs/checklist.md` | Regras do projeto, IDs e entregas |
-| Design (Figma/Stitch) | pendente — ver `docs/design-tokens.md` | Cores, tipografia, hierarquia visual |
+| Design | `docs/design-tokens.md` e `prototype/` | Cores, tipografia, hierarquia visual |
 
 ---
 
@@ -195,28 +195,43 @@ Estado de servidor (dados da API, TanStack Query) não se mistura com estado de 
 
 > **Dados e código em inglês, interface em português.**
 
-| Termo PRD (PT-BR) | Entidade técnica (EN) | Atributos principais |
-| :---------------- | :-------------------- | :------------------- |
-| Conta (aluno ou treinador) | `User` | `id`, `name`, `email` (único), `passwordHash`, `role` (`STUDENT` \| `TRAINER`) |
-| Vínculo | `Enrollment` | `id`, `trainerId`, `studentId`, `createdAt` — único por par |
-| Plano nutricional | `NutritionPlan` | `id`, `enrollmentId`, antropometria, rotina, objetivo, teto/macros (sugerido + vigente), `errorMarginKcal`, `status`, `recordedAt` — cada gravação é um setup novo |
-| Pedido | `Order` | `id`, `trainerId`, `planCode`, `status` (`PENDING` \| `PAID` \| `REFUSED` \| `EXPIRED`), `createdAt` |
-| Pagamento | `Payment` | `id`, `orderId`, ids do gateway, `status`, `receivedAt` |
-| Assinatura | `Subscription` | `id`, `trainerId`, `orderId` que ativou, `status` (`ACTIVE` \| `INACTIVE`), `activatedAt` |
+Cada termo do PRD tem um nome inglês só dele. Aluno e treinador compartilham a tabela `User`; o que muda é o `role`.
 
-**Não são tabela:** Motor, teto do dia, meta do dia, medidor sincero — cálculo ou leitura sobre o plano vigente e os registros do dia (estes últimos nascem nas specs Should/Could).
+| Termo PRD (PT-BR) | Nome técnico (EN) | Atributos principais |
+| :---------------- | :---------------- | :------------------- |
+| Aluno | `STUDENT` | valor de `User.role`. Não é tabela |
+| Treinador | `TRAINER` | valor de `User.role`. Não é tabela |
+| Vínculo | `Enrollment` | `id`, `trainerId`, `studentId`, `createdAt` — único por par |
+| Plano nutricional | `NutritionPlan` | ver campos abaixo. Cada gravação é um setup novo. A rotina mora em `PlanSport` |
+| Teto calórico | `dailyCeilingKcal` | leitura calculada (RN20), não é coluna. O número gravado na revisão é `NutritionPlan.ceilingKcal` |
+| Motor | `CalorieEngine` | cálculo de RN05–RN09. Não é tabela |
+| Margem de erro | `errorMarginKcal` | coluna de `NutritionPlan`. O aluno não vê |
+| Meta do dia | `dailyTargetKcal` | leitura (RN17). Não é tabela |
+| Pedido | `Order` | `id`, `trainerId`, `planCode`, `status` (`PENDING` \| `PAID` \| `REFUSED` \| `EXPIRED`), `createdAt` |
+| Pagamento | `Payment` | `id`, `orderId`, `gatewayPaymentId`, `status`, `receivedAt` |
+| Assinatura | `Subscription` | `id`, `trainerId`, `orderId` que ativou, `status` (`ACTIVE` \| `INACTIVE`), `activatedAt` |
+| Medidor sincero | `honestMeter` | leitura binária (RN18). Não é tabela |
+
+A conta dos dois papéis é a tabela `User`: `id`, `name`, `email` (único), `passwordHash`, `role` (`STUDENT` \| `TRAINER`).
+
+`NutritionPlan`: `id`, `enrollmentId`, `age`, `weightKg`, `heightCm`, `biologicalSex` (`MALE` \| `FEMALE`), `objective` (`WEIGHT_LOSS` \| `HYPERTROPHY` \| `MAINTENANCE`), sugeridos (`suggestedCeilingKcal`, `suggestedProteinG`, `suggestedFatG`, `suggestedCarbG`), vigentes (`ceilingKcal`, `proteinG`, `fatG`, `carbG`), `errorMarginKcal`, `status` (`ACTIVE` \| `SUPERSEDED`), `recordedAt`. A linha só existe depois da revisão gravada (RN10). O vigente é o `ACTIVE`; uma gravação nova marca o anterior como `SUPERSEDED`.
+
+`PlanSport` (rotina do plano, RN06): `id`, `nutritionPlanId`, `name`, `weeklyFrequency`. O PAL soma as frequências.
+
+**Não são tabela:** `CalorieEngine`, `dailyCeilingKcal`, `dailyTargetKcal`, `honestMeter`.
 
 Visitante não é entidade: é ausência de sessão.
 
 ### 📊 5.2. Diagrama ER (Mermaid)
 
-Escopo Must Have + 1:N da ficha (`User`–`Enrollment`, `Order`–`Payment`). Should/Could não entram até a spec correspondente.
+Escopo Must Have + 1:N da ficha (`User`–`Enrollment`, `Order`–`Payment`, `NutritionPlan`–`PlanSport`). Should/Could não entram até a spec correspondente.
 
 ```mermaid
 erDiagram
     User ||--o{ Enrollment : "trainer has"
     User ||--o{ Enrollment : "student in"
     Enrollment ||--o{ NutritionPlan : "setups"
+    NutritionPlan ||--o{ PlanSport : "routine"
     User ||--o{ Order : "places"
     Order ||--o{ Payment : "attempts"
     User ||--o| Subscription : "holds"
@@ -240,8 +255,29 @@ erDiagram
     NutritionPlan {
         uuid id PK
         uuid enrollmentId FK
-        datetime recordedAt
+        int age
+        float weightKg
+        int heightCm
+        enum biologicalSex
+        enum objective
+        int suggestedCeilingKcal
+        int suggestedProteinG
+        int suggestedFatG
+        int suggestedCarbG
+        int ceilingKcal
+        int proteinG
+        int fatG
+        int carbG
+        int errorMarginKcal
         enum status
+        datetime recordedAt
+    }
+
+    PlanSport {
+        uuid id PK
+        uuid nutritionPlanId FK
+        string name
+        int weeklyFrequency
     }
 
     Order {
@@ -269,7 +305,7 @@ erDiagram
     }
 ```
 
-Unicidade: `User.email`; par (`trainerId`, `studentId`) em `Enrollment`; no máximo um `Order` `PENDING` por treinador.
+Unicidade: `User.email`; par (`trainerId`, `studentId`) em `Enrollment`; no máximo um `NutritionPlan` `ACTIVE` por `Enrollment`; no máximo um `Order` `PENDING` por treinador.
 
 ### 🌍 5.3. O banco por ambiente
 
@@ -305,6 +341,7 @@ Unicidade: `User.email`; par (`trainerId`, `studentId`) em `Enrollment`; no máx
 | 2026-09-22 | 1.3.1 | Header/Footer: sessão no chrome; Input com erro de campo; toast no canto superior direito |
 | 2026-09-22 | 1.3.0 | Front: `FormError`, toast (`sonner` via `lib/toast.ts`) |
 | 2026-09-21 | 1.2.0 | Front: libs de UI/tema/HTTP/formulário; camadas `ui` / `hooks` / `lib/http`; tokens claros e escuros |
+| 2026-10-14 | 1.5.0 | Glossário: um nome inglês por termo do PRD. ER: campos do plano (RN05–RN12) e `PlanSport` |
 
 ---
 

@@ -2,7 +2,7 @@
 
 **Projeto:** Zenith Tracker
 **Versão:** 1.0.0
-**Última atualização:** 2026-09-08
+**Última atualização:** 2026-10-14
 
 > 🤖 **Este documento é a fonte da verdade sobre o QUE o produto faz.** Regra de
 > negócio que não estiver aqui não existe — nem para a equipe, nem para a IA.
@@ -146,6 +146,7 @@
 
 - [ ] **Dado** Pedido Pendente, **quando** chega a notificação autenticada de pagamento aprovado, **então** o Pedido fica Pago, a Assinatura fica Ativa e o treinador passa a poder vincular aluno.
 - [ ] **Dado** Pedido Pendente, **quando** o treinador volta da tela de retorno e a notificação ainda não chegou, **então** o Pedido continua Pendente e o painel não libera a carteira.
+- [ ] **Dado** Pedido Pendente e o treinador sumiu no checkout (fechou a aba, caiu a rede ou a tela de retorno não abriu), **quando** reabre o painel, **então** o Pedido continua Pendente, a carteira não libera, e isso não conta como pago nem como desistência.
 - [ ] **Dado** Pedido Pendente, **quando** a notificação informa recusa ou expiração, **então** o Pedido muda para Recusado ou Expirado, a assinatura não ativa, e o treinador pode gerar um novo pedido.
 - [ ] **Dado** notificação que não passa na verificação, **quando** ela chega, **então** o Pedido não muda de estado.
 
@@ -355,3 +356,4 @@
 | 2026-09-08 | 1.0.0 | Visão e RN20: teto variável com o andamento da dieta, sem o aluno redigitar o peso — distinto da meta do dia por treino extra (RN17) |
 | 2026-09-08 | 1.0.0 | Setup vs. automático: treinador grava estado inicial (e pode editar quando quiser); o teto do dia aparece sozinho depois (RN10, RN12, RN20, US03, US04) |
 | 2026-09-08 | 1.0.0 | RN16: sem período de cortesia — primeiro vínculo já exige Assinatura Ativa |
+| 2026-10-14 | 1.0.0 | US06: critério do nó vermelho — sumir no checkout e reabrir o painel deixa o Pedido Pendente |
