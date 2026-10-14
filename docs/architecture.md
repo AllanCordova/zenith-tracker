@@ -1,7 +1,7 @@
 # 🛠️ Architecture / Software Design Document
 
 **Projeto:** Zenith Tracker
-**Versão:** 1.5.0
+**Versão:** 1.6.0
 **Última atualização:** 2026-10-14
 
 > 🤖 **O `prd.md` responde _o quê_ o produto faz. Este responde _onde as coisas
@@ -36,7 +36,7 @@
 - **Backend:** NestJS **12** (projeto **CommonJS** — `nest new --type cjs`) + Prisma ORM **8** + PostgreSQL
 - **Frontend:** React via Next.js **16** (App Router). Next.js é só a casca da UI — ver §4
 - **Padrões de código do frontend:** componentes de função com hooks (sem classes); estado do servidor (TanStack Query) separado do estado de UI (modal, tema, passo do wizard); páginas do App Router distintas de `components/ui` e `components/layout`; telas interativas e qualquer código que carregue JWT são Client Components (`'use client'`). **Componente de UI não fala com o servidor** — HTTP à NestJS só em `repositories/`, via cliente axios em `lib/http.ts`. Página e componente de UI não importam axios. Hook de domínio (`hooks/`) orquestra Query/Mutation e o repositório
-- **Estilo:** Tailwind CSS **4**. Tokens de `docs/design-tokens.md` (claro e escuro) entram em `@theme`. Visual minimalista preto e branco: `background`, `foreground`, `surface`, `primary`. Espaçamento só na escala do Tailwind (`p-4`, `gap-6`), sem tokens de espaço. Geist + Geist Mono nos kickers. Tema com `next-themes` (classe `dark` no `html`). Ícones: `lucide-react`. Animação de vitrine: `motion`, só na landing. Cor crua fora do mapa de tokens é defeito
+- **Estilo:** Tailwind CSS **4**. Tokens de `docs/design-tokens.md` entram em `@theme`. Paleta única copiada do diet: `paper`, `sheet`, `ink`, `muted`, `line`, `copper`, `forest`, `rose`. Espaçamento só na escala do Tailwind (`p-4`, `gap-6`), sem tokens de espaço. Outfit no corpo, Fraunces nos títulos. Ícones: `lucide-react`. Animação de vitrine: `motion`, só na landing. Cor crua fora do mapa de tokens é defeito
 - **Formulário no cliente:** `react-hook-form` + `zod` (`@hookform/resolvers`). A API continua com DTO + `ValidationPipe` (ID7); o schema do front não substitui o 400 do servidor
 - **Testes:**
   - `apps/api`: **Jest** + **oxlint** (gerador CJS do Nest 12)
@@ -342,6 +342,7 @@ Unicidade: `User.email`; par (`trainerId`, `studentId`) em `Enrollment`; no máx
 | 2026-09-22 | 1.3.0 | Front: `FormError`, toast (`sonner` via `lib/toast.ts`) |
 | 2026-09-21 | 1.2.0 | Front: libs de UI/tema/HTTP/formulário; camadas `ui` / `hooks` / `lib/http`; tokens claros e escuros |
 | 2026-10-14 | 1.5.0 | Glossário: um nome inglês por termo do PRD. ER: campos do plano (RN05–RN12) e `PlanSport` |
+| 2026-10-14 | 1.6.0 | Estilo: paleta e tipo do diet (Outfit, Fraunces; sem tema escuro) |
 
 ---
 
