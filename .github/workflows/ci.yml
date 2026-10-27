@@ -1,0 +1,96 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  api:
+    name: api
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      # Banco descartável deste job, o mesmo do Compose. Não é a URL de produção.
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: apps/api/package-lock.json
+
+      - name: Instalar dependências
+        run: npm ci
+        working-directory: apps/api
+
+      - name: Aplicar migrations
+        # Prisma 8 aplica o pacote commitado com `db migrate`.
+        run: npx prisma db migrate
+        working-directory: apps/api
+
+      - name: Lint
+        run: npm run lint
+        working-directory: apps/api
+
+      - name: Build
+        run: npm run build
+        working-directory: apps/api
+
+      - name: Testes
+        run: npm test
+        working-directory: apps/api
+
+      - name: Testes e2e
+        run: npm run test:e2e
+        working-directory: apps/api
+
+  web:
+    name: web
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+
+      - name: Instalar dependências
+        run: npm ci
+        working-directory: apps/web
+
+      - name: Lint
+        run: npm run lint
+        working-directory: apps/web
+
+      - name: Build
+        run: npm run build
+        working-directory: apps/web
+
+      - name: Testes
+        run: npx vitest run
+        working-directory: apps/web
