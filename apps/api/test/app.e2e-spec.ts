@@ -82,6 +82,46 @@ describe('AppController (e2e)', () => {
     expect(response.headers['access-control-allow-origin']).toBe(uiOrigin);
   });
 
+  it('sends security headers on success and on error', async () => {
+    const ok = await request(app.getHttpServer()).get('/').expect(200);
+
+    expect(ok.headers['x-content-type-options']).toBe('nosniff');
+    expect(ok.headers['x-frame-options']).toBe('DENY');
+    expect(ok.headers['referrer-policy']).toBe('no-referrer');
+    expect(ok.headers['permissions-policy']).toBe(
+      'camera=(), microphone=(), geolocation=()',
+    );
+
+    const bad = await request(app.getHttpServer()).post('/auth/register').send({});
+
+    expect(bad.status).toBe(400);
+    expect(bad.headers['x-content-type-options']).toBe('nosniff');
+    expect(bad.headers['x-frame-options']).toBe('DENY');
+  });
+
+  it('GET /docs publishes the story routes', async () => {
+    const ui = await request(app.getHttpServer()).get('/docs').expect(200);
+
+    expect(ui.headers['content-type']).toMatch(/html/);
+    expect(ui.text).toMatch(/swagger/i);
+    expect(ui.headers['x-content-type-options']).toBe('nosniff');
+
+    const spec = await request(app.getHttpServer()).get('/docs-json').expect(200);
+
+    expect(Object.keys(spec.body.paths as Record<string, unknown>)).toEqual(
+      expect.arrayContaining([
+        '/auth/register',
+        '/auth/login',
+        '/auth/me',
+        '/student/area',
+        '/trainer/area',
+      ]),
+    );
+    const serialized = JSON.stringify(spec.body);
+    expect(serialized).not.toMatch(/passwordHash/);
+    expect(serialized).not.toMatch(/eyJ/);
+  });
+
   it('POST /auth/register from the UI origin returns CORS', async () => {
     const response = await request(app.getHttpServer())
       .post('/auth/register')
