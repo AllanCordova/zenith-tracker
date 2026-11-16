@@ -35,8 +35,9 @@ Node.js 24.9+. Cada app tem o seu `package.json` (sem workspaces).
 docker compose up -d
 npm install --prefix apps/api
 npm install --prefix apps/web
-npm run api    # Nest em http://localhost:3000
-npm run web    # Next em http://localhost:3000 — use outra porta se a API já ocupou
+npm run dev    # API em http://localhost:3001 e Next em http://localhost:3000
+npm run api    # só a API, http://localhost:3001
+npm run web    # só o Next, http://localhost:3000
 ```
 
 Testes e lint (comandos da raiz):

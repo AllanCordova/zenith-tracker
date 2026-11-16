@@ -12,7 +12,7 @@ afterEach(() => {
   http.defaults.adapter = undefined;
 });
 
-test("sem NEXT_PUBLIC_API_URL o cliente aponta para a API em :3000, não o Next", async () => {
+test("sem NEXT_PUBLIC_API_URL o cliente aponta para a API em :3001, não o Next", async () => {
   let seenBaseURL: string | undefined;
   http.defaults.adapter = async (config) => {
     seenBaseURL = config.baseURL;
@@ -27,8 +27,8 @@ test("sem NEXT_PUBLIC_API_URL o cliente aponta para a API em :3000, não o Next"
 
   await http.post("/auth/login", {});
 
-  expect(seenBaseURL).toBe("http://localhost:3000");
-  expect(seenBaseURL).not.toContain(":3001");
+  expect(seenBaseURL).toBe("http://localhost:3001");
+  expect(seenBaseURL).not.toContain(":3000");
 });
 
 test("com sessão, o cliente manda Authorization Bearer", async () => {

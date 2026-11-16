@@ -7,7 +7,7 @@ import { configureApp } from './../src/common/configure-app';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication<App>;
-  const uiOrigin = 'http://localhost:3001';
+  const uiOrigin = 'http://localhost:3000';
 
   beforeEach(async () => {
     process.env.JWT_SECRET ??= 'e2e-only-jwt-secret';

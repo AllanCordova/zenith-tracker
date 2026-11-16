@@ -4,6 +4,7 @@
   "scripts": {
     "api": "npm run start:dev --prefix apps/api",
     "web": "npm run dev --prefix apps/web",
+    "dev": "trap 'kill 0' INT TERM EXIT; npm run api & npm run web & wait",
     "test": "npm test --prefix apps/api && npm test --prefix apps/web -- --run",
     "lint": "npm run lint --prefix apps/api && npm run lint --prefix apps/web",
     "test:e2e": "npm run test:e2e --prefix apps/api"
