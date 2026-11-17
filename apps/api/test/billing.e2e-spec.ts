@@ -242,4 +242,47 @@ describe('Billing orders (e2e)', () => {
     expect(subscriptionAfter!.status).toBe('ACTIVE');
     expect(subscriptionAfter!.planCode).toBe('MONTHLY');
   });
+
+  it('POST /billing/orders twice reuses PENDING and updates planCode/amountCents', async () => {
+    const trainer = await registerTrainer(`${Date.now()}-ca4`);
+
+    const first = await request(app.getHttpServer())
+      .post('/billing/orders')
+      .set('Authorization', `Bearer ${trainer.accessToken}`)
+      .send({ planCode: 'MONTHLY' });
+
+    expect(first.status).toBe(201);
+    expect(first.body.data).toEqual({
+      id: expect.any(String),
+      trainerId: trainer.trainerId,
+      planCode: 'MONTHLY',
+      amountCents: 4990,
+      status: 'PENDING',
+      createdAt: expect.any(String),
+    });
+
+    const second = await request(app.getHttpServer())
+      .post('/billing/orders')
+      .set('Authorization', `Bearer ${trainer.accessToken}`)
+      .send({ planCode: 'YEARLY' });
+
+    expect(second.status).toBe(201);
+    expect(second.body.data).toEqual({
+      id: first.body.data.id,
+      trainerId: trainer.trainerId,
+      planCode: 'YEARLY',
+      amountCents: 39900,
+      status: 'PENDING',
+      createdAt: expect.any(String),
+    });
+
+    const pendingOrders = await db.orm.public.Order.where({
+      trainerId: trainer.trainerId,
+      status: 'PENDING',
+    }).all();
+    expect(pendingOrders).toHaveLength(1);
+    expect(pendingOrders[0]!.id).toBe(first.body.data.id);
+    expect(pendingOrders[0]!.planCode).toBe('YEARLY');
+    expect(pendingOrders[0]!.amountCents).toBe(39900);
+  });
 });

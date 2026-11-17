@@ -59,6 +59,17 @@ export class BillingService {
     }
 
     const amountCents = amountCentsFor(planCode);
+    const existingPending = await this.findCurrentPendingOrder(trainerId);
+    if (existingPending) {
+      const updated = await this.prisma.db.orm.public.Order.where({
+        id: existingPending.id,
+      }).update({
+        planCode,
+        amountCents,
+      });
+      return this.toOrderResponse(updated as OrderRecord);
+    }
+
     const order = await this.prisma.db.orm.public.Order.create({
       trainerId,
       planCode,

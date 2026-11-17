@@ -32,7 +32,7 @@
   - Teste primeiro: e2e ACTIVE `MONTHLY` + `POST` `YEARLY` cria/atualiza `PENDING` com valor anual; `Subscription` continua `ACTIVE`. Vitest: fluxo vai a `/treinador/pagamento`.
   - Arquivos previstos: `apps/api/src/billing/`, `apps/api/test/`, `apps/web/__tests__/`
 
-- [ ] **Tarefa 5 — Reaproveitar Pedido Pendente ao trocar plano**
+- [x] **Tarefa 5 — Reaproveitar Pedido Pendente ao trocar plano**
   - Cobre: CA4
   - Teste primeiro: e2e dois `POST` seguidos → uma linha `PENDING`; segundo atualiza `planCode`/`amountCents`. Contagem no banco = 1 Pendente.
   - Arquivos previstos: `apps/api/src/billing/`, `apps/api/test/`
