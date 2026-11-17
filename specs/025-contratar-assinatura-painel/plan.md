@@ -37,7 +37,7 @@
   - Teste primeiro: e2e dois `POST` seguidos → uma linha `PENDING`; segundo atualiza `planCode`/`amountCents`. Contagem no banco = 1 Pendente.
   - Arquivos previstos: `apps/api/src/billing/`, `apps/api/test/`
 
-- [ ] **Tarefa 6 — Bloquear visitante e aluno**
+- [x] **Tarefa 6 — Bloquear visitante e aluno**
   - Cobre: CA6, CA7
   - Teste primeiro: e2e sem Bearer → 401; JWT `STUDENT` → 403; zero Pedidos. Vitest: aluno não usa as telas de contratação de treinador.
   - Arquivos previstos: `apps/api/src/billing/`, `apps/api/test/`, `apps/web/__tests__/`

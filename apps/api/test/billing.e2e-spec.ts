@@ -8,7 +8,7 @@ import { createDb } from './../src/prisma/db';
 
 const db = createDb(process.env.DATABASE_URL ?? '');
 
-async function deleteTrainerByEmail(email: string): Promise<void> {
+async function deleteUserByEmail(email: string): Promise<void> {
   const user = await db.orm.public.User.first({ email });
   if (!user) {
     return;
@@ -28,6 +28,10 @@ async function deleteTrainerByEmail(email: string): Promise<void> {
   await db.orm.public.User.where({ email }).delete();
 }
 
+async function countPendingOrders(): Promise<number> {
+  return (await db.orm.public.Order.where({ status: 'PENDING' }).all()).length;
+}
+
 describe('Billing orders (e2e)', () => {
   let app: INestApplication<App>;
   const createdEmails: string[] = [];
@@ -44,7 +48,7 @@ describe('Billing orders (e2e)', () => {
 
   afterEach(async () => {
     for (const email of createdEmails.splice(0)) {
-      await deleteTrainerByEmail(email);
+      await deleteUserByEmail(email);
     }
     await app.close();
   });
@@ -71,6 +75,27 @@ describe('Billing orders (e2e)', () => {
       email: storedEmail,
       accessToken: registered.body.data.accessToken as string,
       trainerId: registered.body.data.user.id as string,
+    };
+  }
+
+  async function registerStudent(suffix: string) {
+    const storedEmail = `aluno.billing.${suffix}@example.com`;
+    createdEmails.push(storedEmail);
+
+    const registered = await request(app.getHttpServer())
+      .post('/auth/register')
+      .send({
+        name: 'Ana Aluna',
+        email: storedEmail,
+        password: 'Senha123',
+        role: 'STUDENT',
+      })
+      .expect(201);
+
+    return {
+      email: storedEmail,
+      accessToken: registered.body.data.accessToken as string,
+      userId: registered.body.data.user.id as string,
     };
   }
 
@@ -284,5 +309,72 @@ describe('Billing orders (e2e)', () => {
     expect(pendingOrders[0]!.id).toBe(first.body.data.id);
     expect(pendingOrders[0]!.planCode).toBe('YEARLY');
     expect(pendingOrders[0]!.amountCents).toBe(39900);
+  });
+
+  it('billing routes without Bearer return 401 and create no Order', async () => {
+    const pendingBefore = await countPendingOrders();
+
+    const postOrders = await request(app.getHttpServer())
+      .post('/billing/orders')
+      .send({ planCode: 'MONTHLY' });
+    const getPlans = await request(app.getHttpServer()).get('/billing/plans');
+    const getCurrent = await request(app.getHttpServer()).get(
+      '/billing/orders/current',
+    );
+    const getCheckout = await request(app.getHttpServer()).get(
+      '/billing/checkout-config',
+    );
+
+    expect(postOrders.status).toBe(401);
+    expect(getPlans.status).toBe(401);
+    expect(getCurrent.status).toBe(401);
+    expect(getCheckout.status).toBe(401);
+
+    expect(postOrders.body).not.toHaveProperty('data');
+    expect(getPlans.body).not.toHaveProperty('data');
+    expect(getCurrent.body).not.toHaveProperty('data');
+    expect(getCheckout.body).not.toHaveProperty('data');
+
+    expect(await countPendingOrders()).toBe(pendingBefore);
+  });
+
+  it('billing routes with STUDENT JWT return 403 and create no Order', async () => {
+    const student = await registerStudent(`${Date.now()}-ca7`);
+    const pendingBefore = await countPendingOrders();
+
+    const postOrders = await request(app.getHttpServer())
+      .post('/billing/orders')
+      .set('Authorization', `Bearer ${student.accessToken}`)
+      .send({ planCode: 'MONTHLY' });
+    const getPlans = await request(app.getHttpServer())
+      .get('/billing/plans')
+      .set('Authorization', `Bearer ${student.accessToken}`);
+    const getCurrent = await request(app.getHttpServer())
+      .get('/billing/orders/current')
+      .set('Authorization', `Bearer ${student.accessToken}`);
+    const getCheckout = await request(app.getHttpServer())
+      .get('/billing/checkout-config')
+      .set('Authorization', `Bearer ${student.accessToken}`);
+
+    expect(postOrders.status).toBe(403);
+    expect(getPlans.status).toBe(403);
+    expect(getCurrent.status).toBe(403);
+    expect(getCheckout.status).toBe(403);
+
+    expect(postOrders.body).toEqual({
+      statusCode: 403,
+      message: expect.any(String),
+      error: expect.any(String),
+    });
+    expect(postOrders.body).not.toHaveProperty('data');
+    expect(getPlans.body).not.toHaveProperty('data');
+    expect(getCurrent.body).not.toHaveProperty('data');
+    expect(getCheckout.body).not.toHaveProperty('data');
+
+    const ordersForStudent = await db.orm.public.Order.where({
+      trainerId: student.userId,
+    }).all();
+    expect(ordersForStudent).toHaveLength(0);
+    expect(await countPendingOrders()).toBe(pendingBefore);
   });
 });

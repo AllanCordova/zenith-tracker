@@ -181,3 +181,45 @@ test("com assinatura ativa, plano diferente confirma e vai a /treinador/pagament
     expect(push).toHaveBeenCalledWith("/treinador/pagamento");
   });
 });
+
+test("sessão de aluno em /treinador/assinatura permanece em /aluno e não cria pedido", async () => {
+  saveSession("jwt-aluno", {
+    id: "user-1",
+    name: "Ana Aluna",
+    email: "ana@example.com",
+    role: "STUDENT",
+  });
+
+  const createOrder = vi.spyOn(billing, "createOrder");
+
+  renderWithQuery(<AssinaturaPage />);
+
+  await waitFor(() => {
+    expect(push).toHaveBeenCalledWith("/aluno");
+  });
+  expect(screen.queryByRole("button", { name: /mensal|anual|confirmar/i })).toBeNull();
+  expect(screen.queryByText(/escolha o plano/i)).toBeNull();
+  expect(createOrder).not.toHaveBeenCalled();
+});
+
+test("sessão de aluno em /treinador/pagamento permanece em /aluno e não monta formulário", async () => {
+  saveSession("jwt-aluno", {
+    id: "user-1",
+    name: "Ana Aluna",
+    email: "ana@example.com",
+    role: "STUDENT",
+  });
+
+  const getCheckoutConfig = vi.spyOn(billing, "getCheckoutConfig");
+  const getCurrentOrder = vi.spyOn(billing, "getCurrentOrder");
+
+  renderWithQuery(<PagamentoPage />);
+
+  await waitFor(() => {
+    expect(push).toHaveBeenCalledWith("/aluno");
+  });
+  expect(screen.queryByTestId("mp-card-form")).toBeNull();
+  expect(screen.queryByText(/pagamento/i)).toBeNull();
+  expect(getCheckoutConfig).not.toHaveBeenCalled();
+  expect(getCurrentOrder).not.toHaveBeenCalled();
+});
