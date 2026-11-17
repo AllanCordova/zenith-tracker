@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getAccessToken } from "./session";
 
-const FALLBACK_API_URL = "http://localhost:3000";
+const FALLBACK_API_URL = "http://localhost:3001";
 
 export const http = axios.create({
   headers: { "Content-Type": "application/json" },

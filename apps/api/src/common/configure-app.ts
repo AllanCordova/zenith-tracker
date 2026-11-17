@@ -4,7 +4,7 @@ import { ResponseInterceptor } from './response.interceptor';
 import { useSecurityHeaders } from './security-headers';
 import { setupSwagger } from './setup-swagger';
 
-const UI_ORIGIN = 'http://localhost:3001';
+const UI_ORIGIN = 'http://localhost:3000';
 
 export function configureApp(app: INestApplication): void {
   useSecurityHeaders(app);
