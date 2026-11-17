@@ -18,7 +18,7 @@ Acompanhamento nutricional para treinos híbridos: o aluno vê se o dia fechou s
 
 - **API:** NestJS 12 (CommonJS) + Prisma 8 + PostgreSQL — `apps/api`
 - **Web:** Next.js 16 (React, App Router, Tailwind 4) — `apps/web`
-- **Pagamento:** Mercado Pago (sandbox)
+- **Pagamento:** Mercado Pago Checkout Transparente (sandbox)
 - **Banco local:** Docker Compose na raiz
 - **Banco de produção:** Vercel Postgres
 

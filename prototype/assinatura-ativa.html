@@ -41,7 +41,7 @@
         <p class="marca-nome">Mensal</p>
         <p class="apoio">Válida até 13/11/2026</p>
       </section>
-      <p class="apoio">O painel da carteira só abre com pagamento confirmado. Fechar a aba do checkout não libera nem bloqueia o que já foi pago.</p>
+      <p class="apoio">O painel da carteira só abre com pagamento confirmado. Fechar a aba no pagamento não libera nem bloqueia o que já foi pago. Reescolher o plano atual não cria pedido; outro plano segue o fluxo comum.</p>
       <div class="planos">
         <button type="button" class="escolha" data-plano="monthly" aria-pressed="false">
           <p class="marca-nome">Mensal</p>
@@ -73,8 +73,15 @@
       planos.forEach(function (outro) { outro.setAttribute("aria-pressed", "false"); });
       plano.setAttribute("aria-pressed", "true");
       var mesmo = plano.getAttribute("data-plano") === "monthly";
-      confirmar.textContent = mesmo ? "Este já é o seu plano" : "A assinatura já está ativa";
-      confirmar.setAttribute("aria-disabled", "true");
+      if (mesmo) {
+        confirmar.textContent = "Este já é o seu plano";
+        confirmar.setAttribute("href", "assinatura-ativa.html");
+        confirmar.setAttribute("aria-disabled", "true");
+      } else {
+        confirmar.textContent = "Confirmar e pagar";
+        confirmar.setAttribute("href", "checkout.html");
+        confirmar.removeAttribute("aria-disabled");
+      }
     });
   });
 </script>

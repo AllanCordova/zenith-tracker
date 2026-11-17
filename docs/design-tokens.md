@@ -1,8 +1,8 @@
 # 🎨 Tokens de Design
 
 **Projeto:** Zenith Tracker
-**Versão:** 1.6.0
-**Última atualização:** 2026-10-14
+**Versão:** 1.7.0
+**Última atualização:** 2026-11-16
 
 > 🤖 **Este documento existe para a IA parar de inventar um botão diferente a cada
 > tela.** Não é um design system — é o mínimo que dá à prototipagem assistida algo a
@@ -99,11 +99,11 @@ HTML estático em `prototype/`, publicado pelo GitHub Pages. Cores, raio e tipo 
 1. Entrar — `login.html`. A combinação que não confere está em `login-erro.html`.
 2. Cadastro — `cadastro.html`. E-mail já cadastrado está em `cadastro-erro.html`. Aluno cai em `aluno.html` e, se tenta a área do treinador, continua lá. Treinador cai no painel sem assinatura.
 3. Painel bloqueado — `painel.html`. Sem Assinatura Ativa a carteira não abre e nenhum pedido existe.
-4. Escolher o plano — `assinatura.html`. Sem assinatura, a tela diz que não há uma ativa e oferece Mensal e Anual. Confirmar abre o checkout. Sair sem confirmar não cria pedido.
-5. Checkout do gateway — `checkout.html`. Pagar abre o retorno. Cancelar recusa o pedido. Fechar a aba reabre o painel com o pedido ainda Pendente.
-6. Retorno — `retorno.html`. A notificação ainda não chegou: o pedido continua Pendente. Dali se simula aprovação ou recusa.
+4. Escolher o plano — `assinatura.html`. Sem assinatura, a tela diz que não há uma ativa e oferece Mensal e Anual. Confirmar abre o formulário de pagamento. Sair sem confirmar não cria pedido.
+5. Checkout Transparente — `checkout.html`. Formulário do Mercado Pago no próprio produto (token do cartão). Pagar abre a tela de status. Cancelar/recusar o pedido. Fechar a aba reabre o painel com o pedido ainda Pendente.
+6. Status do pedido — `retorno.html`. A notificação ainda não chegou: o pedido continua Pendente. Dali se simula aprovação ou recusa.
 7. Pedido reaproveitado — `assinatura-reaproveita.html`.
-8. Assinatura já ativa — `assinatura-ativa.html`. Mostra o plano vigente. Escolher de novo não cria pedido.
+8. Assinatura já ativa — `assinatura-ativa.html`. Mostra o plano vigente. Reescolher o mesmo plano não cria pedido; escolher outro plano segue o fluxo comum.
 9. Carteira — `wallet.html`, só depois da notificação aprovada. Plano nutricional abre o plano daquele aluno.
 10. Antropometria, rotina e revisão — `nutritionalplane.html`, `activty-plane.html`, `comfirm-plane.html`. Coluna de passos e painel. A rotina continua no meio, na ordem deste produto.
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Checkout — gateway</title>
+<title>Checkout Transparente — Zenith Tracker</title>
 <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -11,15 +11,61 @@
 <link rel="stylesheet" href="tokens.css"/>
 </head>
 <body>
-<main class="gateway">
-  <div class="gateway-caixa">
-    <p class="kicker">Fora do site</p>
-    <h1>Checkout do gateway</h1>
-    <p class="apoio">O pedido já nasceu Pendente antes desta tela. Quem decide se foi pago é a notificação, não este checkout.</p>
-    <a class="btn" href="retorno.html">Pagar</a>
-    <p class="nav"><a href="painel-recusado.html">Cancelar no gateway — pedido recusado</a></p>
-    <p class="nav"><a href="painel-pendente.html">Fechar a aba, cair a rede ou sumir</a></p>
+<div class="app">
+  <aside class="side">
+    <div class="marca-bloco">
+      <span class="mark">Z</span>
+      <div>
+        <p class="marca-nome">Zenith Tracker</p>
+        <p class="apoio">Painel</p>
+      </div>
+    </div>
+    <nav class="side-nav" aria-label="Painel">
+      <a class="nav-item ativo" href="assinatura.html">Assinatura</a>
+    </nav>
+    <div class="side-fim">
+      <button class="icon-btn" type="button" data-theme aria-label="Tema">Aa</button>
+      <a class="sair" href="login.html">Sair</a>
+    </div>
+  </aside>
+  <div class="coluna">
+    <header class="mobile-bar">
+      <p class="marca-nome">Zenith Tracker</p>
+      <a class="sair" href="login.html">Sair</a>
+    </header>
+    <main class="miolo">
+      <p class="kicker">Checkout Transparente</p>
+      <h1>Pagar no próprio produto</h1>
+      <p class="apoio">O Pedido já nasceu Pendente no servidor. O formulário do Mercado Pago devolve um token; a API cobra com o valor do banco. Quem confirma o pago é o webhook, não esta tela.</p>
+      <section class="painel" aria-label="Formulário do Mercado Pago">
+        <p class="rotulo">Cartão (sandbox)</p>
+        <p class="apoio">Titular de teste: APRO. O número não vai para a NestJS — só o token.</p>
+        <label class="campo">
+          <span>Número</span>
+          <input type="text" inputmode="numeric" placeholder="5031 4332 1540 6351" autocomplete="off"/>
+        </label>
+        <label class="campo">
+          <span>Validade</span>
+          <input type="text" placeholder="11/25" autocomplete="off"/>
+        </label>
+        <label class="campo">
+          <span>CVV</span>
+          <input type="text" inputmode="numeric" placeholder="123" autocomplete="off"/>
+        </label>
+        <label class="campo">
+          <span>Titular</span>
+          <input type="text" placeholder="APRO" autocomplete="off"/>
+        </label>
+      </section>
+      <a class="btn" href="retorno.html">Pagar com o token</a>
+      <p class="nav"><a href="painel-recusado.html">Cancelar ou recusar — pedido recusado</a></p>
+      <p class="nav"><a href="painel-pendente.html">Fechar a aba, cair a rede ou sumir</a></p>
+    </main>
+    <nav class="dock" aria-label="Painel">
+      <a class="ativo" href="assinatura.html">Assinatura</a>
+    </nav>
   </div>
-</main>
+</div>
+<script src="theme.js"></script>
 </body>
 </html>

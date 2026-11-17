@@ -129,7 +129,7 @@
 
 **Critérios de aceite:**
 
-- [ ] **Dado** treinador autenticado sem assinatura Ativa e sem pedido Pendente, **quando** escolho o plano e confirmo, **então** nasce um Pedido Pendente e eu sou enviado ao checkout externo.
+- [ ] **Dado** treinador autenticado sem assinatura Ativa e sem pedido Pendente, **quando** escolho o plano e confirmo, **então** nasce um Pedido Pendente e eu vejo o formulário do Mercado Pago (Checkout Transparente) no próprio produto.
 - [ ] **Dado** treinador com assinatura Ativa no plano atual, **quando** escolhe de novo esse mesmo plano, **então** nenhum pedido novo é criado e eu vejo que a assinatura já está ativa.
 - [ ] **Dado** treinador com assinatura Ativa no plano atual, **quando** escolhe um plano diferente e confirma, **então** nasce um Pedido Pendente e eu sigo o fluxo de pagamento comum.
 - [ ] **Dado** pedido já Pendente, **quando** tento criar outro, **então** o sistema reaproveita o pedido aberto em vez de duplicar cobrança.
@@ -141,13 +141,13 @@
 
 ### US06 — Confirmar o pagamento da assinatura · `Must Have` · `M` · Status: `🟡 Ready`
 
-**Como** treinador, **eu quero** que a assinatura só vire Ativa quando o pagamento for confirmado pelo gateway **para que** fechar a aba no checkout não libere nem bloqueie o que eu já paguei.
+**Como** treinador, **eu quero** que a assinatura só vire Ativa quando o pagamento for confirmado pelo gateway **para que** fechar a aba no pagamento não libere nem bloqueie o que eu já paguei.
 
 **Critérios de aceite:**
 
 - [ ] **Dado** Pedido Pendente, **quando** chega a notificação autenticada de pagamento aprovado, **então** o Pedido fica Pago, a Assinatura fica Ativa e o treinador passa a poder vincular aluno.
-- [ ] **Dado** Pedido Pendente, **quando** o treinador volta da tela de retorno e a notificação ainda não chegou, **então** o Pedido continua Pendente e o painel não libera a carteira.
-- [ ] **Dado** Pedido Pendente e o treinador sumiu no checkout (fechou a aba, caiu a rede ou a tela de retorno não abriu), **quando** reabre o painel, **então** o Pedido continua Pendente, a carteira não libera, e isso não conta como pago nem como desistência.
+- [ ] **Dado** Pedido Pendente, **quando** o treinador vê a tela de status e a notificação ainda não chegou, **então** o Pedido continua Pendente e o painel não libera a carteira.
+- [ ] **Dado** Pedido Pendente e o treinador sumiu no pagamento (fechou a aba, caiu a rede ou a tela de status não abriu), **quando** reabre o painel, **então** o Pedido continua Pendente, a carteira não libera, e isso não conta como pago nem como desistência.
 - [ ] **Dado** Pedido Pendente, **quando** a notificação informa recusa ou expiração, **então** o Pedido muda para Recusado ou Expirado, a assinatura não ativa, e o treinador pode gerar um novo pedido.
 - [ ] **Dado** notificação que não passa na verificação, **quando** ela chega, **então** o Pedido não muda de estado.
 
@@ -312,7 +312,7 @@
 | RN11 | O aluno nunca vê a margem de erro nem o teto sugerido bruto. A faixa “ainda ok” usada por alerta e medidor é teto do dia + margem. |
 | RN12 | Só o treinador dono do vínculo grava o setup: antropometria, rotina, objetivo, margem e a revisão inicial (ou de uma edição). Ele pode editar dieta ou treino a qualquer momento; cada gravação é um setup novo. Ele não grava o teto de cada dia. |
 | RN13 | Um Pedido pertence a um treinador e admite muitos Pagamentos (1:N). Não existem dois Pedidos Pendentes do mesmo treinador ao mesmo tempo. |
-| RN14 | Quem decide que o Pedido foi Pago é a notificação autenticada do gateway, não a tela de retorno do checkout. |
+| RN14 | Quem decide que o Pedido foi Pago é a notificação autenticada do gateway, não a tela de status depois de tentar pagar. |
 | RN15 | Notificação que falha na verificação não altera Pedido nem Assinatura. |
 | RN16 | Vincular aluno, montar plano e usar a carteira exigem Assinatura Ativa. Não há período de cortesia: o primeiro vínculo já cobra essa assinatura. Sem ela, o treinador só entra, vê o estado da assinatura e pode contratar. |
 | RN17 | No dia em que o volume de treino registrado supera a rotina do plano, a meta do dia aumenta a partir do teto vigente. Sem treino extra, a meta do dia é o teto vigente. |
@@ -359,3 +359,4 @@
 | 2026-09-08 | 1.0.0 | RN16: sem período de cortesia — primeiro vínculo já exige Assinatura Ativa |
 | 2026-10-14 | 1.0.0 | US06: critério do nó vermelho — sumir no checkout e reabrir o painel deixa o Pedido Pendente |
 | 2026-11-16 | 1.0.0 | US05/US06 → `🟡 Ready`; US05: recontratar o mesmo plano não cria pedido; plano diferente segue o fluxo comum |
+| 2026-11-16 | 1.0.0 | Pagamento: Checkout Transparente no próprio produto (não redireciona para o site do gateway) |
