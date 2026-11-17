@@ -1,8 +1,8 @@
 # 🛠️ Architecture / Software Design Document
 
 **Projeto:** Zenith Tracker
-**Versão:** 1.7.0
-**Última atualização:** 2026-11-16
+**Versão:** 1.7.1
+**Última atualização:** 2026-11-17
 
 > 🤖 **O `prd.md` responde _o quê_ o produto faz. Este responde _onde as coisas
 > moram e como se chamam_.** Detalhe de tela — rota, componente, contrato —
@@ -57,6 +57,7 @@ O `nest new` / `create-next-app` trazem o esqueleto. **Só entra no projeto o qu
 | `api` | `class-validator`, `class-transformer` | DTOs + `ValidationPipe` com whitelist (ID7) |
 | `api` | `@nestjs/swagger` | contrato vivo (ID14) |
 | `api` | `prisma` (major 8) | ORM; contrato em `src/prisma/contract.prisma` |
+| `api` | `temporal-polyfill` | Prisma 8 usa codec Temporal em `DateTime`; Node 24 ainda não tem `Temporal` nativo |
 | `api` | `mercadopago` | cobra o token do cartão e verifica o webhook (ID20, ID21) |
 | `web` | `vitest`, `@vitejs/plugin-react`, `jsdom`, `@testing-library/react`, `@testing-library/dom`, `vite-tsconfig-paths` | suíte do front (não vem no `create-next-app`) |
 | `web` | `lucide-react` | ícones (papel aluno/treinador, toggle de tema) |
@@ -347,6 +348,7 @@ Unicidade: `User.email`; par (`trainerId`, `studentId`) em `Enrollment`; no máx
 | 2026-10-14 | 1.5.0 | Glossário: um nome inglês por termo do PRD. ER: campos do plano (RN05–RN12) e `PlanSport` |
 | 2026-10-14 | 1.6.0 | Estilo: paleta e tipo do diet (Outfit, Fraunces; sem tema escuro) |
 | 2026-11-16 | 1.7.0 | Pagamento: Checkout Transparente (token + cobrança no servidor + webhook); libera `@mercadopago/sdk-react`; nomes `PAGAMENTO_*` no `.env.example` |
+| 2026-11-17 | 1.7.1 | Libera `temporal-polyfill` na API (codec Temporal do Prisma 8 em Node 24) |
 
 ---
 

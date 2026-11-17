@@ -17,7 +17,7 @@
   - Teste primeiro: contrato Prisma declara `Order` e `Subscription` com os campos da spec; migration aplica; app sobe. Falha hoje: só existe `User`.
   - Arquivos previstos: `apps/api/src/prisma/contract.prisma`, migration, `docs/architecture.md` (glossário/ER)
 
-- [ ] **Tarefa 2 — Criar Pedido Pendente e abrir o formulário**
+- [x] **Tarefa 2 — Criar Pedido Pendente e abrir o formulário**
   - Cobre: CA1, CA5
   - Teste primeiro: e2e `POST /billing/orders` com treinador sem assinatura cria `PENDING` com `amountCents` do catálogo; `GET /billing/checkout-config` devolve public key. Vitest: confirmar em `/treinador/assinatura` chama o repositório e cai em `/treinador/pagamento` com o formulário; sair sem confirmar não chama `POST`. Falha hoje: não há billing nem rotas.
   - Arquivos previstos: `apps/api/src/billing/`, `apps/api/test/`, `apps/web/app/treinador/`, `apps/web/repositories/billing.ts`, `apps/web/__tests__/`

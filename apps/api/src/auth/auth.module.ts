@@ -16,5 +16,6 @@ import { TrainerAreaController } from './trainer-area.controller';
   ],
   controllers: [AuthController, StudentAreaController, TrainerAreaController],
   providers: [AuthService, JwtStrategy, JwtAuthGuard, RolesGuard],
+  exports: [JwtAuthGuard, RolesGuard, PassportModule],
 })
 export class AuthModule {}

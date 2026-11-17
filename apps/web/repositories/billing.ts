@@ -1,0 +1,52 @@
+import { http } from "@/lib/http";
+
+export type PlanCode = "MONTHLY" | "YEARLY";
+
+export type BillingPlan = {
+  planCode: PlanCode;
+  amountCents: number;
+};
+
+export type Order = {
+  id: string;
+  trainerId: string;
+  planCode: PlanCode;
+  amountCents: number;
+  status: "PENDING" | "PAID" | "REFUSED" | "EXPIRED";
+  createdAt: string;
+};
+
+export type CheckoutConfig = {
+  publicKey: string;
+};
+
+type Envelope<T> = {
+  data?: T;
+};
+
+export async function listPlans(): Promise<BillingPlan[]> {
+  const response = await http.get<Envelope<BillingPlan[]>>("/billing/plans");
+  return response.data.data ?? [];
+}
+
+export async function createOrder(input: {
+  planCode: PlanCode;
+}): Promise<Order | undefined> {
+  const response = await http.post<Envelope<Order>>("/billing/orders", input);
+  return response.data.data;
+}
+
+export async function getCurrentOrder(): Promise<Order | undefined> {
+  const response = await http.get<Envelope<Order>>("/billing/orders/current");
+  if (response.status === 404) {
+    return undefined;
+  }
+  return response.data.data;
+}
+
+export async function getCheckoutConfig(): Promise<CheckoutConfig | undefined> {
+  const response = await http.get<Envelope<CheckoutConfig>>(
+    "/billing/checkout-config",
+  );
+  return response.data.data;
+}
