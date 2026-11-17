@@ -149,3 +149,35 @@ test("UI mostra que a assinatura já está ativa ao tentar o mesmo planCode", as
 
   expect(push).not.toHaveBeenCalledWith("/treinador/pagamento");
 });
+
+test("com assinatura ativa, plano diferente confirma e vai a /treinador/pagamento", async () => {
+  saveTrainerSession();
+
+  const createOrder = vi.spyOn(billing, "createOrder").mockResolvedValue({
+    id: "order-yearly",
+    trainerId: "user-2",
+    planCode: "YEARLY",
+    amountCents: 39900,
+    status: "PENDING",
+    createdAt: "2026-11-16T00:00:00.000Z",
+  });
+
+  vi.spyOn(billing, "listPlans").mockResolvedValue([
+    { planCode: "MONTHLY", amountCents: 4990 },
+    { planCode: "YEARLY", amountCents: 39900 },
+  ]);
+
+  renderWithQuery(<AssinaturaPage />);
+
+  await waitFor(() => {
+    expect(screen.getByRole("button", { name: /anual/i })).toBeTruthy();
+  });
+
+  fireEvent.click(screen.getByRole("button", { name: /anual/i }));
+  fireEvent.click(screen.getByRole("button", { name: /confirmar/i }));
+
+  await waitFor(() => {
+    expect(createOrder).toHaveBeenCalledWith({ planCode: "YEARLY" });
+    expect(push).toHaveBeenCalledWith("/treinador/pagamento");
+  });
+});

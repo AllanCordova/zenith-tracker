@@ -191,4 +191,55 @@ describe('Billing orders (e2e)', () => {
     expect(pendingAfter!.amountCents).toBe(39900);
     expect(pendingAfter!.status).toBe('PENDING');
   });
+
+  it('POST /billing/orders with ACTIVE MONTHLY + YEARLY creates PENDING yearly; Subscription stays ACTIVE', async () => {
+    const trainer = await registerTrainer(`${Date.now()}-ca3`);
+
+    const activatingOrder = await db.orm.public.Order.create({
+      trainerId: trainer.trainerId,
+      planCode: 'MONTHLY',
+      amountCents: 4990,
+      status: 'PAID',
+    });
+
+    // TODO #26 — quem cria Assinatura pelo pagamento é a #26
+    const subscription = await db.orm.public.Subscription.create({
+      trainerId: trainer.trainerId,
+      orderId: activatingOrder.id,
+      planCode: 'MONTHLY',
+      status: 'ACTIVE',
+      activatedAt: Temporal.Now.instant(),
+    });
+
+    const response = await request(app.getHttpServer())
+      .post('/billing/orders')
+      .set('Authorization', `Bearer ${trainer.accessToken}`)
+      .send({ planCode: 'YEARLY' });
+
+    expect(response.status).toBe(201);
+    expect(response.body.statusCode).toBe(201);
+    expect(response.body.data).toEqual({
+      id: expect.any(String),
+      trainerId: trainer.trainerId,
+      planCode: 'YEARLY',
+      amountCents: 39900,
+      status: 'PENDING',
+      createdAt: expect.any(String),
+    });
+
+    const pending = await db.orm.public.Order.first({
+      id: response.body.data.id,
+    });
+    expect(pending).not.toBeNull();
+    expect(pending!.planCode).toBe('YEARLY');
+    expect(pending!.amountCents).toBe(39900);
+    expect(pending!.status).toBe('PENDING');
+
+    const subscriptionAfter = await db.orm.public.Subscription.first({
+      id: subscription.id,
+    });
+    expect(subscriptionAfter).not.toBeNull();
+    expect(subscriptionAfter!.status).toBe('ACTIVE');
+    expect(subscriptionAfter!.planCode).toBe('MONTHLY');
+  });
 });

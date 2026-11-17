@@ -27,7 +27,7 @@
   - Teste primeiro: e2e com `Subscription` ACTIVE (semeada no banco, `// TODO #26`) no mesmo `planCode` → `POST` não cria Pedido; resposta indica assinatura já ativa. Vitest: UI mostra que já está ativo.
   - Arquivos previstos: `apps/api/src/billing/`, `apps/api/test/`, `apps/web/app/treinador/assinatura/`, `apps/web/__tests__/`
 
-- [ ] **Tarefa 4 — Permitir plano diferente com assinatura ativa**
+- [x] **Tarefa 4 — Permitir plano diferente com assinatura ativa**
   - Cobre: CA3
   - Teste primeiro: e2e ACTIVE `MONTHLY` + `POST` `YEARLY` cria/atualiza `PENDING` com valor anual; `Subscription` continua `ACTIVE`. Vitest: fluxo vai a `/treinador/pagamento`.
   - Arquivos previstos: `apps/api/src/billing/`, `apps/api/test/`, `apps/web/__tests__/`
