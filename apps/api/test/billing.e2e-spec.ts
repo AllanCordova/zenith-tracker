@@ -492,4 +492,75 @@ describe('Billing orders (e2e)', () => {
     }).all();
     expect(pendingOrders).toHaveLength(1);
   });
+
+  it('opening checkout leaves Order PENDING and ACTIVE Subscription unchanged; no charge route (CA10)', async () => {
+    const trainer = await registerTrainer(`${Date.now()}-ca10`);
+
+    const activatingOrder = await db.orm.public.Order.create({
+      trainerId: trainer.trainerId,
+      planCode: 'MONTHLY',
+      amountCents: 4990,
+      status: 'PAID',
+    });
+
+    // TODO #26 — quem cria Assinatura pelo pagamento é a #26
+    const subscription = await db.orm.public.Subscription.create({
+      trainerId: trainer.trainerId,
+      orderId: activatingOrder.id,
+      planCode: 'MONTHLY',
+      status: 'ACTIVE',
+      activatedAt: Temporal.Now.instant(),
+    });
+
+    const created = await request(app.getHttpServer())
+      .post('/billing/orders')
+      .set('Authorization', `Bearer ${trainer.accessToken}`)
+      .send({ planCode: 'YEARLY' });
+
+    expect(created.status).toBe(201);
+    expect(created.body.data.status).toBe('PENDING');
+
+    const current = await request(app.getHttpServer())
+      .get('/billing/orders/current')
+      .set('Authorization', `Bearer ${trainer.accessToken}`);
+    const checkout = await request(app.getHttpServer())
+      .get('/billing/checkout-config')
+      .set('Authorization', `Bearer ${trainer.accessToken}`);
+
+    expect(current.status).toBe(200);
+    expect(current.body.data.status).toBe('PENDING');
+    expect(current.body.data.id).toBe(created.body.data.id);
+    expect(checkout.status).toBe(200);
+    expect(checkout.body.data.publicKey).toEqual(expect.any(String));
+
+    const chargePaths = [
+      '/billing/charges',
+      '/billing/payments',
+      `/billing/orders/${created.body.data.id}/charge`,
+      `/billing/orders/${created.body.data.id}/pay`,
+    ];
+
+    for (const path of chargePaths) {
+      const charge = await request(app.getHttpServer())
+        .post(path)
+        .set('Authorization', `Bearer ${trainer.accessToken}`)
+        .send({ token: 'fake-card-token' });
+      expect(charge.status).toBe(404);
+    }
+
+    const pendingAfter = await db.orm.public.Order.first({
+      id: created.body.data.id,
+    });
+    expect(pendingAfter).not.toBeNull();
+    expect(pendingAfter!.status).toBe('PENDING');
+    expect(pendingAfter!.planCode).toBe('YEARLY');
+    expect(pendingAfter!.amountCents).toBe(39900);
+
+    const subscriptionAfter = await db.orm.public.Subscription.first({
+      id: subscription.id,
+    });
+    expect(subscriptionAfter).not.toBeNull();
+    expect(subscriptionAfter!.status).toBe('ACTIVE');
+    expect(subscriptionAfter!.planCode).toBe('MONTHLY');
+  });
 });

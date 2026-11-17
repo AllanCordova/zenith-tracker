@@ -52,7 +52,7 @@
   - Teste primeiro: e2e `GET /billing/orders/current` devolve o Pendente. Vitest: após `POST` ok e “rede” falha na navegação, reabrir contratação lê o current e segue ao formulário sem segundo `POST` desnecessário.
   - Arquivos previstos: `apps/api/src/billing/`, `apps/api/test/`, `apps/web/repositories/`, `apps/web/__tests__/`
 
-- [ ] **Tarefa 9 — Formulário não marca Pedido como pago**
+- [x] **Tarefa 9 — Formulário não marca Pedido como pago**
   - Cobre: CA10
   - Teste primeiro: e2e/Vitest — com formulário montado (ou página `/treinador/pagamento` aberta) o Pedido segue `PENDING`; Assinatura ACTIVE (se houver) não muda; não existe chamada de cobrança nesta Issue. Falha hoje: nada a proteger; o teste trava a regressão.
   - Arquivos previstos: `apps/web/app/treinador/pagamento/`, `apps/web/__tests__/`, `apps/api/test/`
