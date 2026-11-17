@@ -1,7 +1,7 @@
 # 🛠️ Architecture / Software Design Document
 
 **Projeto:** Zenith Tracker
-**Versão:** 1.7.1
+**Versão:** 1.8.0
 **Última atualização:** 2026-11-17
 
 > 🤖 **O `prd.md` responde _o quê_ o produto faz. Este responde _onde as coisas
@@ -122,8 +122,8 @@ Autenticação no Swagger: esquema Bearer JWT, o mesmo das rotas protegidas.
     │   │   ├── users/
     │   │   ├── enrollments/
     │   │   ├── nutrition-plans/
-    │   │   ├── orders/
-    │   │   ├── payments/          # webhook Mercado Pago
+    │   │   ├── billing/           # Pedido PENDING + checkout-config (US05)
+    │   │   ├── payments/          # webhook Mercado Pago (US06 / #26)
     │   │   ├── subscriptions/
     │   │   ├── common/            # interceptor, filter, pipe
     │   │   ├── prisma/            # contract.prisma, db.ts, queries
@@ -332,6 +332,7 @@ Unicidade: `User.email`; par (`trainerId`, `studentId`) em `Enrollment`; no máx
 | Domínio | Módulo (pasta) | Guard | Dados (repository) | US |
 | :------ | :------------- | :---- | :----------------- | :-- |
 | Autenticação e conta | `auth/`, `users/` | `JwtAuthGuard` + `RolesGuard` | Prisma `User` | US01 |
+| Contratação / Pedido | `billing/` | `JwtAuthGuard` + `RolesGuard` (`TRAINER`) | Prisma `Order`, `Subscription` (leitura) | US05 |
 
 ---
 
@@ -349,6 +350,7 @@ Unicidade: `User.email`; par (`trainerId`, `studentId`) em `Enrollment`; no máx
 | 2026-10-14 | 1.6.0 | Estilo: paleta e tipo do diet (Outfit, Fraunces; sem tema escuro) |
 | 2026-11-16 | 1.7.0 | Pagamento: Checkout Transparente (token + cobrança no servidor + webhook); libera `@mercadopago/sdk-react`; nomes `PAGAMENTO_*` no `.env.example` |
 | 2026-11-17 | 1.7.1 | Libera `temporal-polyfill` na API (codec Temporal do Prisma 8 em Node 24) |
+| 2026-11-17 | 1.8.0 | Mapa/árvore: `billing/` (US05); `payments/` fica para webhook (#26) |
 
 ---
 
