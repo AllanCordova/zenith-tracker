@@ -12,7 +12,7 @@
 
 ## Tarefas
 
-- [ ] **Tarefa 1 — Modelar Pedido e Assinatura no Prisma**
+- [x] **Tarefa 1 — Modelar Pedido e Assinatura no Prisma**
   - Cobre: nenhum CA (passo técnico)
   - Teste primeiro: contrato Prisma declara `Order` e `Subscription` com os campos da spec; migration aplica; app sobe. Falha hoje: só existe `User`.
   - Arquivos previstos: `apps/api/src/prisma/contract.prisma`, migration, `docs/architecture.md` (glossário/ER)

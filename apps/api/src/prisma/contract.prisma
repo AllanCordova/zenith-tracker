@@ -6,10 +6,53 @@ enum Role {
   TRAINER = "TRAINER"
 }
 
+enum PlanCode {
+  @@type("pg/text@1")
+  MONTHLY = "MONTHLY"
+  YEARLY  = "YEARLY"
+}
+
+enum OrderStatus {
+  @@type("pg/text@1")
+  PENDING = "PENDING"
+  PAID    = "PAID"
+  REFUSED = "REFUSED"
+  EXPIRED = "EXPIRED"
+}
+
+enum SubscriptionStatus {
+  @@type("pg/text@1")
+  ACTIVE   = "ACTIVE"
+  INACTIVE = "INACTIVE"
+}
+
 model User {
   id           String @id @default(uuid())
   name         String
   email        String @unique
   passwordHash String
   role         Role
+}
+
+model Order {
+  id          String      @id @default(uuid())
+  trainerId   String
+  planCode    PlanCode
+  amountCents Int
+  status      OrderStatus
+  createdAt   DateTime    @default(now())
+  trainer     User        @relation(fields: [trainerId], references: [id])
+  // TODO #26: Payment / webhook cria ou troca Subscription a partir do Pedido pago
+}
+
+model Subscription {
+  id          String             @id @default(uuid())
+  trainerId   String
+  orderId     String
+  planCode    PlanCode
+  status      SubscriptionStatus
+  activatedAt DateTime
+  trainer     User               @relation(fields: [trainerId], references: [id])
+  order       Order              @relation(fields: [orderId], references: [id])
+  // TODO #26: criação/troca de Assinatura Ativa pelo pagamento
 }

@@ -208,9 +208,9 @@ Cada termo do PRD tem um nome inglês só dele. Aluno e treinador compartilham a
 | Motor | `CalorieEngine` | cálculo de RN05–RN09. Não é tabela |
 | Margem de erro | `errorMarginKcal` | coluna de `NutritionPlan`. O aluno não vê |
 | Meta do dia | `dailyTargetKcal` | leitura (RN17). Não é tabela |
-| Pedido | `Order` | `id`, `trainerId`, `planCode`, `status` (`PENDING` \| `PAID` \| `REFUSED` \| `EXPIRED`), `createdAt` |
+| Pedido | `Order` | `id`, `trainerId`, `planCode` (`MONTHLY` \| `YEARLY`), `amountCents`, `status` (`PENDING` \| `PAID` \| `REFUSED` \| `EXPIRED`), `createdAt` |
 | Pagamento | `Payment` | `id`, `orderId`, `gatewayPaymentId`, `status`, `receivedAt` |
-| Assinatura | `Subscription` | `id`, `trainerId`, `orderId` que ativou, `status` (`ACTIVE` \| `INACTIVE`), `activatedAt` |
+| Assinatura | `Subscription` | `id`, `trainerId`, `orderId` que ativou, `planCode` (`MONTHLY` \| `YEARLY`), `status` (`ACTIVE` \| `INACTIVE`), `activatedAt` |
 | Medidor sincero | `honestMeter` | leitura binária (RN18). Não é tabela |
 
 A conta dos dois papéis é a tabela `User`: `id`, `name`, `email` (único), `passwordHash`, `role` (`STUDENT` \| `TRAINER`).
@@ -284,7 +284,8 @@ erDiagram
     Order {
         uuid id PK
         uuid trainerId FK
-        string planCode
+        enum planCode
+        int amountCents
         enum status
         datetime createdAt
     }
@@ -301,6 +302,7 @@ erDiagram
         uuid id PK
         uuid trainerId FK
         uuid orderId FK
+        enum planCode
         enum status
         datetime activatedAt
     }
