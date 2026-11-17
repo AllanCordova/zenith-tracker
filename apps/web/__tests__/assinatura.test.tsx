@@ -223,3 +223,72 @@ test("sessão de aluno em /treinador/pagamento permanece em /aluno e não monta 
   expect(getCheckoutConfig).not.toHaveBeenCalled();
   expect(getCurrentOrder).not.toHaveBeenCalled();
 });
+
+test("após POST ok e falha na navegação, reabrir contratação lê current e vai ao formulário sem segundo POST", async () => {
+  saveTrainerSession();
+
+  const pendingOrder = {
+    id: "order-pending-ca9",
+    trainerId: "user-2",
+    planCode: "MONTHLY" as const,
+    amountCents: 4990,
+    status: "PENDING" as const,
+    createdAt: "2026-11-16T00:00:00.000Z",
+  };
+
+  const createOrder = vi.spyOn(billing, "createOrder").mockResolvedValue(pendingOrder);
+  vi.spyOn(billing, "listPlans").mockResolvedValue([
+    { planCode: "MONTHLY", amountCents: 4990 },
+    { planCode: "YEARLY", amountCents: 39900 },
+  ]);
+
+  push.mockImplementationOnce(() => {
+    throw new Error("Network Error");
+  });
+
+  const { unmount } = renderWithQuery(<AssinaturaPage />);
+
+  await waitFor(() => {
+    expect(screen.getByRole("button", { name: /mensal/i })).toBeTruthy();
+  });
+
+  fireEvent.click(screen.getByRole("button", { name: /mensal/i }));
+  fireEvent.click(screen.getByRole("button", { name: /confirmar/i }));
+
+  await waitFor(() => {
+    expect(createOrder).toHaveBeenCalledTimes(1);
+    expect(createOrder).toHaveBeenCalledWith({ planCode: "MONTHLY" });
+  });
+
+  unmount();
+  push.mockReset();
+  createOrder.mockClear();
+
+  const getCurrentOrder = vi
+    .spyOn(billing, "getCurrentOrder")
+    .mockResolvedValue(pendingOrder);
+  vi.spyOn(billing, "listPlans").mockResolvedValue([
+    { planCode: "MONTHLY", amountCents: 4990 },
+    { planCode: "YEARLY", amountCents: 39900 },
+  ]);
+  vi.spyOn(billing, "getCheckoutConfig").mockResolvedValue({
+    publicKey: "TEST-PUBLIC-KEY",
+  });
+
+  const remount = renderWithQuery(<AssinaturaPage />);
+
+  await waitFor(() => {
+    expect(getCurrentOrder).toHaveBeenCalled();
+    expect(push).toHaveBeenCalledWith("/treinador/pagamento");
+  });
+  expect(createOrder).not.toHaveBeenCalled();
+
+  remount.unmount();
+  push.mockReset();
+
+  renderWithQuery(<PagamentoPage />);
+
+  await waitFor(() => {
+    expect(screen.getByTestId("mp-card-form")).toBeTruthy();
+  });
+});

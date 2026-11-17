@@ -47,7 +47,7 @@
   - Teste primeiro: e2e `planCode` inválido/ausente, body com `amountCents` ou preço → 400; Pendente inalterado ou inexistente; valor no banco nunca é o enviado pelo cliente.
   - Arquivos previstos: `apps/api/src/billing/`, `apps/api/test/`
 
-- [ ] **Tarefa 8 — Recuperar Pendente após falha de rede na UI**
+- [x] **Tarefa 8 — Recuperar Pendente após falha de rede na UI**
   - Cobre: CA9
   - Teste primeiro: e2e `GET /billing/orders/current` devolve o Pendente. Vitest: após `POST` ok e “rede” falha na navegação, reabrir contratação lê o current e segue ao formulário sem segundo `POST` desnecessário.
   - Arquivos previstos: `apps/api/src/billing/`, `apps/api/test/`, `apps/web/repositories/`, `apps/web/__tests__/`

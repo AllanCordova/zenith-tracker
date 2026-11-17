@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/ui/form-error";
 import { useBillingPlans } from "@/hooks/use-billing-plans";
 import { useCreateOrder } from "@/hooks/use-create-order";
+import { useCurrentOrder } from "@/hooks/use-current-order";
 import { areaPathForRole, getAccessToken, getSessionUser } from "@/lib/session";
 import type { PlanCode } from "@/repositories/billing";
 
@@ -27,8 +28,10 @@ export default function AssinaturaPage() {
   const token = getAccessToken();
   const user = getSessionUser();
   const role = user?.role;
+  const allowed = Boolean(token && role === "TRAINER");
   const plans = useBillingPlans();
   const createOrder = useCreateOrder();
+  const currentOrder = useCurrentOrder(allowed);
   const [selected, setSelected] = useState<PlanCode | null>(null);
   const [error, setError] = useState("");
 
@@ -41,6 +44,12 @@ export default function AssinaturaPage() {
       router.push(areaPathForRole(role));
     }
   }, [token, role, router]);
+
+  useEffect(() => {
+    if (currentOrder.data?.status === "PENDING") {
+      router.push("/treinador/pagamento");
+    }
+  }, [currentOrder.data, router]);
 
   if (!token || role === "STUDENT") {
     return null;

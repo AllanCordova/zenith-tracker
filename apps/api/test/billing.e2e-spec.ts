@@ -452,4 +452,44 @@ describe('Billing orders (e2e)', () => {
     }).all();
     expect(ordersForEmpty).toHaveLength(0);
   });
+
+  it('GET /billing/orders/current returns PENDING after POST without duplicating (CA9)', async () => {
+    const trainer = await registerTrainer(`${Date.now()}-ca9`);
+
+    const created = await request(app.getHttpServer())
+      .post('/billing/orders')
+      .set('Authorization', `Bearer ${trainer.accessToken}`)
+      .send({ planCode: 'MONTHLY' });
+
+    expect(created.status).toBe(201);
+    expect(created.body.data.status).toBe('PENDING');
+
+    const current = await request(app.getHttpServer())
+      .get('/billing/orders/current')
+      .set('Authorization', `Bearer ${trainer.accessToken}`);
+
+    expect(current.status).toBe(200);
+    expect(current.body.statusCode).toBe(200);
+    expect(current.body.data).toEqual({
+      id: created.body.data.id,
+      trainerId: trainer.trainerId,
+      planCode: 'MONTHLY',
+      amountCents: 4990,
+      status: 'PENDING',
+      createdAt: expect.any(String),
+    });
+
+    const again = await request(app.getHttpServer())
+      .get('/billing/orders/current')
+      .set('Authorization', `Bearer ${trainer.accessToken}`);
+
+    expect(again.status).toBe(200);
+    expect(again.body.data.id).toBe(created.body.data.id);
+
+    const pendingOrders = await db.orm.public.Order.where({
+      trainerId: trainer.trainerId,
+      status: 'PENDING',
+    }).all();
+    expect(pendingOrders).toHaveLength(1);
+  });
 });
