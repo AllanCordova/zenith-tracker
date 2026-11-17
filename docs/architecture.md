@@ -1,8 +1,8 @@
 # 🛠️ Architecture / Software Design Document
 
 **Projeto:** Zenith Tracker
-**Versão:** 1.6.0
-**Última atualização:** 2026-10-14
+**Versão:** 1.7.0
+**Última atualização:** 2026-11-16
 
 > 🤖 **O `prd.md` responde _o quê_ o produto faz. Este responde _onde as coisas
 > moram e como se chamam_.** Detalhe de tela — rota, componente, contrato —
@@ -41,7 +41,7 @@
 - **Testes:**
   - `apps/api`: **Jest** + **oxlint** (gerador CJS do Nest 12)
   - `apps/web`: **Vitest** + Testing Library + **ESLint** (`eslint`, não `next lint`)
-- **Pagamento:** Mercado Pago (Checkout Pro) em **sandbox**
+- **Pagamento:** Mercado Pago (**Checkout Transparente**) em **sandbox**
 - **Banco local:** PostgreSQL via Docker Compose na raiz
 - **Banco de produção:** Vercel Postgres, com URL de *connection pooling* do Prisma
 
@@ -57,7 +57,7 @@ O `nest new` / `create-next-app` trazem o esqueleto. **Só entra no projeto o qu
 | `api` | `class-validator`, `class-transformer` | DTOs + `ValidationPipe` com whitelist (ID7) |
 | `api` | `@nestjs/swagger` | contrato vivo (ID14) |
 | `api` | `prisma` (major 8) | ORM; contrato em `src/prisma/contract.prisma` |
-| `api` | `mercadopago` | checkout e verificação do webhook (ID20, ID21) |
+| `api` | `mercadopago` | cobra o token do cartão e verifica o webhook (ID20, ID21) |
 | `web` | `vitest`, `@vitejs/plugin-react`, `jsdom`, `@testing-library/react`, `@testing-library/dom`, `vite-tsconfig-paths` | suíte do front (não vem no `create-next-app`) |
 | `web` | `lucide-react` | ícones (papel aluno/treinador, toggle de tema) |
 | `web` | `next-themes` | tema claro/escuro (Context + `localStorage`; classe `dark`) |
@@ -67,6 +67,7 @@ O `nest new` / `create-next-app` trazem o esqueleto. **Só entra no projeto o qu
 | `web` | `zod` | schema de validação no cliente |
 | `web` | `react-hook-form`, `@hookform/resolvers` | formulários de cadastro/login |
 | `web` | `sonner` | toast de ação (sucesso/erro) no layout, canto superior direito; páginas usam `lib/toast.ts`, não importam `sonner` |
+| `web` | `@mercadopago/sdk-react` | formulário de cartão do Checkout Transparente; só a public key no browser |
 
 ### 🧱 2.1. Backend — regras estruturais
 
@@ -82,9 +83,9 @@ O `nest new` / `create-next-app` trazem o esqueleto. **Só entra no projeto o qu
 
 **Resposta e erro (ID10).** Interceptor global de sucesso: `{ statusCode, data }`. Exception filter global: `{ statusCode, message, error }`. Sem stack, senha, token ou chave de gateway no corpo, no log commitável ou no Swagger de exemplo.
 
-**Segredos (ID17, ID21).** `ConfigModule` lê `.env` local (arquivo gitignored) e as variáveis da plataforma em CI/produção. `DATABASE_URL`, `JWT_SECRET`, chaves do Mercado Pago e segredo do webhook **nunca** aparecem no Git, em YAML de workflow em claro, nem neste documento.
+**Segredos (ID17, ID21).** `ConfigModule` lê `.env` local (arquivo gitignored) e as variáveis da plataforma em CI/produção. `DATABASE_URL`, `JWT_SECRET`, `PAGAMENTO_ACCESS_TOKEN`, `PAGAMENTO_PUBLIC_KEY`, `PAGAMENTO_WEBHOOK_SECRET` **nunca** aparecem no Git, em YAML de workflow em claro, nem neste documento. No repositório ficam só os **nomes** em `apps/api/.env.example` (e o equivalente do web, se houver public key de build).
 
-**Pagamento (ID20, ID21).** O Pedido (`Order`) nasce na API, já `PENDING`, **antes** do redirecionamento. O checkout é o Mercado Pago (sandbox). Quem muda `Order` para `PAID` / `REFUSED` / `EXPIRED` é o **webhook** autenticado (verificação de assinatura). A tela de retorno do Next **não** confirma pagamento: só consulta o Pedido. Notificação que falha na assinatura não altera Pedido nem `Subscription`. Chaves fora do repositório.
+**Pagamento (ID20, ID21).** Mercado Pago **Checkout Transparente** em sandbox. O Pedido (`Order`) nasce na API, já `PENDING`, com o **valor lido do banco**, **antes** da cobrança. O front monta o formulário do Mercado Pago no próprio produto; o SDK devolve um **token** de cartão — o número do cartão não passa pela NestJS. A API cobra esse token no gateway com **chave de idempotência** e o valor do Pedido (nunca o valor vindo do browser). Quem muda `Order` para `PAID` / `REFUSED` / `EXPIRED` é o **webhook** público autenticado por assinatura; a tela de status do Next **não** confirma pagamento: só consulta o Pedido. Notificação inválida ou repetida não altera de novo Pedido nem `Subscription`.
 
 **CI (ID18).** GitHub Actions no Pull Request: lint + suíte de `apps/api` e `apps/web`. Postgres de serviço no job (espelha o Compose). Sem `DATABASE_URL` de produção no workflow.
 
@@ -343,6 +344,7 @@ Unicidade: `User.email`; par (`trainerId`, `studentId`) em `Enrollment`; no máx
 | 2026-09-21 | 1.2.0 | Front: libs de UI/tema/HTTP/formulário; camadas `ui` / `hooks` / `lib/http`; tokens claros e escuros |
 | 2026-10-14 | 1.5.0 | Glossário: um nome inglês por termo do PRD. ER: campos do plano (RN05–RN12) e `PlanSport` |
 | 2026-10-14 | 1.6.0 | Estilo: paleta e tipo do diet (Outfit, Fraunces; sem tema escuro) |
+| 2026-11-16 | 1.7.0 | Pagamento: Checkout Transparente (token + cobrança no servidor + webhook); libera `@mercadopago/sdk-react`; nomes `PAGAMENTO_*` no `.env.example` |
 
 ---
 
