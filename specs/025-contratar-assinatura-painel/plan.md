@@ -22,7 +22,7 @@
   - Teste primeiro: e2e `POST /billing/orders` com treinador sem assinatura cria `PENDING` com `amountCents` do catálogo; `GET /billing/checkout-config` devolve public key. Vitest: confirmar em `/treinador/assinatura` chama o repositório e cai em `/treinador/pagamento` com o formulário; sair sem confirmar não chama `POST`. Falha hoje: não há billing nem rotas.
   - Arquivos previstos: `apps/api/src/billing/`, `apps/api/test/`, `apps/web/app/treinador/`, `apps/web/repositories/billing.ts`, `apps/web/__tests__/`
 
-- [ ] **Tarefa 3 — Recusar recontratar o mesmo plano ativo**
+- [x] **Tarefa 3 — Recusar recontratar o mesmo plano ativo**
   - Cobre: CA2
   - Teste primeiro: e2e com `Subscription` ACTIVE (semeada no banco, `// TODO #26`) no mesmo `planCode` → `POST` não cria Pedido; resposta indica assinatura já ativa. Vitest: UI mostra que já está ativo.
   - Arquivos previstos: `apps/api/src/billing/`, `apps/api/test/`, `apps/web/app/treinador/assinatura/`, `apps/web/__tests__/`

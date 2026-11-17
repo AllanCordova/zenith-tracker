@@ -13,8 +13,18 @@ async function deleteTrainerByEmail(email: string): Promise<void> {
   if (!user) {
     return;
   }
-  await db.orm.public.Subscription.where({ trainerId: user.id }).delete();
-  await db.orm.public.Order.where({ trainerId: user.id }).delete();
+  const subscriptions = await db.orm.public.Subscription.where({
+    trainerId: user.id,
+  }).all();
+  for (const subscription of subscriptions) {
+    await db.orm.public.Subscription.where({ id: subscription.id }).delete();
+  }
+  const orders = await db.orm.public.Order.where({
+    trainerId: user.id,
+  }).all();
+  for (const order of orders) {
+    await db.orm.public.Order.where({ id: order.id }).delete();
+  }
   await db.orm.public.User.where({ email }).delete();
 }
 
@@ -127,5 +137,58 @@ describe('Billing orders (e2e)', () => {
     });
     expect(response.body.data.publicKey).toEqual(expect.any(String));
     expect(response.body.data.publicKey.length).toBeGreaterThan(0);
+  });
+
+  it('POST /billing/orders with ACTIVE subscription on same planCode does not create Order', async () => {
+    const trainer = await registerTrainer(`${Date.now()}-ca2`);
+
+    const activatingOrder = await db.orm.public.Order.create({
+      trainerId: trainer.trainerId,
+      planCode: 'MONTHLY',
+      amountCents: 4990,
+      status: 'PAID',
+    });
+
+    // TODO #26 — quem cria Assinatura pelo pagamento é a #26
+    await db.orm.public.Subscription.create({
+      trainerId: trainer.trainerId,
+      orderId: activatingOrder.id,
+      planCode: 'MONTHLY',
+      status: 'ACTIVE',
+      activatedAt: Temporal.Now.instant(),
+    });
+
+    const pendingBefore = await db.orm.public.Order.create({
+      trainerId: trainer.trainerId,
+      planCode: 'YEARLY',
+      amountCents: 39900,
+      status: 'PENDING',
+    });
+
+    const ordersBefore = await db.orm.public.Order.where({
+      trainerId: trainer.trainerId,
+    }).all();
+
+    const response = await request(app.getHttpServer())
+      .post('/billing/orders')
+      .set('Authorization', `Bearer ${trainer.accessToken}`)
+      .send({ planCode: 'MONTHLY' });
+
+    expect(response.status).toBe(409);
+    expect(response.body.statusCode).toBe(409);
+    expect(response.body.message).toMatch(/já está ativa/i);
+
+    const ordersAfter = await db.orm.public.Order.where({
+      trainerId: trainer.trainerId,
+    }).all();
+    expect(ordersAfter).toHaveLength(ordersBefore.length);
+
+    const pendingAfter = await db.orm.public.Order.first({
+      id: pendingBefore.id,
+    });
+    expect(pendingAfter).not.toBeNull();
+    expect(pendingAfter!.planCode).toBe('YEARLY');
+    expect(pendingAfter!.amountCents).toBe(39900);
+    expect(pendingAfter!.status).toBe('PENDING');
   });
 });

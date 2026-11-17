@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiConflictResponse,
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiOkResponse,
@@ -44,6 +45,10 @@ export class BillingController {
   @Post('orders')
   @ApiOperation({ summary: 'Cria Pedido PENDING com valor do catálogo.' })
   @ApiCreatedResponse({ description: 'Pedido PENDING criado.' })
+  @ApiConflictResponse({
+    type: ErrorEnvelopeDto,
+    description: 'Assinatura já ativa no mesmo planCode.',
+  })
   createOrder(
     @Req() req: { user: PublicUser },
     @Body() dto: CreateOrderDto,

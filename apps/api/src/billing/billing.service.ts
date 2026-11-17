@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma.service';
 import {
@@ -49,6 +49,15 @@ export class BillingService {
     trainerId: string,
     planCode: PlanCode,
   ): Promise<OrderResponse> {
+    const activeSamePlan = await this.prisma.db.orm.public.Subscription.first({
+      trainerId,
+      planCode,
+      status: 'ACTIVE',
+    });
+    if (activeSamePlan) {
+      throw new ConflictException('Assinatura já está ativa neste plano');
+    }
+
     const amountCents = amountCentsFor(planCode);
     const order = await this.prisma.db.orm.public.Order.create({
       trainerId,

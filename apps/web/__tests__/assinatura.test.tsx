@@ -120,3 +120,32 @@ test("sair de /treinador/assinatura sem confirmar não chama POST de pedido", as
 
   expect(createOrder).not.toHaveBeenCalled();
 });
+
+test("UI mostra que a assinatura já está ativa ao tentar o mesmo planCode", async () => {
+  saveTrainerSession();
+
+  const createOrder = vi
+    .spyOn(billing, "createOrder")
+    .mockRejectedValue(new Error("Assinatura já está ativa neste plano"));
+
+  vi.spyOn(billing, "listPlans").mockResolvedValue([
+    { planCode: "MONTHLY", amountCents: 4990 },
+    { planCode: "YEARLY", amountCents: 39900 },
+  ]);
+
+  renderWithQuery(<AssinaturaPage />);
+
+  await waitFor(() => {
+    expect(screen.getByRole("button", { name: /mensal/i })).toBeTruthy();
+  });
+
+  fireEvent.click(screen.getByRole("button", { name: /mensal/i }));
+  fireEvent.click(screen.getByRole("button", { name: /confirmar/i }));
+
+  await waitFor(() => {
+    expect(createOrder).toHaveBeenCalledWith({ planCode: "MONTHLY" });
+    expect(screen.getByText(/já está ativa/i)).toBeTruthy();
+  });
+
+  expect(push).not.toHaveBeenCalledWith("/treinador/pagamento");
+});

@@ -58,7 +58,14 @@ export default function AssinaturaPage() {
         return;
       }
       router.push("/treinador/pagamento");
-    } catch {
+    } catch (caught) {
+      if (
+        caught instanceof Error &&
+        /já está ativa/i.test(caught.message)
+      ) {
+        setError(caught.message);
+        return;
+      }
       setError("Não deu certo. Verifique a conexão.");
     }
   }

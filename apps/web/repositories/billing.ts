@@ -29,10 +29,23 @@ export async function listPlans(): Promise<BillingPlan[]> {
   return response.data.data ?? [];
 }
 
+type ErrorEnvelope = {
+  statusCode?: number;
+  message?: string | string[];
+};
+
 export async function createOrder(input: {
   planCode: PlanCode;
 }): Promise<Order | undefined> {
-  const response = await http.post<Envelope<Order>>("/billing/orders", input);
+  const response = await http.post<Envelope<Order> & ErrorEnvelope>(
+    "/billing/orders",
+    input,
+  );
+  if (response.status === 409) {
+    const message = response.data.message;
+    const text = Array.isArray(message) ? message.join(" ") : message;
+    throw new Error(text ?? "Assinatura já está ativa neste plano");
+  }
   return response.data.data;
 }
 
