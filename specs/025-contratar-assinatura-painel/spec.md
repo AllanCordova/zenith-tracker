@@ -1,6 +1,6 @@
 ---
 issue: 25
-status: aprovado
+status: aprovada
 ---
 
 # US05 — Contratar a assinatura do painel
