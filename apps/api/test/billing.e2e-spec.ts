@@ -377,4 +377,79 @@ describe('Billing orders (e2e)', () => {
     expect(ordersForStudent).toHaveLength(0);
     expect(await countPendingOrders()).toBe(pendingBefore);
   });
+
+  it('POST /billing/orders with missing, invalid planCode or client amountCents returns 400 and leaves PENDING untouched', async () => {
+    const trainer = await registerTrainer(`${Date.now()}-ca8`);
+    const trainerWithoutPending = await registerTrainer(
+      `${Date.now()}-ca8-empty`,
+    );
+
+    const pending = await db.orm.public.Order.create({
+      trainerId: trainer.trainerId,
+      planCode: 'MONTHLY',
+      amountCents: 4990,
+      status: 'PENDING',
+    });
+
+    const missingPlanCode = await request(app.getHttpServer())
+      .post('/billing/orders')
+      .set('Authorization', `Bearer ${trainer.accessToken}`)
+      .send({});
+
+    const invalidPlanCode = await request(app.getHttpServer())
+      .post('/billing/orders')
+      .set('Authorization', `Bearer ${trainer.accessToken}`)
+      .send({ planCode: 'WEEKLY' });
+
+    const clientAmountCents = await request(app.getHttpServer())
+      .post('/billing/orders')
+      .set('Authorization', `Bearer ${trainer.accessToken}`)
+      .send({ planCode: 'YEARLY', amountCents: 1 });
+
+    const clientPrice = await request(app.getHttpServer())
+      .post('/billing/orders')
+      .set('Authorization', `Bearer ${trainer.accessToken}`)
+      .send({ planCode: 'YEARLY', price: 1 });
+
+    const forgedOnly = await request(app.getHttpServer())
+      .post('/billing/orders')
+      .set('Authorization', `Bearer ${trainer.accessToken}`)
+      .send({ amountCents: 1 });
+
+    const noPendingForged = await request(app.getHttpServer())
+      .post('/billing/orders')
+      .set('Authorization', `Bearer ${trainerWithoutPending.accessToken}`)
+      .send({ planCode: 'MONTHLY', amountCents: 1 });
+
+    for (const response of [
+      missingPlanCode,
+      invalidPlanCode,
+      clientAmountCents,
+      clientPrice,
+      forgedOnly,
+      noPendingForged,
+    ]) {
+      expect(response.status).toBe(400);
+      expect(response.body.statusCode).toBe(400);
+      expect(response.body).not.toHaveProperty('data');
+    }
+
+    const pendingAfter = await db.orm.public.Order.first({ id: pending.id });
+    expect(pendingAfter).not.toBeNull();
+    expect(pendingAfter!.planCode).toBe('MONTHLY');
+    expect(pendingAfter!.amountCents).toBe(4990);
+    expect(pendingAfter!.status).toBe('PENDING');
+    expect(pendingAfter!.amountCents).not.toBe(1);
+
+    const pendingOrders = await db.orm.public.Order.where({
+      trainerId: trainer.trainerId,
+      status: 'PENDING',
+    }).all();
+    expect(pendingOrders).toHaveLength(1);
+
+    const ordersForEmpty = await db.orm.public.Order.where({
+      trainerId: trainerWithoutPending.trainerId,
+    }).all();
+    expect(ordersForEmpty).toHaveLength(0);
+  });
 });

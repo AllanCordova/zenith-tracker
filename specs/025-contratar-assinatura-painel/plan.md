@@ -42,7 +42,7 @@
   - Teste primeiro: e2e sem Bearer → 401; JWT `STUDENT` → 403; zero Pedidos. Vitest: aluno não usa as telas de contratação de treinador.
   - Arquivos previstos: `apps/api/src/billing/`, `apps/api/test/`, `apps/web/__tests__/`
 
-- [ ] **Tarefa 7 — Recusar planCode inválido e preço do browser**
+- [x] **Tarefa 7 — Recusar planCode inválido e preço do browser**
   - Cobre: CA8
   - Teste primeiro: e2e `planCode` inválido/ausente, body com `amountCents` ou preço → 400; Pendente inalterado ou inexistente; valor no banco nunca é o enviado pelo cliente.
   - Arquivos previstos: `apps/api/src/billing/`, `apps/api/test/`
