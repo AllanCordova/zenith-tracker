@@ -123,14 +123,15 @@
 
 ---
 
-### US05 — Contratar a assinatura do painel · `Must Have` · `M` · Status: `⚪ Draft`
+### US05 — Contratar a assinatura do painel · `Must Have` · `M` · Status: `🟡 Ready`
 
 **Como** treinador, **eu quero** escolher um plano pago e gerar um pedido **para que** eu possa ir ao checkout pagar o direito de usar a carteira.
 
 **Critérios de aceite:**
 
 - [ ] **Dado** treinador autenticado sem assinatura Ativa e sem pedido Pendente, **quando** escolho o plano e confirmo, **então** nasce um Pedido Pendente e eu sou enviado ao checkout externo.
-- [ ] **Dado** treinador que já tem assinatura Ativa, **quando** tenta contratar de novo, **então** nenhum pedido novo é criado e eu vejo que a assinatura já está ativa.
+- [ ] **Dado** treinador com assinatura Ativa no plano atual, **quando** escolhe de novo esse mesmo plano, **então** nenhum pedido novo é criado e eu vejo que a assinatura já está ativa.
+- [ ] **Dado** treinador com assinatura Ativa no plano atual, **quando** escolhe um plano diferente e confirma, **então** nasce um Pedido Pendente e eu sigo o fluxo de pagamento comum.
 - [ ] **Dado** pedido já Pendente, **quando** tento criar outro, **então** o sistema reaproveita o pedido aberto em vez de duplicar cobrança.
 - [ ] **Dado** treinador que desiste antes de confirmar o plano, **quando** sai da tela, **então** nenhum Pedido é criado.
 
@@ -138,7 +139,7 @@
 
 ---
 
-### US06 — Confirmar o pagamento da assinatura · `Must Have` · `M` · Status: `⚪ Draft`
+### US06 — Confirmar o pagamento da assinatura · `Must Have` · `M` · Status: `🟡 Ready`
 
 **Como** treinador, **eu quero** que a assinatura só vire Ativa quando o pagamento for confirmado pelo gateway **para que** fechar a aba no checkout não libere nem bloqueie o que eu já paguei.
 
@@ -357,3 +358,4 @@
 | 2026-09-08 | 1.0.0 | Setup vs. automático: treinador grava estado inicial (e pode editar quando quiser); o teto do dia aparece sozinho depois (RN10, RN12, RN20, US03, US04) |
 | 2026-09-08 | 1.0.0 | RN16: sem período de cortesia — primeiro vínculo já exige Assinatura Ativa |
 | 2026-10-14 | 1.0.0 | US06: critério do nó vermelho — sumir no checkout e reabrir o painel deixa o Pedido Pendente |
+| 2026-11-16 | 1.0.0 | US05/US06 → `🟡 Ready`; US05: recontratar o mesmo plano não cria pedido; plano diferente segue o fluxo comum |
