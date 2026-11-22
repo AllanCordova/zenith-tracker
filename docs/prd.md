@@ -139,7 +139,7 @@
 
 ---
 
-### US06 — Confirmar o pagamento da assinatura · `Must Have` · `M` · Status: `🟡 Ready`
+### US06 — Confirmar o pagamento da assinatura · `Must Have` · `M` · Status: `🟢 Live`
 
 **Como** treinador, **eu quero** que a assinatura só vire Ativa quando o pagamento for confirmado pelo gateway **para que** fechar a aba no pagamento não libere nem bloqueie o que eu já paguei.
 
@@ -361,3 +361,4 @@
 | 2026-11-16 | 1.0.0 | US05/US06 → `🟡 Ready`; US05: recontratar o mesmo plano não cria pedido; plano diferente segue o fluxo comum |
 | 2026-11-16 | 1.0.0 | Pagamento: Checkout Transparente no próprio produto (não redireciona para o site do gateway) |
 | 2026-11-17 | 1.0.0 | US05 — Contratar a assinatura do painel: `🟡 Ready` → `🟢 Live` |
+| 2026-11-22 | 1.0.0 | US06 — Confirmar o pagamento da assinatura: `🟡 Ready` → `🟢 Live` |
