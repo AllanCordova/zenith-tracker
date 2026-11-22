@@ -26,7 +26,7 @@
   - Teste primeiro: e2e webhook autenticado “aprovado” → `Order` `PAID`, nova `Subscription` `ACTIVE` (e ACTIVE anterior `INACTIVE` se troca de plano); painel/consulta deixa de tratar como sem assinatura.
   - Arquivos previstos: `apps/api/src/payments/`, `apps/api/test/`, `apps/web/` (painel/status se necessário)
 
-- [ ] **Tarefa 4 — Tela de status só consulta Pendente**
+- [x] **Tarefa 4 — Tela de status só consulta Pendente**
   - Cobre: CA3
   - Teste primeiro: Vitest/e2e — com Pedido `PENDING` e sem webhook, `/treinador/pagamento/status` mostra Pendente e não libera carteira; nenhum `POST` de “confirmar pago”.
   - Arquivos previstos: `apps/web/app/treinador/pagamento/status/`, `apps/web/__tests__/`, repositório de consulta
