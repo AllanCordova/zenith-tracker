@@ -21,7 +21,7 @@
   - Teste primeiro: e2e `POST` charge com token + Pedido `PENDING` cria `Payment`, Pedido segue `PENDING`, valor cobrado = `amountCents` do banco; body com preço/`amountCents` → 400. Vitest: `onSubmit` chama charge e navega para `/treinador/pagamento/status`.
   - Arquivos previstos: `apps/api/src/payments/`, `apps/api/test/`, `apps/web/app/treinador/pagamento/`, `apps/web/repositories/`, `apps/web/__tests__/`
 
-- [ ] **Tarefa 3 — Webhook aprovado ativa Assinatura**
+- [x] **Tarefa 3 — Webhook aprovado ativa Assinatura**
   - Cobre: CA2
   - Teste primeiro: e2e webhook autenticado “aprovado” → `Order` `PAID`, nova `Subscription` `ACTIVE` (e ACTIVE anterior `INACTIVE` se troca de plano); painel/consulta deixa de tratar como sem assinatura.
   - Arquivos previstos: `apps/api/src/payments/`, `apps/api/test/`, `apps/web/` (painel/status se necessário)

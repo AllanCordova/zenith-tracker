@@ -28,6 +28,15 @@ export type Payment = {
   receivedAt: string;
 };
 
+export type Subscription = {
+  id: string;
+  trainerId: string;
+  orderId: string;
+  planCode: PlanCode;
+  status: "ACTIVE" | "INACTIVE";
+  activatedAt: string;
+};
+
 type Envelope<T> = {
   data?: T;
 };
@@ -59,6 +68,18 @@ export async function createOrder(input: {
 
 export async function getCurrentOrder(): Promise<Order | undefined> {
   const response = await http.get<Envelope<Order>>("/billing/orders/current");
+  if (response.status === 404) {
+    return undefined;
+  }
+  return response.data.data;
+}
+
+export async function getCurrentSubscription(): Promise<
+  Subscription | undefined
+> {
+  const response = await http.get<Envelope<Subscription>>(
+    "/billing/subscription/current",
+  );
   if (response.status === 404) {
     return undefined;
   }

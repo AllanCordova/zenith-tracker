@@ -25,6 +25,24 @@ export type OrderResponse = {
   createdAt: string;
 };
 
+export type SubscriptionRecord = {
+  id: string;
+  trainerId: string;
+  orderId: string;
+  planCode: PlanCode;
+  status: 'ACTIVE' | 'INACTIVE';
+  activatedAt: { toString(): string } | string;
+};
+
+export type SubscriptionResponse = {
+  id: string;
+  trainerId: string;
+  orderId: string;
+  planCode: PlanCode;
+  status: 'ACTIVE' | 'INACTIVE';
+  activatedAt: string;
+};
+
 @Injectable()
 export class BillingService {
   constructor(
@@ -92,6 +110,19 @@ export class BillingService {
     return this.toOrderResponse(order as OrderRecord);
   }
 
+  async findCurrentActiveSubscription(
+    trainerId: string,
+  ): Promise<SubscriptionResponse | null> {
+    const subscription = await this.prisma.db.orm.public.Subscription.first({
+      trainerId,
+      status: 'ACTIVE',
+    });
+    if (!subscription) {
+      return null;
+    }
+    return this.toSubscriptionResponse(subscription as SubscriptionRecord);
+  }
+
   private toOrderResponse(order: OrderRecord): OrderResponse {
     const createdAt =
       typeof order.createdAt === 'string'
@@ -104,6 +135,23 @@ export class BillingService {
       amountCents: order.amountCents,
       status: order.status,
       createdAt,
+    };
+  }
+
+  private toSubscriptionResponse(
+    subscription: SubscriptionRecord,
+  ): SubscriptionResponse {
+    const activatedAt =
+      typeof subscription.activatedAt === 'string'
+        ? subscription.activatedAt
+        : subscription.activatedAt.toString();
+    return {
+      id: subscription.id,
+      trainerId: subscription.trainerId,
+      orderId: subscription.orderId,
+      planCode: subscription.planCode,
+      status: subscription.status,
+      activatedAt,
     };
   }
 }

@@ -1,7 +1,7 @@
 import { AxiosHeaders } from "axios";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 import { http } from "../lib/http";
-import { chargeOrder } from "../repositories/billing";
+import { chargeOrder, getCurrentSubscription } from "../repositories/billing";
 
 function axiosOk(status: number, data: unknown) {
   return {
@@ -51,4 +51,24 @@ test("chargeOrder com 4xx/5xx lança Error e não engole a falha", async () => {
   await expect(
     chargeOrder({ orderId: "order-1", token: "card-token" }),
   ).rejects.toThrow("Gateway Timeout");
+});
+
+test("getCurrentSubscription chama GET /billing/subscription/current", async () => {
+  vi.spyOn(http, "get").mockResolvedValue(
+    axiosOk(200, {
+      data: {
+        id: "sub-1",
+        trainerId: "user-2",
+        orderId: "order-1",
+        planCode: "YEARLY",
+        status: "ACTIVE",
+        activatedAt: "2026-11-22T00:00:00.000Z",
+      },
+    }),
+  );
+
+  const subscription = await getCurrentSubscription();
+
+  expect(http.get).toHaveBeenCalledWith("/billing/subscription/current");
+  expect(subscription?.status).toBe("ACTIVE");
 });
