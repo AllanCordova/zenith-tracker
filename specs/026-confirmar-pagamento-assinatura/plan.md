@@ -31,7 +31,7 @@
   - Teste primeiro: Vitest/e2e — com Pedido `PENDING` e sem webhook, `/treinador/pagamento/status` mostra Pendente e não libera carteira; nenhum `POST` de “confirmar pago”.
   - Arquivos previstos: `apps/web/app/treinador/pagamento/status/`, `apps/web/__tests__/`, repositório de consulta
 
-- [ ] **Tarefa 5 — Abandono no pagamento não decide pago**
+- [x] **Tarefa 5 — Abandono no pagamento não decide pago**
   - Cobre: CA4
   - Teste primeiro: e2e/Vitest — após charge (ou mesmo só Pendente), “sumir” e reabrir painel: Pedido `PENDING`, carteira bloqueada, sem Assinatura nova.
   - Arquivos previstos: `apps/web/app/treinador/`, `apps/web/__tests__/`, `apps/api/test/`

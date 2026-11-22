@@ -147,6 +147,56 @@ describe('Payments charge (e2e)', () => {
     expect(charges[0]!.idempotencyKey.length).toBeGreaterThan(0);
   });
 
+  it('after charge without webhook, reopen keeps Order PENDING and no Subscription (CA4)', async () => {
+    const trainer = await registerTrainer(`${Date.now()}-ca4`);
+
+    const order = await db.orm.public.Order.create({
+      trainerId: trainer.trainerId,
+      planCode: 'MONTHLY',
+      amountCents: 4990,
+      status: 'PENDING',
+    });
+
+    await request(app.getHttpServer())
+      .post(`/billing/orders/${order.id}/charge`)
+      .set('Authorization', `Bearer ${trainer.accessToken}`)
+      .send({ token: 'fake-card-token' })
+      .expect(201);
+
+    const currentOrder = await request(app.getHttpServer())
+      .get('/billing/orders/current')
+      .set('Authorization', `Bearer ${trainer.accessToken}`);
+
+    expect(currentOrder.status).toBe(200);
+    expect(currentOrder.body.data).toEqual({
+      id: order.id,
+      trainerId: trainer.trainerId,
+      planCode: 'MONTHLY',
+      amountCents: 4990,
+      status: 'PENDING',
+      createdAt: expect.any(String),
+    });
+
+    const currentSubscription = await request(app.getHttpServer())
+      .get('/billing/subscription/current')
+      .set('Authorization', `Bearer ${trainer.accessToken}`);
+
+    expect(currentSubscription.status).toBe(404);
+    expect(currentSubscription.body).not.toHaveProperty('data');
+
+    const subscriptions = await db.orm.public.Subscription.where({
+      trainerId: trainer.trainerId,
+    }).all();
+    expect(subscriptions).toHaveLength(0);
+
+    const orderAfter = await db.orm.public.Order.first({ id: order.id });
+    expect(orderAfter).not.toBeNull();
+    expect(orderAfter!.status).toBe('PENDING');
+    expect(orderAfter!.status).not.toBe('PAID');
+    expect(orderAfter!.status).not.toBe('REFUSED');
+    expect(orderAfter!.status).not.toBe('EXPIRED');
+  });
+
   it('POST charge with price or amountCents in body returns 400 (CA8)', async () => {
     const trainer = await registerTrainer(`${Date.now()}-ca8`);
 

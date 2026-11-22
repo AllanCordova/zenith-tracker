@@ -1,6 +1,7 @@
 import { cleanup, fireEvent, screen, waitFor } from "@testing-library/react";
 import { beforeEach, expect, test, vi } from "vitest";
 import TreinadorPage from "../app/treinador/page";
+import { http } from "@/lib/http";
 import { saveSession } from "@/lib/session";
 import { renderWithQuery } from "./query-wrapper";
 import * as billing from "@/repositories/billing";
@@ -128,4 +129,28 @@ test("painel com Assinatura ACTIVE deixa de tratar como sem assinatura (CA2)", a
   });
   expect(screen.queryByText("carteira ainda não libera")).toBeNull();
   expect(screen.queryByRole("link", { name: /contratar assinatura/i })).toBeNull();
+});
+
+test("Pedido PENDING sem Assinatura ACTIVE: reabrir painel mantém contratar e não libera (CA4)", async () => {
+  saveSession("jwt-treinador", {
+    id: "user-2",
+    name: "Téo Treinador",
+    email: "teo@example.com",
+    role: "TRAINER",
+  });
+
+  vi.spyOn(billing, "getCurrentSubscription").mockResolvedValue(undefined);
+  const chargeOrder = vi.spyOn(billing, "chargeOrder");
+  const httpPost = vi.spyOn(http, "post");
+
+  renderWithQuery(<TreinadorPage />);
+
+  await waitFor(() => {
+    expect(screen.getByText("carteira ainda não libera")).toBeTruthy();
+  });
+  expect(screen.getByRole("link", { name: /contratar assinatura/i })).toBeTruthy();
+  expect(screen.queryByText("Assinatura ativa")).toBeNull();
+
+  expect(chargeOrder).not.toHaveBeenCalled();
+  expect(httpPost).not.toHaveBeenCalled();
 });
