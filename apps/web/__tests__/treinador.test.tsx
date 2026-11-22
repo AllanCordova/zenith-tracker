@@ -19,7 +19,7 @@ beforeEach(() => {
   localStorage.clear();
   push.mockReset();
   vi.restoreAllMocks();
-  vi.spyOn(billing, "getCurrentSubscription").mockResolvedValue(undefined);
+  vi.spyOn(billing, "getCurrentSubscription").mockResolvedValue(null);
 });
 
 function jwtExpirado(): string {
@@ -139,7 +139,7 @@ test("Pedido PENDING sem Assinatura ACTIVE: reabrir painel mantém contratar e n
     role: "TRAINER",
   });
 
-  vi.spyOn(billing, "getCurrentSubscription").mockResolvedValue(undefined);
+  vi.spyOn(billing, "getCurrentSubscription").mockResolvedValue(null);
   const chargeOrder = vi.spyOn(billing, "chargeOrder");
   const httpPost = vi.spyOn(http, "post");
 

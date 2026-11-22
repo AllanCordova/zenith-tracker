@@ -47,7 +47,7 @@ test("com Pedido PENDING e sem webhook, status mostra Pendente e não libera car
     .mockResolvedValue(pendingOrder);
   const getCurrentSubscription = vi
     .spyOn(billing, "getCurrentSubscription")
-    .mockResolvedValue(undefined);
+    .mockResolvedValue(null);
   const chargeOrder = vi.spyOn(billing, "chargeOrder");
   const httpPost = vi.spyOn(http, "post");
 

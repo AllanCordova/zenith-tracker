@@ -74,16 +74,14 @@ export async function getCurrentOrder(): Promise<Order | undefined> {
   return response.data.data;
 }
 
-export async function getCurrentSubscription(): Promise<
-  Subscription | undefined
-> {
+export async function getCurrentSubscription(): Promise<Subscription | null> {
   const response = await http.get<Envelope<Subscription>>(
     "/billing/subscription/current",
   );
   if (response.status === 404) {
-    return undefined;
+    return null;
   }
-  return response.data.data;
+  return response.data.data ?? null;
 }
 
 export async function getCheckoutConfig(): Promise<CheckoutConfig | undefined> {

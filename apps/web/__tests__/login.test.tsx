@@ -26,6 +26,10 @@ vi.mock("@/lib/toast", () => ({
   toastSuccess: (...args: unknown[]) => toastSuccess(...args),
 }));
 
+vi.mock("@/repositories/billing", () => ({
+  getCurrentSubscription: vi.fn().mockResolvedValue(null),
+}));
+
 function fillLoginForm(values: { email: string; password: string }) {
   fireEvent.change(screen.getByLabelText("E-mail"), {
     target: { value: values.email },
@@ -194,7 +198,7 @@ test("login de treinador grava JWT e cai em /treinador", async () => {
   });
 
   unmount();
-  render(<TreinadorPage />);
+  renderWithQuery(<TreinadorPage />);
 
-  expect(screen.getByText("Téo Treinador")).toBeDefined();
+  expect(await screen.findByText("Téo Treinador")).toBeDefined();
 });
