@@ -42,7 +42,16 @@ model Order {
   status      OrderStatus
   createdAt   DateTime    @default(now())
   trainer     User        @relation(fields: [trainerId], references: [id])
-  // TODO #26: Payment / webhook cria ou troca Subscription a partir do Pedido pago
+  // TODO #26: webhook cria ou troca Subscription a partir do Pedido pago
+}
+
+model Payment {
+  id               String   @id @default(uuid())
+  orderId          String
+  gatewayPaymentId String
+  status           String
+  receivedAt       DateTime
+  order            Order    @relation(fields: [orderId], references: [id])
 }
 
 model Subscription {

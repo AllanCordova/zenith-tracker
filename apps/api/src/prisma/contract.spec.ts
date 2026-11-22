@@ -42,3 +42,15 @@ describe('Prisma Order and Subscription contract', () => {
     expect(source).toMatch(/activatedAt/);
   });
 });
+
+describe('Prisma Payment contract', () => {
+  it('declares Payment with orderId, gatewayPaymentId, status and receivedAt', () => {
+    const source = contractSource();
+
+    expect(source).toMatch(/model\s+Payment\s*\{/);
+    expect(source).toMatch(/orderId/);
+    expect(source).toMatch(/gatewayPaymentId/);
+    expect(source).toMatch(/status/);
+    expect(source).toMatch(/receivedAt/);
+  });
+});

@@ -11,7 +11,7 @@
 
 ## Tarefas
 
-- [ ] **Tarefa 1 — Modelar Pagamento no Prisma**
+- [x] **Tarefa 1 — Modelar Pagamento no Prisma**
   - Cobre: nenhum CA (passo técnico)
   - Teste primeiro: contrato Prisma declara `Payment` com os campos da architecture; migration aplica; app sobe. Falha hoje: só `Order`/`Subscription`.
   - Arquivos previstos: `apps/api/src/prisma/contract.prisma`, migration, `docs/architecture.md` (se faltar detalhe)

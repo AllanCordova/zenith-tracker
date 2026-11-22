@@ -8,6 +8,10 @@
       "model": "Order",
       "namespace": "public"
     },
+    "payment": {
+      "model": "Payment",
+      "namespace": "public"
+    },
     "subscription": {
       "model": "Subscription",
       "namespace": "public"
@@ -180,6 +184,83 @@
               },
               "namespaceId": "public",
               "table": "order"
+            }
+          },
+          "Payment": {
+            "fields": {
+              "gatewayPaymentId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "orderId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "receivedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "order": {
+                "cardinality": "N:1",
+                "on": {
+                  "localFields": [
+                    "orderId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Order",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "gatewayPaymentId": {
+                  "column": "gatewayPaymentId"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "orderId": {
+                  "column": "orderId"
+                },
+                "receivedAt": {
+                  "column": "receivedAt"
+                },
+                "status": {
+                  "column": "status"
+                }
+              },
+              "namespaceId": "public",
+              "table": "payment"
             }
           },
           "Subscription": {
@@ -468,6 +549,69 @@
               },
               "uniques": []
             },
+            "payment": {
+              "columns": {
+                "gatewayPaymentId": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "orderId": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "receivedAt": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "status": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "source": {
+                    "columns": [
+                      "orderId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "payment"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "order"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "orderId"
+                  ],
+                  "name": "payment_orderId_idx_d284871b",
+                  "prefix": "payment_orderId_idx",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            },
             "subscription": {
               "checks": [
                 {
@@ -678,10 +822,10 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "6aded3bfabe2b9f5622ad913308b6ad7dc9ab577bb73fcfdea24fafc19fcb1d7"
+    "storageHash": "a3e05625566c912742eeb7bff814d7be2a43c6815ec52e1bb2bd9b76339aaa0f"
   },
   "execution": {
-    "executionHash": "fe2036d79325334aa8a231f3b7da575a3b17de2e968ed10f7c845e1fdfbf7380",
+    "executionHash": "6a5a457c045a97c5f39a0cfb1d252dadf60d803920ad001d481d7993e4a4b447",
     "mutations": {
       "defaults": [
         {
@@ -693,6 +837,17 @@
             "column": "id",
             "namespace": "public",
             "table": "order"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "id",
+            "namespace": "public",
+            "table": "payment"
           }
         },
         {
