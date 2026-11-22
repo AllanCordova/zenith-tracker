@@ -1,6 +1,6 @@
 ---
 issue: 26
-status: rascunho
+status: aprovada
 ---
 
 # US06 — Confirmar o pagamento da assinatura
