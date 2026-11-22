@@ -42,7 +42,6 @@ model Order {
   status      OrderStatus
   createdAt   DateTime    @default(now())
   trainer     User        @relation(fields: [trainerId], references: [id])
-  // TODO #26: webhook cria ou troca Subscription a partir do Pedido pago
 }
 
 model Payment {
@@ -63,5 +62,4 @@ model Subscription {
   activatedAt DateTime
   trainer     User               @relation(fields: [trainerId], references: [id])
   order       Order              @relation(fields: [orderId], references: [id])
-  // TODO #26: criação/troca de Assinatura Ativa pelo pagamento
 }

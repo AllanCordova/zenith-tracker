@@ -180,7 +180,7 @@ describe('Billing orders (e2e)', () => {
       status: 'PAID',
     });
 
-    // TODO #26 — quem cria Assinatura pelo pagamento é a #26
+    // Seed de Assinatura ACTIVE para o cenário (pagamento real via webhook na #26)
     await db.orm.public.Subscription.create({
       trainerId: trainer.trainerId,
       orderId: activatingOrder.id,
@@ -233,7 +233,7 @@ describe('Billing orders (e2e)', () => {
       status: 'PAID',
     });
 
-    // TODO #26 — quem cria Assinatura pelo pagamento é a #26
+    // Seed de Assinatura ACTIVE para o cenário (pagamento real via webhook na #26)
     const subscription = await db.orm.public.Subscription.create({
       trainerId: trainer.trainerId,
       orderId: activatingOrder.id,
@@ -509,7 +509,7 @@ describe('Billing orders (e2e)', () => {
       status: 'PAID',
     });
 
-    // TODO #26 — quem cria Assinatura pelo pagamento é a #26
+    // Seed de Assinatura ACTIVE para o cenário (pagamento real via webhook na #26)
     const subscription = await db.orm.public.Subscription.create({
       trainerId: trainer.trainerId,
       orderId: activatingOrder.id,
