@@ -16,22 +16,23 @@ vi.mock("next/navigation", () => ({
   useRouter: () => ({ push }),
 }));
 
-vi.mock("@mercadopago/sdk-react", () => ({
-  initMercadoPago: vi.fn(),
-  CardPayment: ({
-    onSubmit,
-    initialization,
-  }: {
-    onSubmit: (formData: { token: string }) => Promise<void>;
-    initialization: { amount: number };
-  }) => {
-    cardPayment.onSubmit = onSubmit;
-    return (
-      <div data-testid="mp-card-form" data-amount={String(initialization.amount)}>
-        formulário Mercado Pago
-      </div>
-    );
-  },
+vi.mock("next/dynamic", () => ({
+  default: () =>
+    function MercadoPagoCardPaymentMock({
+      onSubmit,
+      amount,
+    }: {
+      onSubmit: (formData: { token: string }) => Promise<void>;
+      amount: number;
+      publicKey: string;
+    }) {
+      cardPayment.onSubmit = onSubmit;
+      return (
+        <div data-testid="mp-card-form" data-amount={String(amount)}>
+          formulário Mercado Pago
+        </div>
+      );
+    },
 }));
 
 beforeEach(() => {
@@ -42,63 +43,69 @@ beforeEach(() => {
   vi.restoreAllMocks();
 });
 
-function saveTrainerSession() {
+test("onSubmit chama charge e navega para /treinador/pagamento/status", async () => {
   saveSession("jwt-treinador", {
     id: "user-2",
     name: "Téo Treinador",
     email: "teo@example.com",
     role: "TRAINER",
   });
-}
 
-const pendingOrder: billing.Order = {
-  id: "order-pending-ca1",
-  trainerId: "user-2",
-  planCode: "MONTHLY",
-  amountCents: 4990,
-  status: "PENDING",
-  createdAt: "2026-11-16T00:00:00.000Z",
-};
-
-test("onSubmit chama charge e navega para /treinador/pagamento/status (CA1)", async () => {
-  saveTrainerSession();
-
-  vi.spyOn(billing, "getCurrentOrder").mockResolvedValue(pendingOrder);
   vi.spyOn(billing, "getCheckoutConfig").mockResolvedValue({
     publicKey: "TEST-PUBLIC-KEY",
   });
-  const chargeOrder = vi.spyOn(billing, "chargeOrder").mockResolvedValue({
-    id: "payment-1",
-    orderId: pendingOrder.id,
+  vi.spyOn(billing, "getCurrentOrder").mockResolvedValue({
+    id: "order-1",
+    trainerId: "user-2",
+    planCode: "MONTHLY",
+    amountCents: 4990,
+    status: "PENDING",
+    createdAt: "2026-11-17T00:00:00.000Z",
+  });
+  const charge = vi.spyOn(billing, "chargeOrder").mockResolvedValue({
+    id: "pay-1",
+    orderId: "order-1",
     gatewayPaymentId: "gw-1",
     status: "pending",
-    receivedAt: "2026-11-22T00:00:00.000Z",
+    receivedAt: "2026-11-17T00:00:00.000Z",
   });
 
   renderWithQuery(<PagamentoPage />);
 
   await waitFor(() => {
-    expect(screen.getByTestId("mp-card-form")).toBeTruthy();
-    expect(cardPayment.onSubmit).toBeTypeOf("function");
+    expect(screen.getByTestId("mp-card-form")).toBeDefined();
   });
 
-  await cardPayment.onSubmit!({ token: "card-token-ca1" });
+  expect(cardPayment.onSubmit).toBeTypeOf("function");
+  await cardPayment.onSubmit!({ token: "card-token" });
 
   await waitFor(() => {
-    expect(chargeOrder).toHaveBeenCalledWith({
-      orderId: pendingOrder.id,
-      token: "card-token-ca1",
+    expect(charge).toHaveBeenCalledWith({
+      orderId: "order-1",
+      token: "card-token",
     });
     expect(push).toHaveBeenCalledWith("/treinador/pagamento/status");
   });
 });
 
-test("falha de charge mostra erro e não navega para status", async () => {
-  saveTrainerSession();
+test("falha no charge não navega e mostra erro", async () => {
+  saveSession("jwt-treinador", {
+    id: "user-2",
+    name: "Téo Treinador",
+    email: "teo@example.com",
+    role: "TRAINER",
+  });
 
-  vi.spyOn(billing, "getCurrentOrder").mockResolvedValue(pendingOrder);
   vi.spyOn(billing, "getCheckoutConfig").mockResolvedValue({
     publicKey: "TEST-PUBLIC-KEY",
+  });
+  vi.spyOn(billing, "getCurrentOrder").mockResolvedValue({
+    id: "order-1",
+    trainerId: "user-2",
+    planCode: "MONTHLY",
+    amountCents: 4990,
+    status: "PENDING",
+    createdAt: "2026-11-17T00:00:00.000Z",
   });
   vi.spyOn(billing, "chargeOrder").mockRejectedValue(
     new Error("Não deu certo cobrar o pedido"),
@@ -107,11 +114,10 @@ test("falha de charge mostra erro e não navega para status", async () => {
   renderWithQuery(<PagamentoPage />);
 
   await waitFor(() => {
-    expect(screen.getByTestId("mp-card-form")).toBeTruthy();
-    expect(cardPayment.onSubmit).toBeTypeOf("function");
+    expect(screen.getByTestId("mp-card-form")).toBeDefined();
   });
 
-  await cardPayment.onSubmit!({ token: "card-token-fail" });
+  await cardPayment.onSubmit!({ token: "card-token" });
 
   await waitFor(() => {
     expect(screen.getByRole("alert").textContent).toMatch(

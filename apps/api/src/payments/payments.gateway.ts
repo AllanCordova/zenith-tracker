@@ -2,6 +2,7 @@ export type ChargeInput = {
   token: string;
   amountCents: number;
   idempotencyKey: string;
+  payerEmail: string;
 };
 
 export type ChargeResult = {
