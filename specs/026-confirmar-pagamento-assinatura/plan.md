@@ -36,17 +36,17 @@
   - Teste primeiro: e2e/Vitest — após charge (ou mesmo só Pendente), “sumir” e reabrir painel: Pedido `PENDING`, carteira bloqueada, sem Assinatura nova.
   - Arquivos previstos: `apps/web/app/treinador/`, `apps/web/__tests__/`, `apps/api/test/`
 
-- [ ] **Tarefa 6 — Webhook de recusa ou expiração**
+- [x] **Tarefa 6 — Webhook de recusa ou expiração**
   - Cobre: CA5
   - Teste primeiro: e2e notificação autenticada recusada/expirada → `Order` `REFUSED`/`EXPIRED`; nenhuma `Subscription` `ACTIVE` nova; treinador pode criar novo Pedido (US05).
   - Arquivos previstos: `apps/api/src/payments/`, `apps/api/test/`
 
-- [ ] **Tarefa 7 — Rejeitar webhook sem assinatura válida**
+- [x] **Tarefa 7 — Rejeitar webhook sem assinatura válida**
   - Cobre: CA6
   - Teste primeiro: e2e payload sem/`PAGAMENTO_WEBHOOK_SECRET` errado → Pedido e Assinatura inalterados.
   - Arquivos previstos: `apps/api/src/payments/`, `apps/api/test/`
 
-- [ ] **Tarefa 8 — Webhook idempotente**
+- [x] **Tarefa 8 — Webhook idempotente**
   - Cobre: CA7
   - Teste primeiro: e2e segundo webhook do mesmo pagamento (ou Pedido já terminal) não altera de novo `Order`/`Subscription`.
   - Arquivos previstos: `apps/api/src/payments/`, `apps/api/test/`

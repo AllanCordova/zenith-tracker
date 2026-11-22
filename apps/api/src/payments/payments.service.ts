@@ -83,7 +83,15 @@ export class PaymentsService {
       throw new UnauthorizedException('Assinatura do webhook inválida');
     }
 
-    if (input.status !== 'approved') {
+    const orderStatus =
+      input.status === 'approved'
+        ? 'PAID'
+        : input.status === 'rejected'
+          ? 'REFUSED'
+          : input.status === 'expired'
+            ? 'EXPIRED'
+            : null;
+    if (!orderStatus) {
       return { received: true };
     }
 
@@ -96,35 +104,38 @@ export class PaymentsService {
 
     const order = await this.prisma.db.orm.public.Order.first({
       id: payment.orderId,
-      status: 'PENDING',
     });
     if (!order) {
-      throw new NotFoundException('Pedido Pendente não encontrado');
+      throw new NotFoundException('Pedido não encontrado');
+    }
+    if (order.status !== 'PENDING') {
+      return { received: true };
     }
 
     await this.prisma.db.orm.public.Order.where({ id: order.id }).update({
-      status: 'PAID',
+      status: orderStatus,
     });
 
-    const activeSubscriptions = await this.prisma.db.orm.public.Subscription.where(
-      {
+    if (orderStatus === 'PAID') {
+      const activeSubscriptions =
+        await this.prisma.db.orm.public.Subscription.where({
+          trainerId: order.trainerId,
+          status: 'ACTIVE',
+        }).all();
+      for (const subscription of activeSubscriptions) {
+        await this.prisma.db.orm.public.Subscription.where({
+          id: subscription.id,
+        }).update({ status: 'INACTIVE' });
+      }
+
+      await this.prisma.db.orm.public.Subscription.create({
         trainerId: order.trainerId,
+        orderId: order.id,
+        planCode: order.planCode,
         status: 'ACTIVE',
-      },
-    ).all();
-    for (const subscription of activeSubscriptions) {
-      await this.prisma.db.orm.public.Subscription.where({
-        id: subscription.id,
-      }).update({ status: 'INACTIVE' });
+        activatedAt: Temporal.Now.instant(),
+      });
     }
-
-    await this.prisma.db.orm.public.Subscription.create({
-      trainerId: order.trainerId,
-      orderId: order.id,
-      planCode: order.planCode,
-      status: 'ACTIVE',
-      activatedAt: Temporal.Now.instant(),
-    });
 
     return { received: true };
   }

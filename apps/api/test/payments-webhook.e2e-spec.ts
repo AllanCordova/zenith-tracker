@@ -172,4 +172,284 @@ describe('Payments webhook (e2e)', () => {
       activatedAt: expect.any(String),
     });
   });
+
+  it('authenticated rejected webhook marks Order REFUSED without new ACTIVE Subscription; trainer can create new Order (CA5)', async () => {
+    const trainer = await registerTrainer(`${Date.now()}-ca5-refused`);
+
+    const order = await db.orm.public.Order.create({
+      trainerId: trainer.trainerId,
+      planCode: 'MONTHLY',
+      amountCents: 4990,
+      status: 'PENDING',
+    });
+    const gatewayPaymentId = `gw-rejected-${Date.now()}`;
+    await db.orm.public.Payment.create({
+      orderId: order.id,
+      gatewayPaymentId,
+      status: 'pending',
+      receivedAt: Temporal.Now.instant(),
+    });
+
+    const requestId = `req-rejected-${Date.now()}`;
+    const headers = signWebhook(gatewayPaymentId, requestId, WEBHOOK_SECRET);
+
+    const response = await request(app.getHttpServer())
+      .post('/payments/webhook')
+      .set(headers)
+      .send({
+        data: { id: gatewayPaymentId },
+        status: 'rejected',
+      });
+
+    expect(response.status).toBe(200);
+
+    const orderAfter = await db.orm.public.Order.first({ id: order.id });
+    expect(orderAfter).not.toBeNull();
+    expect(orderAfter!.status).toBe('REFUSED');
+
+    const active = await db.orm.public.Subscription.first({
+      trainerId: trainer.trainerId,
+      status: 'ACTIVE',
+    });
+    expect(active).toBeNull();
+
+    const newOrder = await request(app.getHttpServer())
+      .post('/billing/orders')
+      .set('Authorization', `Bearer ${trainer.accessToken}`)
+      .send({ planCode: 'MONTHLY' });
+
+    expect(newOrder.status).toBe(201);
+    expect(newOrder.body.data.status).toBe('PENDING');
+    expect(newOrder.body.data.id).not.toBe(order.id);
+  });
+
+  it('authenticated expired webhook marks Order EXPIRED without new ACTIVE Subscription; trainer can create new Order (CA5)', async () => {
+    const trainer = await registerTrainer(`${Date.now()}-ca5-expired`);
+
+    const order = await db.orm.public.Order.create({
+      trainerId: trainer.trainerId,
+      planCode: 'YEARLY',
+      amountCents: 39900,
+      status: 'PENDING',
+    });
+    const gatewayPaymentId = `gw-expired-${Date.now()}`;
+    await db.orm.public.Payment.create({
+      orderId: order.id,
+      gatewayPaymentId,
+      status: 'pending',
+      receivedAt: Temporal.Now.instant(),
+    });
+
+    const requestId = `req-expired-${Date.now()}`;
+    const headers = signWebhook(gatewayPaymentId, requestId, WEBHOOK_SECRET);
+
+    const response = await request(app.getHttpServer())
+      .post('/payments/webhook')
+      .set(headers)
+      .send({
+        data: { id: gatewayPaymentId },
+        status: 'expired',
+      });
+
+    expect(response.status).toBe(200);
+
+    const orderAfter = await db.orm.public.Order.first({ id: order.id });
+    expect(orderAfter).not.toBeNull();
+    expect(orderAfter!.status).toBe('EXPIRED');
+
+    const active = await db.orm.public.Subscription.first({
+      trainerId: trainer.trainerId,
+      status: 'ACTIVE',
+    });
+    expect(active).toBeNull();
+
+    const newOrder = await request(app.getHttpServer())
+      .post('/billing/orders')
+      .set('Authorization', `Bearer ${trainer.accessToken}`)
+      .send({ planCode: 'YEARLY' });
+
+    expect(newOrder.status).toBe(201);
+    expect(newOrder.body.data.status).toBe('PENDING');
+    expect(newOrder.body.data.id).not.toBe(order.id);
+  });
+
+  it('webhook with wrong or missing signature leaves Order and Subscription unchanged (CA6)', async () => {
+    const trainer = await registerTrainer(`${Date.now()}-ca6`);
+
+    const previousOrder = await db.orm.public.Order.create({
+      trainerId: trainer.trainerId,
+      planCode: 'MONTHLY',
+      amountCents: 4990,
+      status: 'PAID',
+    });
+    const previousSubscription = await db.orm.public.Subscription.create({
+      trainerId: trainer.trainerId,
+      orderId: previousOrder.id,
+      planCode: 'MONTHLY',
+      status: 'ACTIVE',
+      activatedAt: Temporal.Now.instant(),
+    });
+
+    const order = await db.orm.public.Order.create({
+      trainerId: trainer.trainerId,
+      planCode: 'YEARLY',
+      amountCents: 39900,
+      status: 'PENDING',
+    });
+    const gatewayPaymentId = `gw-invalid-sig-${Date.now()}`;
+    await db.orm.public.Payment.create({
+      orderId: order.id,
+      gatewayPaymentId,
+      status: 'pending',
+      receivedAt: Temporal.Now.instant(),
+    });
+
+    const wrongSecretHeaders = signWebhook(
+      gatewayPaymentId,
+      `req-wrong-${Date.now()}`,
+      'definitely-wrong-secret',
+    );
+
+    const wrongSecretResponse = await request(app.getHttpServer())
+      .post('/payments/webhook')
+      .set(wrongSecretHeaders)
+      .send({
+        data: { id: gatewayPaymentId },
+        status: 'approved',
+      });
+
+    expect(wrongSecretResponse.status).toBe(401);
+
+    const missingSignatureResponse = await request(app.getHttpServer())
+      .post('/payments/webhook')
+      .send({
+        data: { id: gatewayPaymentId },
+        status: 'approved',
+      });
+
+    expect(missingSignatureResponse.status).toBe(401);
+
+    const orderAfter = await db.orm.public.Order.first({ id: order.id });
+    expect(orderAfter).not.toBeNull();
+    expect(orderAfter!.status).toBe('PENDING');
+
+    const previousAfter = await db.orm.public.Subscription.first({
+      id: previousSubscription.id,
+    });
+    expect(previousAfter).not.toBeNull();
+    expect(previousAfter!.status).toBe('ACTIVE');
+
+    const subscriptionsForOrder = await db.orm.public.Subscription.where({
+      orderId: order.id,
+    }).all();
+    expect(subscriptionsForOrder).toHaveLength(0);
+  });
+
+  it('repeated approved webhook for same payment is idempotent 2xx and does not alter Order/Subscription again (CA7)', async () => {
+    const trainer = await registerTrainer(`${Date.now()}-ca7-repeat`);
+
+    const order = await db.orm.public.Order.create({
+      trainerId: trainer.trainerId,
+      planCode: 'MONTHLY',
+      amountCents: 4990,
+      status: 'PENDING',
+    });
+    const gatewayPaymentId = `gw-idempotent-${Date.now()}`;
+    await db.orm.public.Payment.create({
+      orderId: order.id,
+      gatewayPaymentId,
+      status: 'pending',
+      receivedAt: Temporal.Now.instant(),
+    });
+
+    const payload = {
+      data: { id: gatewayPaymentId },
+      status: 'approved',
+    };
+
+    const firstHeaders = signWebhook(
+      gatewayPaymentId,
+      `req-idem-1-${Date.now()}`,
+      WEBHOOK_SECRET,
+    );
+    const first = await request(app.getHttpServer())
+      .post('/payments/webhook')
+      .set(firstHeaders)
+      .send(payload);
+    expect(first.status).toBe(200);
+
+    const activeAfterFirst = await db.orm.public.Subscription.first({
+      trainerId: trainer.trainerId,
+      status: 'ACTIVE',
+    });
+    expect(activeAfterFirst).not.toBeNull();
+    const subscriptionId = activeAfterFirst!.id;
+
+    const secondHeaders = signWebhook(
+      gatewayPaymentId,
+      `req-idem-2-${Date.now()}`,
+      WEBHOOK_SECRET,
+    );
+    const second = await request(app.getHttpServer())
+      .post('/payments/webhook')
+      .set(secondHeaders)
+      .send(payload);
+
+    expect(second.status).toBe(200);
+
+    const orderAfter = await db.orm.public.Order.first({ id: order.id });
+    expect(orderAfter).not.toBeNull();
+    expect(orderAfter!.status).toBe('PAID');
+
+    const activeAfterSecond = await db.orm.public.Subscription.where({
+      trainerId: trainer.trainerId,
+      status: 'ACTIVE',
+    }).all();
+    expect(activeAfterSecond).toHaveLength(1);
+    expect(activeAfterSecond[0]!.id).toBe(subscriptionId);
+    expect(activeAfterSecond[0]!.orderId).toBe(order.id);
+  });
+
+  it('webhook for terminal Order responds 2xx without changing Order or Subscription (CA7)', async () => {
+    const trainer = await registerTrainer(`${Date.now()}-ca7-terminal`);
+
+    const order = await db.orm.public.Order.create({
+      trainerId: trainer.trainerId,
+      planCode: 'YEARLY',
+      amountCents: 39900,
+      status: 'REFUSED',
+    });
+    const gatewayPaymentId = `gw-terminal-${Date.now()}`;
+    await db.orm.public.Payment.create({
+      orderId: order.id,
+      gatewayPaymentId,
+      status: 'rejected',
+      receivedAt: Temporal.Now.instant(),
+    });
+
+    const headers = signWebhook(
+      gatewayPaymentId,
+      `req-terminal-${Date.now()}`,
+      WEBHOOK_SECRET,
+    );
+    const response = await request(app.getHttpServer())
+      .post('/payments/webhook')
+      .set(headers)
+      .send({
+        data: { id: gatewayPaymentId },
+        status: 'approved',
+      });
+
+    expect(response.status).toBe(200);
+
+    const orderAfter = await db.orm.public.Order.first({ id: order.id });
+    expect(orderAfter).not.toBeNull();
+    expect(orderAfter!.status).toBe('REFUSED');
+
+    const active = await db.orm.public.Subscription.first({
+      trainerId: trainer.trainerId,
+      status: 'ACTIVE',
+    });
+    expect(active).toBeNull();
+  });
 });
