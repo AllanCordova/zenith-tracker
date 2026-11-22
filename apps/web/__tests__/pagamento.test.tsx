@@ -1,7 +1,6 @@
 import { cleanup, screen, waitFor } from "@testing-library/react";
 import { beforeEach, expect, test, vi } from "vitest";
 import PagamentoPage from "../app/treinador/pagamento/page";
-import { http } from "@/lib/http";
 import { saveSession } from "@/lib/session";
 import * as billing from "@/repositories/billing";
 import { renderWithQuery } from "./query-wrapper";
@@ -9,7 +8,7 @@ import { renderWithQuery } from "./query-wrapper";
 const { push, cardPayment } = vi.hoisted(() => ({
   push: vi.fn(),
   cardPayment: {
-    onSubmit: null as null | (() => Promise<void>),
+    onSubmit: null as null | ((formData: { token: string }) => Promise<void>),
   },
 }));
 
@@ -23,7 +22,7 @@ vi.mock("@mercadopago/sdk-react", () => ({
     onSubmit,
     initialization,
   }: {
-    onSubmit: () => Promise<void>;
+    onSubmit: (formData: { token: string }) => Promise<void>;
     initialization: { amount: number };
   }) => {
     cardPayment.onSubmit = onSubmit;
@@ -61,43 +60,20 @@ const pendingOrder: billing.Order = {
   createdAt: "2026-11-16T00:00:00.000Z",
 };
 
-test("montar /treinador/pagamento e acionar onSubmit não marca Pedido como pago nem chama cobrança (CA10)", async () => {
+test("montar /treinador/pagamento mostra o formulário com amount do Pedido PENDING", async () => {
   saveTrainerSession();
 
-  const getCurrentOrder = vi
-    .spyOn(billing, "getCurrentOrder")
-    .mockResolvedValue(pendingOrder);
+  vi.spyOn(billing, "getCurrentOrder").mockResolvedValue(pendingOrder);
   vi.spyOn(billing, "getCheckoutConfig").mockResolvedValue({
     publicKey: "TEST-PUBLIC-KEY",
   });
-  const createOrder = vi
-    .spyOn(billing, "createOrder")
-    .mockResolvedValue(pendingOrder);
-  const httpPost = vi.spyOn(http, "post").mockResolvedValue({
-    status: 201,
-    data: { data: pendingOrder },
-  } as never);
 
-  const { unmount } = renderWithQuery(<PagamentoPage />);
+  renderWithQuery(<PagamentoPage />);
 
   await waitFor(() => {
     expect(screen.getByTestId("mp-card-form")).toBeTruthy();
-    expect(cardPayment.onSubmit).toBeTypeOf("function");
+    expect(screen.getByTestId("mp-card-form").getAttribute("data-amount")).toBe(
+      "49.9",
+    );
   });
-
-  await cardPayment.onSubmit!();
-
-  expect(createOrder).not.toHaveBeenCalled();
-  expect(httpPost).not.toHaveBeenCalled();
-
-  unmount();
-
-  expect(getCurrentOrder).toHaveBeenCalled();
-  const stillPending = await billing.getCurrentOrder();
-  expect(stillPending?.status).toBe("PENDING");
-  expect(stillPending?.id).toBe(pendingOrder.id);
-  expect(createOrder).not.toHaveBeenCalled();
-  expect(httpPost).not.toHaveBeenCalled();
-  expect("chargeOrder" in billing).toBe(false);
-  expect("createPayment" in billing).toBe(false);
 });

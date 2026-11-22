@@ -20,6 +20,14 @@ export type CheckoutConfig = {
   publicKey: string;
 };
 
+export type Payment = {
+  id: string;
+  orderId: string;
+  gatewayPaymentId: string;
+  status: string;
+  receivedAt: string;
+};
+
 type Envelope<T> = {
   data?: T;
 };
@@ -61,5 +69,21 @@ export async function getCheckoutConfig(): Promise<CheckoutConfig | undefined> {
   const response = await http.get<Envelope<CheckoutConfig>>(
     "/billing/checkout-config",
   );
+  return response.data.data;
+}
+
+export async function chargeOrder(input: {
+  orderId: string;
+  token: string;
+}): Promise<Payment | undefined> {
+  const response = await http.post<Envelope<Payment> & ErrorEnvelope>(
+    `/billing/orders/${input.orderId}/charge`,
+    { token: input.token },
+  );
+  if (response.status >= 400) {
+    const message = response.data.message;
+    const text = Array.isArray(message) ? message.join(" ") : message;
+    throw new Error(text ?? "Não deu certo cobrar o pedido");
+  }
   return response.data.data;
 }

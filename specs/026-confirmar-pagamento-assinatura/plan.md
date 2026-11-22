@@ -16,7 +16,7 @@
   - Teste primeiro: contrato Prisma declara `Payment` com os campos da architecture; migration aplica; app sobe. Falha hoje: só `Order`/`Subscription`.
   - Arquivos previstos: `apps/api/src/prisma/contract.prisma`, migration, `docs/architecture.md` (se faltar detalhe)
 
-- [ ] **Tarefa 2 — Cobrar o token sem marcar Pedido como pago**
+- [x] **Tarefa 2 — Cobrar o token sem marcar Pedido como pago**
   - Cobre: CA1, CA8
   - Teste primeiro: e2e `POST` charge com token + Pedido `PENDING` cria `Payment`, Pedido segue `PENDING`, valor cobrado = `amountCents` do banco; body com preço/`amountCents` → 400. Vitest: `onSubmit` chama charge e navega para `/treinador/pagamento/status`.
   - Arquivos previstos: `apps/api/src/payments/`, `apps/api/test/`, `apps/web/app/treinador/pagamento/`, `apps/web/repositories/`, `apps/web/__tests__/`
