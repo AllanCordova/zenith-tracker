@@ -1,3 +1,4 @@
+import 'temporal-polyfill/full/global';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { configureApp } from './common/configure-app';

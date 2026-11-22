@@ -123,7 +123,7 @@
 
 ---
 
-### US05 — Contratar a assinatura do painel · `Must Have` · `M` · Status: `🟡 Ready`
+### US05 — Contratar a assinatura do painel · `Must Have` · `M` · Status: `🟢 Live`
 
 **Como** treinador, **eu quero** escolher um plano pago e gerar um pedido **para que** eu possa ir ao checkout pagar o direito de usar a carteira.
 
@@ -360,3 +360,4 @@
 | 2026-10-14 | 1.0.0 | US06: critério do nó vermelho — sumir no checkout e reabrir o painel deixa o Pedido Pendente |
 | 2026-11-16 | 1.0.0 | US05/US06 → `🟡 Ready`; US05: recontratar o mesmo plano não cria pedido; plano diferente segue o fluxo comum |
 | 2026-11-16 | 1.0.0 | Pagamento: Checkout Transparente no próprio produto (não redireciona para o site do gateway) |
+| 2026-11-17 | 1.0.0 | US05 — Contratar a assinatura do painel: `🟡 Ready` → `🟢 Live` |

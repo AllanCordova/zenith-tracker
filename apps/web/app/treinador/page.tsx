@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ProductShell } from "@/components/product-shell";
 import { Button } from "@/components/ui/button";
@@ -38,8 +39,13 @@ export default function TreinadorPage() {
       <main>
         <h1 className="zt-titulo">Treinador</h1>
         <p className="zt-corpo mt-2">{user?.name ?? ""}</p>
-        {/* TODO #US05: carteira ainda não libera até existir Issue da US05 */}
+        {/* TODO #12: carteira com alunos reais */}
         <p className="zt-apoio mt-6">carteira ainda não libera</p>
+        <p className="zt-corpo mt-4">
+          <Link href="/treinador/assinatura" className="underline">
+            Contratar assinatura
+          </Link>
+        </p>
         <Button variant="danger" type="button" onClick={onLogout}>
           Sair
         </Button>

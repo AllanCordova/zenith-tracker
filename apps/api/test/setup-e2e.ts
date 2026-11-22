@@ -1,3 +1,4 @@
+import 'temporal-polyfill/full/global';
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -37,6 +38,9 @@ loadEnvFile(resolve(__dirname, '../.env'));
 process.env.JWT_SECRET ??= 'e2e-only-jwt-secret';
 process.env.DATABASE_URL ??=
   'postgresql://postgres:postgres@127.0.0.1:5432/postgres';
+if (!process.env.PAGAMENTO_PUBLIC_KEY) {
+  process.env.PAGAMENTO_PUBLIC_KEY = 'TEST-PUBLIC-KEY';
+}
 
 const apiRoot = resolve(__dirname, '..');
 execFileSync(resolve(apiRoot, 'node_modules/.bin/prisma'), ['db', 'migrate'], {
