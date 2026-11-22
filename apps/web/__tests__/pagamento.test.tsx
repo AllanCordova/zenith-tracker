@@ -16,22 +16,23 @@ vi.mock("next/navigation", () => ({
   useRouter: () => ({ push }),
 }));
 
-vi.mock("@mercadopago/sdk-react", () => ({
-  initMercadoPago: vi.fn(),
-  CardPayment: ({
-    onSubmit,
-    initialization,
-  }: {
-    onSubmit: (formData: { token: string }) => Promise<void>;
-    initialization: { amount: number };
-  }) => {
-    cardPayment.onSubmit = onSubmit;
-    return (
-      <div data-testid="mp-card-form" data-amount={String(initialization.amount)}>
-        formulário Mercado Pago
-      </div>
-    );
-  },
+vi.mock("next/dynamic", () => ({
+  default: () =>
+    function MercadoPagoCardPaymentMock({
+      onSubmit,
+      amount,
+    }: {
+      onSubmit: (formData: { token: string }) => Promise<void>;
+      amount: number;
+      publicKey: string;
+    }) {
+      cardPayment.onSubmit = onSubmit;
+      return (
+        <div data-testid="mp-card-form" data-amount={String(amount)}>
+          formulário Mercado Pago
+        </div>
+      );
+    },
 }));
 
 beforeEach(() => {

@@ -39,11 +39,19 @@ export class PaymentsService {
       throw new NotFoundException('Pedido Pendente não encontrado');
     }
 
+    const trainer = await this.prisma.db.orm.public.User.first({
+      id: trainerId,
+    });
+    if (!trainer) {
+      throw new NotFoundException('Treinador não encontrado');
+    }
+
     const idempotencyKey = `order-${orderId}-charge`;
     const charged = await this.gateway.charge({
       token,
       amountCents: order.amountCents,
       idempotencyKey,
+      payerEmail: trainer.email,
     });
 
     const payment = await this.prisma.db.orm.public.Payment.create({

@@ -14,13 +14,15 @@ vi.mock("next/navigation", () => ({
   useRouter: () => ({ push }),
 }));
 
-vi.mock("@mercadopago/sdk-react", () => ({
-  initMercadoPago: vi.fn(),
-  CardPayment: ({ locale }: { locale?: string }) => (
-    <div data-testid="mp-card-form" data-locale={locale ?? "pt-BR"}>
-      formulário Mercado Pago
-    </div>
-  ),
+vi.mock("next/dynamic", () => ({
+  default: () =>
+    function MercadoPagoCardPaymentMock() {
+      return (
+        <div data-testid="mp-card-form" data-locale="pt-BR">
+          formulário Mercado Pago
+        </div>
+      );
+    },
 }));
 
 beforeEach(() => {

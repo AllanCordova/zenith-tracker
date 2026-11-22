@@ -1,14 +1,25 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { CardPayment, initMercadoPago } from "@mercadopago/sdk-react";
 import { ProductShell } from "@/components/product-shell";
 import { FormError } from "@/components/ui/form-error";
 import { useCheckoutConfig } from "@/hooks/use-checkout-config";
 import { useCurrentOrder } from "@/hooks/use-current-order";
 import { areaPathForRole, getAccessToken, getSessionUser } from "@/lib/session";
 import { chargeOrder } from "@/repositories/billing";
+
+const MercadoPagoCardPayment = dynamic(
+  () =>
+    import("@/components/mercadopago-card-payment").then(
+      (module) => module.MercadoPagoCardPayment,
+    ),
+  {
+    ssr: false,
+    loading: () => <p className="zt-apoio mt-8">Carregando formulário…</p>,
+  },
+);
 
 export default function PagamentoPage() {
   const router = useRouter();
@@ -30,12 +41,6 @@ export default function PagamentoPage() {
     }
   }, [token, role, router]);
 
-  useEffect(() => {
-    if (checkout.data?.publicKey) {
-      initMercadoPago(checkout.data.publicKey);
-    }
-  }, [checkout.data?.publicKey]);
-
   if (!token || role === "STUDENT") {
     return null;
   }
@@ -44,6 +49,7 @@ export default function PagamentoPage() {
     ? currentOrder.data.amountCents / 100
     : undefined;
   const orderId = currentOrder.data?.id;
+  const publicKey = checkout.data?.publicKey;
 
   return (
     <ProductShell>
@@ -52,10 +58,11 @@ export default function PagamentoPage() {
         <p className="zt-corpo mt-2">
           Formulário do Mercado Pago (Checkout Transparente).
         </p>
-        {checkout.data?.publicKey && amount != null && orderId ? (
+        {publicKey && amount != null && orderId ? (
           <div className="mt-8">
-            <CardPayment
-              initialization={{ amount }}
+            <MercadoPagoCardPayment
+              publicKey={publicKey}
+              amount={amount}
               onSubmit={async (formData) => {
                 setError("");
                 try {

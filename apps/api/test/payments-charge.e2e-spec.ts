@@ -13,6 +13,7 @@ type ChargeCall = {
   token: string;
   amountCents: number;
   idempotencyKey: string;
+  payerEmail: string;
 };
 
 async function deleteUserByEmail(email: string): Promise<void> {
@@ -143,6 +144,7 @@ describe('Payments charge (e2e)', () => {
       token: 'fake-card-token',
       amountCents: 4990,
       idempotencyKey: expect.any(String),
+      payerEmail: trainer.email,
     });
     expect(charges[0]!.idempotencyKey.length).toBeGreaterThan(0);
   });
