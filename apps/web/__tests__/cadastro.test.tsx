@@ -24,6 +24,10 @@ vi.mock("@/lib/toast", () => ({
   toastSuccess: (...args: unknown[]) => toastSuccess(...args),
 }));
 
+vi.mock("@/repositories/billing", () => ({
+  getCurrentSubscription: vi.fn().mockResolvedValue(null),
+}));
+
 function fillCadastroForm(values: {
   name: string;
   email: string;
@@ -127,10 +131,12 @@ test("cadastro de treinador grava JWT, cai em /treinador e mostra nome e substit
   });
 
   unmount();
-  render(<TreinadorPage />);
+  renderWithQuery(<TreinadorPage />);
 
-  expect(screen.getByText("Téo Treinador")).toBeDefined();
-  expect(screen.getByText("carteira ainda não libera")).toBeDefined();
+  expect(await screen.findByText("Téo Treinador")).toBeDefined();
+  expect(
+    await screen.findByText("carteira ainda não libera"),
+  ).toBeDefined();
 });
 
 test("desmontar o formulário sem confirmar não chama o repositório", () => {

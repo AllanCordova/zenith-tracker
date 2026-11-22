@@ -41,6 +41,9 @@ process.env.DATABASE_URL ??=
 if (!process.env.PAGAMENTO_PUBLIC_KEY) {
   process.env.PAGAMENTO_PUBLIC_KEY = 'TEST-PUBLIC-KEY';
 }
+if (!process.env.PAGAMENTO_WEBHOOK_SECRET) {
+  process.env.PAGAMENTO_WEBHOOK_SECRET = 'e2e-only-webhook-secret';
+}
 
 const apiRoot = resolve(__dirname, '..');
 execFileSync(resolve(apiRoot, 'node_modules/.bin/prisma'), ['db', 'migrate'], {

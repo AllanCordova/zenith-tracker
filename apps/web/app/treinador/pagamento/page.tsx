@@ -1,15 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CardPayment, initMercadoPago } from "@mercadopago/sdk-react";
 import { ProductShell } from "@/components/product-shell";
+import { FormError } from "@/components/ui/form-error";
 import { useCheckoutConfig } from "@/hooks/use-checkout-config";
 import { useCurrentOrder } from "@/hooks/use-current-order";
 import { areaPathForRole, getAccessToken, getSessionUser } from "@/lib/session";
+import { chargeOrder } from "@/repositories/billing";
 
 export default function PagamentoPage() {
   const router = useRouter();
+  const [error, setError] = useState("");
   const token = getAccessToken();
   const user = getSessionUser();
   const role = user?.role;
@@ -40,6 +43,7 @@ export default function PagamentoPage() {
   const amount = currentOrder.data?.amountCents
     ? currentOrder.data.amountCents / 100
     : undefined;
+  const orderId = currentOrder.data?.id;
 
   return (
     <ProductShell>
@@ -48,19 +52,29 @@ export default function PagamentoPage() {
         <p className="zt-corpo mt-2">
           Formulário do Mercado Pago (Checkout Transparente).
         </p>
-        {/* TODO #26: cobrar o token do cartão; esta tela só monta o formulário */}
-        {checkout.data?.publicKey && amount != null ? (
+        {checkout.data?.publicKey && amount != null && orderId ? (
           <div className="mt-8">
             <CardPayment
               initialization={{ amount }}
-              onSubmit={async () => {
-                // TODO #26: enviar token à API para cobrança
+              onSubmit={async (formData) => {
+                setError("");
+                try {
+                  await chargeOrder({ orderId, token: formData.token });
+                  router.push("/treinador/pagamento/status");
+                } catch (caught) {
+                  if (caught instanceof Error) {
+                    setError(caught.message);
+                    return;
+                  }
+                  setError("Não deu certo. Verifique a conexão.");
+                }
               }}
             />
           </div>
         ) : (
           <p className="zt-apoio mt-8">Carregando formulário…</p>
         )}
+        <FormError>{error}</FormError>
       </main>
     </ProductShell>
   );

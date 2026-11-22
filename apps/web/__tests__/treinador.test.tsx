@@ -1,7 +1,10 @@
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, screen, waitFor } from "@testing-library/react";
 import { beforeEach, expect, test, vi } from "vitest";
 import TreinadorPage from "../app/treinador/page";
+import { http } from "@/lib/http";
 import { saveSession } from "@/lib/session";
+import { renderWithQuery } from "./query-wrapper";
+import * as billing from "@/repositories/billing";
 
 const { push } = vi.hoisted(() => ({
   push: vi.fn(),
@@ -15,6 +18,8 @@ beforeEach(() => {
   cleanup();
   localStorage.clear();
   push.mockReset();
+  vi.restoreAllMocks();
+  vi.spyOn(billing, "getCurrentSubscription").mockResolvedValue(null);
 });
 
 function jwtExpirado(): string {
@@ -35,7 +40,7 @@ test("JWT expirado em /treinador é descartado e cai em /login", async () => {
     role: "TRAINER",
   });
 
-  render(<TreinadorPage />);
+  renderWithQuery(<TreinadorPage />);
 
   await waitFor(() => {
     expect(push).toHaveBeenCalledWith("/login");
@@ -47,7 +52,7 @@ test("JWT expirado em /treinador é descartado e cai em /login", async () => {
 });
 
 test("visitante sem JWT em /treinador cai em /login e não mostra nome nem carteira", async () => {
-  render(<TreinadorPage />);
+  renderWithQuery(<TreinadorPage />);
 
   await waitFor(() => {
     expect(push).toHaveBeenCalledWith("/login");
@@ -65,7 +70,7 @@ test("sessão de aluno em /treinador permanece em /aluno", async () => {
     role: "STUDENT",
   });
 
-  render(<TreinadorPage />);
+  renderWithQuery(<TreinadorPage />);
 
   await waitFor(() => {
     expect(push).toHaveBeenCalledWith("/aluno");
@@ -81,7 +86,11 @@ test("logout apaga o JWT e a área autenticada seguinte exige /login", async () 
     role: "TRAINER",
   });
 
-  const { unmount } = render(<TreinadorPage />);
+  const { unmount } = renderWithQuery(<TreinadorPage />);
+
+  await waitFor(() => {
+    expect(screen.getByRole("button", { name: "Sair" })).toBeTruthy();
+  });
 
   fireEvent.click(screen.getByRole("button", { name: "Sair" }));
 
@@ -89,9 +98,59 @@ test("logout apaga o JWT e a área autenticada seguinte exige /login", async () 
 
   unmount();
   push.mockReset();
-  render(<TreinadorPage />);
+  renderWithQuery(<TreinadorPage />);
 
   await waitFor(() => {
     expect(push).toHaveBeenCalledWith("/login");
   });
+});
+
+test("painel com Assinatura ACTIVE deixa de tratar como sem assinatura (CA2)", async () => {
+  saveSession("jwt-treinador", {
+    id: "user-2",
+    name: "Téo Treinador",
+    email: "teo@example.com",
+    role: "TRAINER",
+  });
+
+  vi.spyOn(billing, "getCurrentSubscription").mockResolvedValue({
+    id: "sub-1",
+    trainerId: "user-2",
+    orderId: "order-1",
+    planCode: "YEARLY",
+    status: "ACTIVE",
+    activatedAt: "2026-11-22T00:00:00.000Z",
+  });
+
+  renderWithQuery(<TreinadorPage />);
+
+  await waitFor(() => {
+    expect(screen.getByText("Assinatura ativa")).toBeTruthy();
+  });
+  expect(screen.queryByText("carteira ainda não libera")).toBeNull();
+  expect(screen.queryByRole("link", { name: /contratar assinatura/i })).toBeNull();
+});
+
+test("Pedido PENDING sem Assinatura ACTIVE: reabrir painel mantém contratar e não libera (CA4)", async () => {
+  saveSession("jwt-treinador", {
+    id: "user-2",
+    name: "Téo Treinador",
+    email: "teo@example.com",
+    role: "TRAINER",
+  });
+
+  vi.spyOn(billing, "getCurrentSubscription").mockResolvedValue(null);
+  const chargeOrder = vi.spyOn(billing, "chargeOrder");
+  const httpPost = vi.spyOn(http, "post");
+
+  renderWithQuery(<TreinadorPage />);
+
+  await waitFor(() => {
+    expect(screen.getByText("carteira ainda não libera")).toBeTruthy();
+  });
+  expect(screen.getByRole("link", { name: /contratar assinatura/i })).toBeTruthy();
+  expect(screen.queryByText("Assinatura ativa")).toBeNull();
+
+  expect(chargeOrder).not.toHaveBeenCalled();
+  expect(httpPost).not.toHaveBeenCalled();
 });

@@ -69,6 +69,18 @@ export class BillingController {
     return order;
   }
 
+  @Get('subscription/current')
+  @ApiOperation({ summary: 'Devolve a Assinatura ACTIVE atual do treinador.' })
+  @ApiOkResponse({ description: 'Assinatura ACTIVE atual.' })
+  async currentSubscription(@Req() req: { user: PublicUser }) {
+    const subscription =
+      await this.billingService.findCurrentActiveSubscription(req.user.id);
+    if (!subscription) {
+      throw new NotFoundException('Nenhuma Assinatura Ativa');
+    }
+    return subscription;
+  }
+
   @Get('checkout-config')
   @ApiOperation({
     summary: 'Public key do Mercado Pago para o formulário do treinador.',
