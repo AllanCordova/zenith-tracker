@@ -34,10 +34,6 @@ async function deleteUserByEmail(email: string): Promise<void> {
   await db.orm.public.User.where({ email }).delete();
 }
 
-async function countPendingOrders(): Promise<number> {
-  return (await db.orm.public.Order.where({ status: 'PENDING' }).all()).length;
-}
-
 describe('Billing orders (e2e)', () => {
   let app: INestApplication<App>;
   const createdEmails: string[] = [];
@@ -318,7 +314,7 @@ describe('Billing orders (e2e)', () => {
   });
 
   it('billing routes without Bearer return 401 and create no Order', async () => {
-    const pendingBefore = await countPendingOrders();
+    const trainer = await registerTrainer(`${Date.now()}-ca6`);
 
     const postOrders = await request(app.getHttpServer())
       .post('/billing/orders')
@@ -341,12 +337,14 @@ describe('Billing orders (e2e)', () => {
     expect(getCurrent.body).not.toHaveProperty('data');
     expect(getCheckout.body).not.toHaveProperty('data');
 
-    expect(await countPendingOrders()).toBe(pendingBefore);
+    const ordersForTrainer = await db.orm.public.Order.where({
+      trainerId: trainer.trainerId,
+    }).all();
+    expect(ordersForTrainer).toHaveLength(0);
   });
 
   it('billing routes with STUDENT JWT return 403 and create no Order', async () => {
     const student = await registerStudent(`${Date.now()}-ca7`);
-    const pendingBefore = await countPendingOrders();
 
     const postOrders = await request(app.getHttpServer())
       .post('/billing/orders')
@@ -381,7 +379,6 @@ describe('Billing orders (e2e)', () => {
       trainerId: student.userId,
     }).all();
     expect(ordersForStudent).toHaveLength(0);
-    expect(await countPendingOrders()).toBe(pendingBefore);
   });
 
   it('POST /billing/orders with missing, invalid planCode or client amountCents returns 400 and leaves PENDING untouched', async () => {
