@@ -24,23 +24,42 @@ Acompanhamento nutricional para treinos híbridos: o aluno vê se o dia fechou s
 
 ## Em produção
 
-- **Aplicação:** ainda não
-- **API (Swagger):** ainda não
+A partir da Entrega 3.
 
 ## Quick Start
 
-Node.js 24.9+. Cada app tem o seu `package.json` (sem workspaces).
+Node.js 24.9+. Cada app tem o seu `package.json` (sem workspaces). Os comandos abaixo são na raiz do repositório. A API fica em http://localhost:3001 e o Next em http://localhost:3000.
 
 ```bash
+# Sobe o PostgreSQL 16. Usuário, senha e banco são postgres, na porta 5432.
 docker compose up -d
+
+# Instala as dependências de cada app.
 npm install --prefix apps/api
 npm install --prefix apps/web
-npm run dev    # API em http://localhost:3001 e Next em http://localhost:3000
-npm run api    # só a API, http://localhost:3001
-npm run web    # só o Next, http://localhost:3000
+
+# Cria o ambiente local. Não commite o .env.
+cp apps/api/.env.example apps/api/.env
 ```
 
-Testes e lint (comandos da raiz):
+Abra `apps/api/.env` e troque o `JWT_SECRET` vazio por um texto desta máquina, por exemplo `dev-only-secret`. Sem ele a API não assina o token. `DATABASE_URL` já aponta para o Compose. `PAGAMENTO_ACCESS_TOKEN`, `PAGAMENTO_PUBLIC_KEY` e `PAGAMENTO_WEBHOOK_SECRET` podem ficar vazios para cadastro, login e Pedido. Preencha os três antes de abrir o checkout ou cobrar no Mercado Pago.
+
+```bash
+# Cria as tabelas no banco novo. Prisma 8 aplica o pacote de migrations com db migrate.
+cd apps/api
+npx prisma db migrate
+cd ../..
+
+# Sobe a API. Swagger em http://localhost:3001/docs
+npm run api
+
+# Opcional: sobe o Next em http://localhost:3000
+npm run web
+```
+
+`npm run dev` sobe a API e o Next juntos.
+
+Testes e lint, na raiz, com o banco no ar:
 
 ```bash
 npm test
